@@ -1,6 +1,6 @@
 {
   "schemaVersion": 4,
-  "generatedAt": "2026-08-03T13:34:56.136Z",
+  "generatedAt": "2026-08-03T14:09:15.908Z",
   "package": {
     "name": "fullstack-vision-engineering-pro",
     "version": "5.0.0"
@@ -8,15 +8,13 @@
   "status": "PASS",
   "errors": [],
   "warnings": [
-    "The distributed suite does not include its own package-lock.json. Generate and review one after dependency installation before using npm ci or publishing the package. The bundled full-stack example includes a verified lockfile fixture.",
     "PyYAML was unavailable; workflow files received only required-file and text checks.",
-    "Browser dependencies are declared but not installed in this validation environment, so live browser execution was not performed.",
     "Live screenshot, accessibility, performance, network, database, and interaction evidence requires a runnable target system and environment-specific configuration.",
     "Behavioral pressure scenarios require fresh independent agent contexts; static validation and deterministic engine tests do not certify those multi-agent runs."
   ],
   "checks": {
     "requiredFiles": {
-      "expected": 267,
+      "expected": 271,
       "missing": 0
     },
     "skillFrontmatter": {
@@ -29,36 +27,36 @@
       "missing": []
     },
     "json": {
-      "files": 69,
+      "files": 70,
       "failed": 0
     },
     "exampleConfigs": "PASS",
     "syntax": {
-      "files": 215,
+      "files": 221,
       "failed": []
     },
     "dynamicExecutionScan": {
-      "files": 133,
+      "files": 137,
       "findings": []
     },
     "unitTests": {
-      "files": 81,
-      "tests": 278,
-      "passed": 278,
+      "files": 83,
+      "tests": 287,
+      "passed": 287,
       "failed": 0,
       "exitStatus": 0
     },
     "package": {
       "name": "fullstack-vision-engineering-pro",
       "version": "5.0.0",
-      "scripts": 49,
-      "binaries": 47,
+      "scripts": 51,
+      "binaries": 49,
       "exactDependencies": true,
-      "packageLockPresent": false
+      "packageLockPresent": true
     },
     "cliHelp": {
-      "files": 47,
-      "passed": 47,
+      "files": 49,
+      "passed": 49,
       "failed": []
     },
     "setupShell": {
@@ -120,13 +118,13 @@
       }
     },
     "browserDependencies": {
-      "installedInValidationEnvironment": false
+      "installedInValidationEnvironment": true
     },
     "documentation": {
       "englishReadmeBytes": 13667,
       "thaiReadmeBytes": 18733
     },
-    "filesScanned": 464
+    "filesScanned": 471
   },
   "wordCounts": {
     "AESTHETIC_WALKTHROUGH.md": 614,
@@ -388,6 +386,7 @@
     "lib/api-contract-engine.mjs": "859a53a85c8f3f4b37518611945fbbe05c5d1beb916fb2e13b3707b59ad901a0",
     "lib/architecture-risk-engine.mjs": "0dff39130df1e4287a41c0808d581db8867b96e39dd97f8522a97dd29f5b3b5c",
     "lib/artifacts.mjs": "4efd7260fda40306fe7dbf1822179c6682187e881a7c579eea41fe8d77cecedc",
+    "lib/ascii-map-engine.mjs": "77ab25182cac2e88efb1eb8c26053972aa5ec65a842e908678ef454941465e37",
     "lib/audit-utils.mjs": "bde3efc640b9acde6c751977f2f31b9333db15a4b156a9dbbb18c8e9646e3b66",
     "lib/baseline-engine.mjs": "252ba6ae946aad05f15705df4fd2a77b5bf3e745c5fd2a030317bceabddff807",
     "lib/breakpoint-engine.mjs": "461cb491d008a1a850daf7edb62af6a5e14b0cd8bf8e2fe469f00168ef067fb8",
@@ -430,6 +429,7 @@
     "lib/interaction-engine.mjs": "f054ace832138e3d744aa9cfdfe0b3fc54f2b92be0680519eb0a21efb12e12be",
     "lib/io.mjs": "6b34f3e4e8204841bea01192b0f5589f19a050d3da51e2d66bbc3716a8704523",
     "lib/layout-analysis.mjs": "9983d4b11d394379e95418a0ebf0024f51d4ebf524cbf7d24004f2c2df19c450",
+    "lib/layout-structure-engine.mjs": "685f8812c1f564f20cb1e78500b4c01a2d3b221205f8e5b8e305b57814332077",
     "lib/manual-review-engine.mjs": "bfefada8b793f3b59cc5a8116f172e43084acc059bc2ad16b75095484d974ef1",
     "lib/migration-risk-engine.mjs": "27b9dc7b5b49a84c2d05857b122fd8729da97df18bd03d2ea143db35a69d5af3",
     "lib/motion-quality-engine.mjs": "d62585e2bc85dd1ec4cc3f59ba4f277888f79ad6cae876df604415799b327627",
@@ -465,7 +465,8 @@
     "lib/token-engine.mjs": "241237474c218e5485c273dfb190c3b2a70298c4be4c9be0fa4a2fdb910cc707",
     "lib/typography-scale-engine.mjs": "906f0a40f1d561a1380563db5bfccf4abdf17064bfbdae7263cb2305a8557258",
     "lib/workspace-safety-engine.mjs": "4fcb2675ecdcf41dbba0d4ba60ee585628e9098a6a007545f65ca7695e753f76",
-    "package.json": "0e62dfe51f5825a6ce575db651aa4c216f5b922280e32844f7563b6808f736e7",
+    "package-lock.json": "6a4a7321cfeb2a9b442176bb2e4842c347a59faaf2a4751c0e3445630fd64d7d",
+    "package.json": "b9b7ec6fac945b90ed2e01d7b06e03ea027038dc29810402a6ac05ab6ed70335",
     "prompts/adversarial-release-review.md": "2aac3aec2df3060bd00446576d619dfbd966ca7e5783215cc99e35123f5ccce2",
     "prompts/aesthetic-critique.md": "151e8c8b01054d234a696fb859e68c8f2ed6027db74a174523d9f2587495bcda",
     "prompts/aesthetic-direction.md": "a4b7f96ce7d7e788a051dccd563a3a3ce72c0fefc29d5b63902277989c420d6b",
@@ -592,6 +593,7 @@
     "schemas/vision-loop-config.schema.json": "5c8c402f1fafeacae3d3a69c25b8f5a4e348e4810d07187f8dee38bbf34d1100",
     "schemas/visual-delta-ledger.schema.json": "057310b9ae3658b47fcab559b316314c6643c6ee8277c744149eb87a1a855654",
     "schemas/workspace-snapshot.schema.json": "1489ff4fb75da8c41552e8b6f67e5812b854a0f7860a3a896a5f1b89248ed3d7",
+    "scripts/ascii-map.mjs": "d4c81d4f706285ebeb375ab8207236f7147e80c42ca329ad6df1396502904373",
     "scripts/audit-a11y.mjs": "49d1012778bf1e197a0309bfc4aeceace1f6e479ab3893d1191da456d6073161",
     "scripts/audit-aesthetics.mjs": "c9bde61e9c7731e0406534baad9adb713953532d06cf44cbdc3f58daf43d3f0f",
     "scripts/audit-api-contract.mjs": "a98014d05b1b5b8e56d961e594f6346a45c0b4edda7bb553bd6855b6782d02d5",
@@ -623,6 +625,7 @@
     "scripts/inspect.mjs": "554a44122f8ed477206804495e58b43120e80906690965877a269c071798cb29",
     "scripts/install-direction-cursor.mjs": "17d3ba9bf22202a65999d744255c52e70339c5cadd3a2c6cbed83a80a9cde04f",
     "scripts/iterate-direction.mjs": "41e57e34558711425bf6d0f293b54bdaff3ec65f27cd67d078d821ac560451c1",
+    "scripts/layout-structure.mjs": "353e828f392eb765bc566241b7f0bc2b0bb7f3e4eeec8abbbd2fffc1c7caec34",
     "scripts/open-direction-gallery.mjs": "4925ffad45ce18f9e7d1035cc21476c9d7fb8a96ed1e4b91ed958597bf9f1263",
     "scripts/prepare-integration.mjs": "af70cd33392931ff7f7aa6dad3010d16b4cf017c01b4d86f1fee50d487518cd8",
     "scripts/promote-baseline.mjs": "ea482e31b42ac3f3ce01691e26636518ed713c4ef14b8413fd693a596488712f",
@@ -689,6 +692,7 @@
     "tests/unit/api-contract-v3.test.mjs": "fd76ad0cd827fec083b95c400854fc59438b846da39e2a2bd7e58b1865ee0ccb",
     "tests/unit/architecture-risk-v3.test.mjs": "a0f111ca562a5fd12067f0a41ee96281b9ee5e6991f1ffbc2edd3ff0755d9991",
     "tests/unit/artifacts.test.mjs": "fffc7f1e5312489c3fae655d1263b7c6723b8f1d0e991d7d03a1346da7ee28c6",
+    "tests/unit/ascii-map.test.mjs": "40fbe255518b958fe606686a8ce0f816e9ef16e6a763492fe7028038fa61bb79",
     "tests/unit/baseline.test.mjs": "0719274f7073623683f8af9c5c3d41fbb8303642f66ed76d41c62b335ecc8048",
     "tests/unit/breakpoints.test.mjs": "cbe5edca8e907945cea1c83fd439ae6233dab5e2257ad5434e36b65ea8174f74",
     "tests/unit/claim-verification-v4.test.mjs": "ef9c0da139c2e5daed3f1d2b1e98f74c928b91dbffef371ae9dfb9ee8af00402",
@@ -725,11 +729,12 @@
     "tests/unit/integration-decision-v4.test.mjs": "32d7c953f3b087072a6a9345c47c4d61355aab4be704d4a1282874fef07ac7b2",
     "tests/unit/interaction.test.mjs": "ba1a2c40b94f759ed79c26f5dd01133d9451eb31dd982e114ab419e76159263d",
     "tests/unit/layout-analysis.test.mjs": "8541c9d7a06d2767e29094a6449006756026260ff63a3807cfa782a5dc744ea8",
+    "tests/unit/layout-structure.test.mjs": "374c308fdc5d4bd0f15e0c4431ad678012e4fab355fc68c66b119ca9eb71a83e",
     "tests/unit/manual-review.test.mjs": "bbc486190f4671f54f55d1b760957e5052e389a5f9b9cf90b35fdfb17dbc65a2",
     "tests/unit/migration-risk-v3.test.mjs": "52ec651df71d474ed8478124988b414f8bda61bbf9aaaeb9d813cd97a980e6a7",
     "tests/unit/motion-quality.test.mjs": "137dcb6cc979a0bf8fe3796d88c07906ed779a5651a938892de9e7427d05c0b1",
     "tests/unit/observability-v3.test.mjs": "e451551493f2699331d8224d970689150327fe2dbc590a5eaeb911b99246124f",
-    "tests/unit/package-v3.test.mjs": "75c381510ea308f0f53b33b37d9aa72669007c53a8bb20d478246392ec5aa7ce",
+    "tests/unit/package-v3.test.mjs": "def51cb16f901ac8e5086dc5d29c947cd5fa298e13cc67c17dbe7c525658586b",
     "tests/unit/perceptual.test.mjs": "1de8d3856e9ca5f24eadcd02b4ef80209c769cbd6a55270b4078662604e0b9f4",
     "tests/unit/performance.test.mjs": "c2e071e4ee60f6636348d1aa23566208c828e6a038181c694a94c0f24ae9367e",
     "tests/unit/plan-quality-v4.test.mjs": "c0e506c1bbf62a3e0cf499c4ef70cd6f0bc67d1c9b9fefe2cea0875ac62a434a",

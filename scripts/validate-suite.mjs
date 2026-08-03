@@ -32,6 +32,8 @@ const required = [
 
   // Retained frontend vision and evidence engines.
   'lib/config.mjs', 'lib/browser-runner.mjs', 'lib/compare-engine.mjs', 'lib/perceptual-diff.mjs',
+  'lib/ascii-map-engine.mjs',
+  'lib/layout-structure-engine.mjs',
   'lib/region-engine.mjs', 'lib/quality-model.mjs', 'lib/evidence-coverage.mjs', 'lib/gate-engine.mjs',
   'lib/baseline-engine.mjs', 'lib/manual-review-engine.mjs', 'lib/history-engine.mjs', 'lib/performance-engine.mjs',
   'lib/interaction-engine.mjs', 'lib/state-crawler-engine.mjs', 'lib/token-engine.mjs', 'lib/breakpoint-engine.mjs',
@@ -92,7 +94,7 @@ const required = [
   'tests/aesthetic-pressure-scenarios-v5.md', 'tests/TDD_EVIDENCE_V5.md',
 
   // Frontend/full-stack and process CLI surface.
-  'scripts/vision-loop.mjs', 'scripts/quality-gate.mjs', 'scripts/promote-baseline.mjs',
+  'scripts/vision-loop.mjs', 'scripts/quality-gate.mjs', 'scripts/ascii-map.mjs', 'scripts/layout-structure.mjs', 'scripts/promote-baseline.mjs',
   'scripts/verify-baseline.mjs', 'scripts/create-review-template.mjs', 'scripts/validate-manual-review.mjs',
   'scripts/audit-fullstack.mjs', 'scripts/audit-experience.mjs', 'scripts/audit-api-contract.mjs',
   'scripts/audit-architecture.mjs', 'scripts/audit-migrations.mjs', 'scripts/audit-security.mjs',

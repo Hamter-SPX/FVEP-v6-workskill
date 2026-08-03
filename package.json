@@ -18,6 +18,8 @@
     "validate": "node scripts/validate-suite.mjs",
     "capture": "node scripts/capture.mjs",
     "compare": "node scripts/compare.mjs",
+    "ascii-map": "node scripts/ascii-map.mjs",
+    "layout-structure": "node scripts/layout-structure.mjs",
     "inspect": "node scripts/inspect.mjs",
     "audit:a11y": "node scripts/audit-a11y.mjs",
     "audit:performance": "node scripts/audit-performance.mjs",
@@ -67,6 +69,8 @@
   "bin": {
     "frontend-vision-capture": "scripts/capture.mjs",
     "frontend-vision-compare": "scripts/compare.mjs",
+    "frontend-vision-ascii-map": "scripts/ascii-map.mjs",
+    "frontend-vision-layout-structure": "scripts/layout-structure.mjs",
     "frontend-vision-inspect": "scripts/inspect.mjs",
     "frontend-vision-a11y": "scripts/audit-a11y.mjs",
     "frontend-vision-performance": "scripts/audit-performance.mjs",
