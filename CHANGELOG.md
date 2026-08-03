@@ -12,6 +12,7 @@
 - `templates/recheck-record.md`, `schemas/recheck-record.schema.json`, `examples/recheck.example.json`, and `prompts/recheck-pass.md`
 - Two playbooks — effects and sound direction, and the pre-presentation re-check — plus a mode label on every existing playbook
 - Ten additional pressure scenarios covering silent mode crossings, unrun gates, assumed modes, checkbox re-checks, unsearched clean verdicts, footnoted defects, self-review without a disconfirmer, effects approved on black, audio-only information, and feel tuned by impression
+- `npm run validate -- --help` and `--output <path>` so the suite can print usage and write `VALIDATION_REPORT.json` outside a read-only skill directory
 
 ## Earlier unreleased — vision-in-the-loop, scenes, and game assets
 

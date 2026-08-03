@@ -5,6 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { parseLooseArgs, printHelp } from '../lib/cli.mjs';
 import { loadConfig } from '../lib/config.mjs';
 import { loadFullstackConfig } from '../lib/fullstack-config.mjs';
 import { runConfiguredFullstackAudit } from '../lib/fullstack-runner.mjs';
@@ -12,8 +13,42 @@ import { loadProcessConfig } from '../lib/process-config.mjs';
 import { runConfiguredProcessAudit } from '../lib/process-orchestrator.mjs';
 import { auditSkillConformance } from '../lib/skill-conformance-engine.mjs';
 
+const HELP = `Usage:
+  node scripts/validate-suite.mjs [--output <path>]
+  npm run validate -- [--output <path>]
+
+Runs the full skill validation suite: required files, JSON/syntax, dangerous
+patterns, unit tests, CLI --help smoke tests, bundled example audits, and
+skill conformance.
+
+Options:
+  --output <path>   Write VALIDATION_REPORT.json to this path instead of the
+                    package root. Use when the skill directory is read-only
+                    (for example a locked Codex/ChatGPT skill cache).
+  -h, --help        Show this help and exit
+
+Examples:
+  npm run validate
+  npm run validate -- --output /tmp/fvep-validation.json
+  npm run validate -- --output ./artifacts/VALIDATION_REPORT.json
+`;
+
+const argv = process.argv.slice(2);
+if (argv.includes('--help') || argv.includes('-h')) {
+  printHelp(HELP);
+  process.exit(0);
+}
+
+const cliArgs = parseLooseArgs(argv);
+if (cliArgs.help || cliArgs.h) {
+  printHelp(HELP);
+  process.exit(0);
+}
+
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const reportPath = path.join(root, 'VALIDATION_REPORT.json');
+const reportPath = path.resolve(
+  cliArgs.output ? String(cliArgs.output) : path.join(root, 'VALIDATION_REPORT.json')
+);
 const trace = (stage) => { if (process.env.FVEP_VALIDATE_TRACE === '1') process.stderr.write(`[validate] ${new Date().toISOString()} ${stage}\n`); };
 trace('start');
 const ignoredDirectories = new Set(['node_modules', 'artifacts', '.git', '.superpowers']);
@@ -526,6 +561,17 @@ const report = {
   sha256: hashes
 };
 trace('writing-report');
-await fs.writeFile(reportPath, `${JSON.stringify(report, null, 2)}\n`, 'utf8');
+try {
+  await fs.mkdir(path.dirname(reportPath), { recursive: true });
+  await fs.writeFile(reportPath, `${JSON.stringify(report, null, 2)}\n`, 'utf8');
+} catch (error) {
+  const code = error?.code;
+  const hint = code === 'EPERM' || code === 'EACCES'
+    ? `\nThe report path is not writable. Re-run with a writable destination:\n  npm run validate -- --output /tmp/VALIDATION_REPORT.json\n`
+    : '';
+  process.stderr.write(`Failed to write validation report to ${reportPath}: ${error.message}${hint}`);
+  process.exitCode = 1;
+  process.exit(1);
+}
 process.stdout.write(`${report.status}: ${errors.length} error(s), ${warnings.length} warning(s), ${passCount}/${testCount} unit tests passed. Report: ${reportPath}\n`);
 if (errors.length) process.exitCode = 1;

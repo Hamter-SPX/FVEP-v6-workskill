@@ -76,8 +76,9 @@ cp vision-loop.config.example.json vision-loop.config.json
 cp examples/process/process.config.json process.config.json
 cp fullstack.config.example.json fullstack.config.json
 npm run validate
+# if the skill directory is read-only:
+npm run validate -- --output /tmp/VALIDATION_REPORT.json
 ```
-
 ## Quick start: governed process
 
 The safe example contracts are in `examples/process/`.
