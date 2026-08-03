@@ -121,9 +121,25 @@ Produce **two or three** theses. Each must differ on at least two of:
 Trivial variants (same layout, only accent hue changed) do not count as separate options. Each thesis gets:
 
 - a one-line visual thesis
+- a **clear novelty concept** (one new idea that is checkable — not “modern/clean/premium”)
 - the personality deltas vs the reference
 - what stays from the reference (structure, task, critical controls)
 - what changes (surface, type, chrome, motion character)
+
+### Distinctness gate (required before presenting)
+
+Before showing options 1/2/3, write `design/direction-options/options.json` and run:
+
+```bash
+npm run direction:distinctness -- --options design/direction-options/options.json
+```
+
+If the gate fails (`ok=false` / `fail-similar-or-weak-novelty`), **do not present** that set. Redesign theses until they:
+
+1. differ on ≥2 personality axes with meaningful separation, and
+2. each carry a distinct novelty concept.
+
+A result that still looks like near-duplicates **does not meet this skill’s visual-direction standard**, even if three images were generated.
 
 ### 3. Generate Images
 

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://frontend-vision-loop.local/schemas/scene-brief-v1.json",
+  "title": "Scene Brief",
+  "description": "Authored intent for a rendered scene. Measurement proves detail exists; the brief proves the detail was designed.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["name", "fantasy", "layers", "focalPoint", "lighting"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "name": { "type": "string", "minLength": 1 },
+    "fantasy": {
+      "type": "string",
+      "minLength": 12,
+      "description": "The moment in one concrete sentence. Praise words such as epic or beautiful are rejected."
+    },
+    "layers": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["foreground", "midground", "background"],
+      "properties": {
+        "foreground": { "type": "string", "minLength": 1 },
+        "midground": { "type": "string", "minLength": 1 },
+        "background": { "type": "string", "minLength": 1 }
+      }
+    },
+    "focalPoint": { "type": "string", "minLength": 1, "description": "The subject and how the eye is led to it." },
+    "lighting": { "type": "string", "minLength": 1, "description": "Key direction, mood, and where the shadow anchors are." },
+    "palette": { "type": "string", "description": "Binding to the aesthetic profile or palette roles." },
+    "styleBinding": { "type": "string" },
+    "camera": { "type": "string", "description": "Which camera approves this scene: distance, FOV, framing." },
+    "storyDetails": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Traces that prove the space is used: wear, repairs, stains, left-behind objects."
+    },
+    "negativeSpace": { "type": "string", "description": "Where quiet is intentional, so the gate does not read it as neglect." },
+    "motion": { "type": "string" },
+    "audio": { "type": "string" }
+  }
+}

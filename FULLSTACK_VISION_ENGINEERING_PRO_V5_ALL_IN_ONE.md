@@ -8,107 +8,127 @@
 1. `SKILL.md`
 2. `README.md`
 3. `README_TH.md`
-4. `ARCHITECTURE.md`
-5. `SECURITY.md`
-6. `SUPERPOWERS_ADAPTATION_MATRIX.md`
-7. `MIGRATION_V3_TO_V4.md`
-8. `MIGRATION_V4_TO_V5.md`
-9. `UPGRADE_REPORT_V4_TH.md`
-10. `UPGRADE_REPORT_V5_TH.md`
-11. `references/process-kernel-overview.md`
-12. `references/skill-routing-and-precedence.md`
-13. `references/design-before-implementation.md`
-14. `references/executable-planning.md`
-15. `references/tdd-evidence-protocol.md`
-16. `references/scientific-debugging-protocol.md`
-17. `references/parallel-task-isolation.md`
-18. `references/subagent-task-lifecycle.md`
-19. `references/review-and-feedback-governance.md`
-20. `references/workspace-and-branch-safety.md`
-21. `references/verification-and-claim-governance.md`
-22. `references/integration-and-cleanup.md`
-23. `references/skill-authoring-conformance.md`
-24. `references/context-recovery-ledger.md`
-25. `references/fullstack-operating-model.md`
-26. `references/experience-design-to-system-contract.md`
-27. `references/backend-architecture-and-domain-boundaries.md`
-28. `references/backend-design-quality-gates.md`
-29. `references/api-contracts-and-compatibility.md`
-30. `references/data-integrity-transactions-and-migrations.md`
-31. `references/data-privacy-and-classification.md`
-32. `references/application-security-and-threat-modeling.md`
-33. `references/resilience-and-distributed-failure-modes.md`
-34. `references/observability-slos-and-incident-readiness.md`
-35. `references/fullstack-systematic-debugging.md`
-36. `references/risk-discovery-and-adversarial-review.md`
-37. `references/dependency-and-supply-chain-risk.md`
-38. `references/fullstack-release-and-rollback.md`
-39. `references/vision-loop-protocol.md`
-40. `references/reference-reconstruction.md`
-41. `references/responsive-and-state-matrix.md`
-42. `references/frontend-engineering-gates.md`
-43. `references/accessibility-and-interaction.md`
-44. `references/performance-and-runtime.md`
-45. `references/anti-generic-design.md`
-46. `lib/direction-gallery-engine.mjs`
-47. `scripts/open-direction-gallery.mjs`
-48. `lib/direction-init-engine.mjs`
-49. `scripts/init-direction.mjs`
-50. `lib/direction-spec-sync-engine.mjs`
-51. `scripts/sync-direction-spec.mjs`
-52. `lib/direction-iterate-engine.mjs`
-53. `scripts/iterate-direction.mjs`
-54. `lib/direction-gate-engine.mjs`
-55. `scripts/direction-gate.mjs`
-56. `lib/direction-runtime-engine.mjs`
-57. `scripts/detect-direction-runtime.mjs`
-58. `scripts/install-direction-cursor.mjs`
-59. `prompts/visual-direction-prompt-pack.md`
-60. `prompts/visual-direction-exploration-ide.md`
-61. `prompts/visual-direction-exploration-cli.md`
-62. `examples/direction-camera/README.md`
-63. `templates/cursor/README.md`
-64. `references/visual-direction-exploration.md`
-65. `references/visual-direction-exploration_TH.md`
-66. `references/aesthetic-direction-protocol.md`
-67. `references/aesthetic-principles.md`
-68. `references/aesthetic-direction-protocol_TH.md`
-69. `references/aesthetic-principles_TH.md`
-70. `AESTHETIC_WALKTHROUGH.md`
-71. `references/aesthetic-scoring-anchors.md`
-72. `references/visual-craft-standards.md`
-73. `references/color-system-and-perception.md`
-74. `references/typographic-system-quality.md`
-75. `references/spatial-composition-and-rhythm.md`
-76. `references/motion-quality-standards.md`
-77. `references/brand-personality-and-tone.md`
-78. `references/visual-style-lexicon.md`
-79. `references/copy-voice-and-microcopy.md`
-80. `templates/task-brief.md`
-81. `templates/aesthetic-profile.md`
-82. `templates/aesthetic-review.md`
-83. `templates/visual-direction-spec.md`
-84. `templates/review-package.md`
-85. `templates/feedback-ruling.md`
-86. `templates/tdd-evidence.md`
-87. `templates/debug-session.md`
-88. `templates/integration-decision.md`
-89. `agents/process-controller.md`
-90. `agents/task-implementer.md`
-91. `agents/task-reviewer.md`
-92. `agents/re-reviewer.md`
-93. `agents/final-reviewer.md`
-94. `agents/aesthetic-critic.md`
-95. `prompts/process-controller.md`
-96. `prompts/visual-direction-exploration.md`
-97. `prompts/aesthetic-critique.md`
-98. `prompts/aesthetic-direction.md`
-99. `prompts/task-implementer.md`
-100. `prompts/task-reviewer.md`
-101. `prompts/re-reviewer.md`
-102. `prompts/final-reviewer.md`
-103. `tests/process-pressure-scenarios-v4.md`
-104. `tests/TDD_EVIDENCE_V4.md`
+4. `PLAYBOOKS.md`
+5. `ARCHITECTURE.md`
+6. `SECURITY.md`
+7. `SUPERPOWERS_ADAPTATION_MATRIX.md`
+8. `MIGRATION_V3_TO_V4.md`
+9. `MIGRATION_V4_TO_V5.md`
+10. `UPGRADE_REPORT_V4_TH.md`
+11. `UPGRADE_REPORT_V5_TH.md`
+12. `references/process-kernel-overview.md`
+13. `references/skill-routing-and-precedence.md`
+14. `references/design-before-implementation.md`
+15. `references/executable-planning.md`
+16. `references/tdd-evidence-protocol.md`
+17. `references/scientific-debugging-protocol.md`
+18. `references/parallel-task-isolation.md`
+19. `references/subagent-task-lifecycle.md`
+20. `references/review-and-feedback-governance.md`
+21. `references/workspace-and-branch-safety.md`
+22. `references/verification-and-claim-governance.md`
+23. `references/integration-and-cleanup.md`
+24. `references/skill-authoring-conformance.md`
+25. `references/context-recovery-ledger.md`
+26. `references/fullstack-operating-model.md`
+27. `references/experience-design-to-system-contract.md`
+28. `references/backend-architecture-and-domain-boundaries.md`
+29. `references/backend-design-quality-gates.md`
+30. `references/api-contracts-and-compatibility.md`
+31. `references/data-integrity-transactions-and-migrations.md`
+32. `references/data-privacy-and-classification.md`
+33. `references/application-security-and-threat-modeling.md`
+34. `references/resilience-and-distributed-failure-modes.md`
+35. `references/observability-slos-and-incident-readiness.md`
+36. `references/fullstack-systematic-debugging.md`
+37. `references/risk-discovery-and-adversarial-review.md`
+38. `references/dependency-and-supply-chain-risk.md`
+39. `references/fullstack-release-and-rollback.md`
+40. `references/vision-loop-protocol.md`
+41. `references/reference-reconstruction.md`
+42. `references/responsive-and-state-matrix.md`
+43. `references/frontend-engineering-gates.md`
+44. `references/accessibility-and-interaction.md`
+45. `references/performance-and-runtime.md`
+46. `references/anti-generic-design.md`
+47. `references/visual-delta-triage.md`
+48. `references/scene-completeness.md`
+49. `references/game-vision-loop.md`
+50. `references/game-asset-direction.md`
+51. `references/world-building-and-level-blockout.md`
+52. `references/visual-delta-triage_TH.md`
+53. `references/game-vision-loop_TH.md`
+54. `prompts/vision-triage-loop.md`
+55. `agents/scene-and-asset-critic.md`
+56. `domains/README.md`
+57. `domains/ROLES/README.md`
+58. `lib/scene-completeness-engine.mjs`
+59. `scripts/audit-scene.mjs`
+60. `lib/game-asset-engine.mjs`
+61. `scripts/audit-game-assets.mjs`
+62. `lib/visual-diff-triage-engine.mjs`
+63. `scripts/vision-triage.mjs`
+64. `lib/direction-gallery-engine.mjs`
+65. `scripts/open-direction-gallery.mjs`
+66. `lib/direction-init-engine.mjs`
+67. `scripts/init-direction.mjs`
+68. `lib/direction-spec-sync-engine.mjs`
+69. `scripts/sync-direction-spec.mjs`
+70. `lib/direction-iterate-engine.mjs`
+71. `scripts/iterate-direction.mjs`
+72. `lib/direction-gate-engine.mjs`
+73. `scripts/direction-gate.mjs`
+74. `lib/direction-runtime-engine.mjs`
+75. `scripts/detect-direction-runtime.mjs`
+76. `scripts/install-direction-cursor.mjs`
+77. `prompts/visual-direction-prompt-pack.md`
+78. `prompts/visual-direction-exploration-ide.md`
+79. `prompts/visual-direction-exploration-cli.md`
+80. `examples/direction-camera/README.md`
+81. `templates/cursor/README.md`
+82. `references/visual-direction-exploration.md`
+83. `references/visual-direction-exploration_TH.md`
+84. `references/aesthetic-direction-protocol.md`
+85. `references/aesthetic-principles.md`
+86. `references/aesthetic-direction-protocol_TH.md`
+87. `references/aesthetic-principles_TH.md`
+88. `AESTHETIC_WALKTHROUGH.md`
+89. `references/aesthetic-scoring-anchors.md`
+90. `references/visual-craft-standards.md`
+91. `references/color-system-and-perception.md`
+92. `references/typographic-system-quality.md`
+93. `references/spatial-composition-and-rhythm.md`
+94. `references/motion-quality-standards.md`
+95. `references/brand-personality-and-tone.md`
+96. `references/visual-style-lexicon.md`
+97. `references/copy-voice-and-microcopy.md`
+98. `templates/task-brief.md`
+99. `templates/scene-brief.md`
+100. `templates/game-asset-spec.md`
+101. `templates/aesthetic-profile.md`
+102. `templates/aesthetic-review.md`
+103. `templates/visual-direction-spec.md`
+104. `templates/review-package.md`
+105. `templates/feedback-ruling.md`
+106. `templates/tdd-evidence.md`
+107. `templates/debug-session.md`
+108. `templates/integration-decision.md`
+109. `agents/process-controller.md`
+110. `agents/task-implementer.md`
+111. `agents/task-reviewer.md`
+112. `agents/re-reviewer.md`
+113. `agents/final-reviewer.md`
+114. `agents/aesthetic-critic.md`
+115. `prompts/process-controller.md`
+116. `prompts/visual-direction-exploration.md`
+117. `prompts/aesthetic-critique.md`
+118. `prompts/aesthetic-direction.md`
+119. `prompts/task-implementer.md`
+120. `prompts/task-reviewer.md`
+121. `prompts/re-reviewer.md`
+122. `prompts/final-reviewer.md`
+123. `tests/process-pressure-scenarios-v4.md`
+124. `tests/TDD_EVIDENCE_V4.md`
 
 ---
 
@@ -158,6 +178,8 @@ route the work
 
 The package does not create browser access, subagents, git remotes, production telemetry, or database environments that the host runtime lacks. Missing capability remains a verification gap.
 
+For the shortest correct path through a common request — redesign from a screenshot, match a reference, design a scene or map, specify an asset set, ship a feature — start from `PLAYBOOKS.md`.
+
 ## Skill Routing and Precedence
 
 Always evaluate the work context before acting. The deterministic router is available through:
@@ -188,6 +210,49 @@ Common routes:
 | Completion or integration | Fresh packaged verification → explicit user decision → controlled cleanup |
 
 Read `references/skill-routing-and-precedence.md` and `SUPERPOWERS_ADAPTATION_MATRIX.md`.
+
+## Domain packs
+
+Product-shaped work lives under `domains/`:
+
+| Domain | Path | Use for |
+|---|---|---|
+| GAME | `domains/GAME/` | Genres, graphics styles, HUD, assets, gameplay, tools, platforms |
+| APPLICATION | `domains/APPLICATION/` | App/product UI and shipping surfaces |
+| DESIGN | `domains/DESIGN/` | Visual direction, craft, brand options |
+| GENERAL | `domains/GENERAL/` | Process, backend risk, release, skill work |
+| ROLES | `domains/ROLES/` | What each discipline owns, its gates, and its red flags |
+
+Start at `domains/README.md`. Load only the genre/system notes the task needs; process and aesthetic gates still apply.
+
+Role packs answer "what does a frontend, backend, security, data, SRE, QA, product design, visual design, game design, gameplay, or tech-art pass require here" and route to the gates that produce that evidence. More than one usually applies.
+
+## Vision in the Loop
+
+`ref` is the image the user wants. `cur` is what was produced. Do not re-argue the whole render each round — measure it, rank the differences in perceptual order, and change exactly one thing.
+
+```bash
+npm run vision:triage -- --ref design/ref.png --cur artifacts/cur.png --history .fx/triage-history.json
+npm run layout-structure -- check --structure .fx/ref-structure.json --cur artifacts/cur.png --region photo=95,735,62,60
+npm run ascii-map -- --ref design/ref.png --cur artifacts/cur.png 92 735 62 60 --label PHOTO
+```
+
+Corrections are ordered `structure → proportion → value → colour → density → polish`, and the report names one next change. `vision:triage` exits non-zero while the frames differ, so an agent loop keeps iterating until it matches. Three rounds without measurable convergence is a stall: stop guessing and re-read the reference at region level.
+
+Read `references/visual-delta-triage.md`.
+
+## Scenes, Worlds, and Game Assets
+
+A strong subject in the middle of an abandoned frame is not a finished scene, and a beautiful asset render is not a usable asset.
+
+```bash
+npm run audit:scene -- --image artifacts/frame.png --brief design/scene-brief.json --grid 8x5
+npm run audit:game-assets -- --assets design/game-assets.json --frame-triangle-budget 250000
+```
+
+`audit:scene` measures the frame zone by zone and blocks on empty corners, dead regions, missing focal hierarchy, flat value structure, and copy-paste tiling; the scene brief must declare fantasy, all three depth layers, focal point, lighting, and story details. `audit:game-assets` requires each asset to state its silhouette read, in-engine scale with a comparison reference, style binding, budget, acceptance distance, and in-context evidence — a turntable render never approves an asset.
+
+Read `references/game-vision-loop.md`, `references/scene-completeness.md`, `references/game-asset-direction.md`, and `references/world-building-and-level-blockout.md`.
 
 ## Process Reference Map
 
@@ -330,6 +395,12 @@ Stop and return to the correct phase when any of these occurs:
 - Treating reviewer feedback as automatically correct without codebase verification
 - Repeating fix rounds beyond the circuit breaker
 - Comparing frontend appearance from memory instead of a current render
+- Changing several variables in one vision-loop round, so no improvement can be attributed
+- Repainting colour or texture while the triage still reports an open structure difference
+- Running a fourth speculative round after three rounds without measurable convergence
+- Approving a frame whose corners, background, or depth layers were never measured
+- Accepting a game asset from a turntable render instead of a gameplay-camera capture
+- Stating an asset's size without a unit and a comparison reference
 - Declaring an aesthetic direction in terms that cannot be checked against a render
 - Redesigning from a screenshot without presenting numbered visual options when image exploration is required
 - Implementing UI code in the same turn as an unchosen ImageGen option set
@@ -361,6 +432,11 @@ direction:gate       Lightweight PR/CI check that the direction spec is confirme
 direction:runtime    Detect Cursor/Codex/CLI/CI and print the ImageGen presentation plan
 direction:cursor-install  Install Cursor rule + redesign hook into a project .cursor/
 vision-loop          Capture, inspect, compare, load semantic + aesthetic evidence, and write the run summary
+vision:triage        Rank every ref↔cur difference in perceptual order and return one next change
+audit:scene          Measure a frame zone by zone: empty corners, focal hierarchy, value structure, tiling
+audit:game-assets    Audit a game asset set: silhouette, scale reference, style binding, budget, in-context proof
+ascii-map            Render or compare an image region as an ASCII/digit density map
+layout-structure     Remember a reference layout and check current renders against it
 skill:conformance    Audit the skill's metadata, references, pressure coverage, TDD evidence, and CLI identity
 docs:all-in-one      Regenerate the deterministic combined Markdown reference
 release:build        Build and verify the clean deterministic release directory, manifest, checksums, ZIP, and SHA sidecar
@@ -568,6 +644,26 @@ The mechanical audit runs first and produces facts. The judgment review follows 
 
 Until it is enabled the `aesthetic` gate reports not-applicable and does not affect the quality score, so a v4 pipeline upgraded to v5 produces unchanged gate results.
 
+## Vision-in-the-loop commands
+
+| Command | Purpose |
+|---|---|
+| `npm run vision:triage` | Rank every difference between the reference and the current render in perceptual order, and return exactly one next change |
+| `npm run layout-structure` | Remember a reference layout and check named regions in the current render against it |
+| `npm run ascii-map` | Render or compare an image region as an ASCII/digit density map an agent can reason over |
+| `npm run audit:scene` | Measure a frame zone by zone: empty corners, focal hierarchy, value structure, copy-paste tiling |
+| `npm run audit:game-assets` | Audit a game asset set: silhouette read, in-engine scale with a reference, style binding, budget, in-context proof |
+
+```bash
+npm run vision:triage -- --ref design/ref.png --cur artifacts/cur.png --history .fx/triage-history.json
+npm run audit:scene -- --image artifacts/frame.png --brief examples/scene-brief.example.json --grid 8x5
+npm run audit:game-assets -- --assets examples/game-assets.example.json --frame-triangle-budget 250000
+```
+
+`vision:triage` fixes differences in the order `structure → proportion → value → colour → density → polish`, exits non-zero while the frames still differ, and flags a stall when three rounds produce no measurable convergence. Read `references/visual-delta-triage.md`, `references/scene-completeness.md`, `references/game-vision-loop.md`, `references/game-asset-direction.md`, and `references/world-building-and-level-blockout.md`.
+
+Discipline packs — what each role owns, its gates, and its red flags — live in `domains/ROLES/`.
+
 ## Domain commands
 
 The v3 surface is preserved:
@@ -640,6 +736,8 @@ The release builder skips symlinks and development state, rejects unsafe member 
 ## Documentation map
 
 - `SKILL.md` — main agent workflow
+- `PLAYBOOKS.md` — copy-paste flows for redesign, reference matching, scenes, maps, asset sets, and delivery
+- `domains/` — product-shaped packs (GAME, APPLICATION, DESIGN, GENERAL) and discipline packs (ROLES)
 - `SUPERPOWERS_ADAPTATION_MATRIX.md` — mapping from every installed Superpowers skill to the process implementation
 - `MIGRATION_V3_TO_V4.md` and `MIGRATION_V4_TO_V5.md` — upgrade guides
 - `ARCHITECTURE.md` — engine and evidence architecture
@@ -851,6 +949,26 @@ npm run vision-loop -- --config vision-loop.config.json
 
 ตราบใดที่ยังไม่เปิด Gate `aesthetic` จะรายงานเป็น not-applicable และไม่กระทบคะแนนคุณภาพ ดังนั้น Pipeline v4 ที่อัปเป็น v5 จะได้ผล Gate เท่าเดิม
 
+## คำสั่ง Vision-in-the-loop
+
+| คำสั่ง | หน้าที่ |
+|---|---|
+| `npm run vision:triage` | เทียบ ref กับ cur แล้วจัดลำดับความต่างตามลำดับการรับรู้ พร้อมบอก “สิ่งที่ต้องแก้ต่อไปหนึ่งอย่าง” |
+| `npm run layout-structure` | จำโครงเลย์เอาต์ของภาพต้นฉบับ แล้วตรวจตำแหน่ง/ขนาดของ region ในภาพปัจจุบัน |
+| `npm run ascii-map` | แปลงพื้นที่ของภาพเป็นแผนที่ ASCII/ตัวเลข ให้ Agent ใช้คิดต่อได้ |
+| `npm run audit:scene` | วัดเฟรมทีละโซน: มุมภาพว่าง โซนตาย ไม่มีจุดนำสายตา ค่าน้ำหนักแบน และการก็อปวาง |
+| `npm run audit:game-assets` | ตรวจชุด Asset เกม: เงา (silhouette) สเกลจริงพร้อมตัวเทียบ สไตล์ที่ผูกไว้ งบโพลี และหลักฐานในฉากจริง |
+
+```bash
+npm run vision:triage -- --ref design/ref.png --cur artifacts/cur.png --history .fx/triage-history.json
+npm run audit:scene -- --image artifacts/frame.png --brief examples/scene-brief.example.json --grid 8x5
+npm run audit:game-assets -- --assets examples/game-assets.example.json --frame-triangle-budget 250000
+```
+
+ลำดับการแก้คือ `structure → proportion → value → colour → density → polish` แก้ครั้งละหนึ่งอย่างแล้ว capture ใหม่ทุกรอบ คำสั่งจะ exit ไม่เป็นศูนย์ตราบใดที่ยังไม่ตรง และถ้าสามรอบติดกันไม่ขยับเข้าใกล้เลย จะรายงานว่า stall — ให้หยุดเดา แล้วกลับไปอ่าน ref ทีละส่วน
+
+เอกสาร: `references/visual-delta-triage.md`, `references/scene-completeness.md`, `references/game-vision-loop.md`, `references/game-asset-direction.md`, `references/world-building-and-level-blockout.md` · แพ็กตามบทบาท (frontend/backend/security/design/game/tech-art) อยู่ใน `domains/ROLES/`
+
 ## วงจรการทำงาน
 
 ```text
@@ -946,6 +1064,151 @@ Release Builder จะข้าม Symlink และ Development State, ปฏ�
 สิ่งที่ยังตรวจไม่ได้จะถูกแสดงเป็น Verification Gap ไม่ถูกนับเป็น Pass
 
 <!-- END SOURCE: README_TH.md -->
+
+---
+
+## Source: `PLAYBOOKS.md`
+
+<!-- BEGIN SOURCE: PLAYBOOKS.md -->
+
+# Playbooks
+
+Copy-paste flows for the jobs this skill is actually asked to do. Each one is the shortest
+path that still produces evidence. Read the linked reference when a step needs judgment.
+
+---
+
+## 1. "Here is a screenshot — redesign it"
+
+```bash
+npm run direction:runtime                      # decide the ImageGen presentation plan
+npm run direction:init                         # scaffold design/ artifacts
+# draft 2–3 theses, then gate them BEFORE showing the user
+npm run direction:distinctness -- --options design/direction-options/options.json
+```
+
+1. Present options **1 / 2 / 3** and stop for a numbered choice. Near-duplicates are blocked
+   by the distinctness gate — the same layout with a different accent hue is one option, not
+   three.
+2. Write `design/visual-direction-spec.md`, then stop for **เริ่มเขียน | ปรับต่อ | เลือกใหม่**.
+3. On **ปรับต่อ**: `npm run direction:iterate`. Only after **เริ่มเขียน**:
+
+```bash
+npm run direction:sync
+# implement, then:
+npm run audit:aesthetics -- --input aesthetic-audit.json
+npm run vision-loop -- --config vision-loop.config.json
+```
+
+Reference: `references/visual-direction-exploration.md`
+
+---
+
+## 2. "This does not look like the reference — fix it"
+
+```bash
+npm run vision:triage -- --ref design/ref.png --cur artifacts/cur.png --history .fx/triage-history.json
+```
+
+Apply the one change under `NEXT SINGLE CHANGE`, re-capture, run it again. Repeat until the
+command exits `0`. If it reports a stall, stop and re-read the reference at region level:
+
+```bash
+npm run ascii-map -- --ref design/ref.png --cur artifacts/cur.png 92 735 62 60 --label PHOTO
+npm run layout-structure -- check --structure .fx/ref-structure.json --cur artifacts/cur.png --region photo=95,735,62,60
+```
+
+Reference: `references/visual-delta-triage.md` · Prompt: `prompts/vision-triage-loop.md`
+
+---
+
+## 3. "Keep watching until it matches"
+
+```bash
+npm run layout-structure -- remember --ref design/ref.png --region photo=92,738,62,60 --write .fx/ref-structure.json
+npm run layout-structure -- until-match --structure .fx/ref-structure.json --cur .fx/cur.png \
+  --regions .fx/regions.json --interval 2 --capture-to .fx/accepted.png
+```
+
+The loop keeps checking the current capture against the remembered layout and stops the
+moment it matches, so you can keep editing while it watches.
+
+---
+
+## 4. "Design a scene / level / map"
+
+```bash
+cp templates/scene-brief.md design/scene-brief.md      # then write the JSON form
+npm run audit:scene -- --brief design/scene-brief.json  # brief-only pass: is the intent designed?
+# build the blockout in grey geometry, capture the establishing shot, then:
+npm run audit:scene -- --image artifacts/blockout.png --brief design/scene-brief.json --grid 8x5
+```
+
+Fix empty corners and missing depth layers **in the blockout**, before materials. Then run it
+again on the lit frame, and on the worst procedural seed if the map is generated.
+
+References: `references/scene-completeness.md`, `references/world-building-and-level-blockout.md`
+
+---
+
+## 5. "Design the assets for this game"
+
+```bash
+cp templates/game-asset-spec.md design/assets/<asset>.md
+# collect the set into design/game-assets.json, then:
+npm run audit:game-assets -- --assets design/game-assets.json --frame-triangle-budget 250000
+```
+
+Every asset needs a silhouette read, a scale with a comparison reference, a style binding, a
+budget, an acceptance distance, and an in-context capture. Then prove it in the scene:
+
+```bash
+npm run audit:scene -- --image artifacts/asset-in-context.png --brief design/scene-brief.json
+```
+
+Reference: `references/game-asset-direction.md` · Example: `examples/game-assets.example.json`
+
+---
+
+## 6. "Build a Roblox map"
+
+1. Read `domains/GAME/platforms/roblox-maps.md` and `domains/GAME/graphics/ugc-avatar-platform.md`.
+2. Fix the authoring unit as studs and state every asset scale against avatar height.
+3. Blockout with real collision, then run the scene gate on the establishing shots.
+4. Budget parts and draw calls per region before art passes; decide streaming boundaries
+   while the geometry is still grey.
+5. Run the asset gate on the prop set, with the frame budget for the target device tier.
+
+---
+
+## 7. "Ship a feature end to end"
+
+```bash
+npm run process:route -- --input request.json
+npm run process:plan -- --plan implementation-plan.json
+npm run process:tdd -- --evidence tdd-evidence.json
+npm run audit:fullstack -- --config fullstack.config.json
+npm run process:audit -- --config process.config.json
+npm run fullstack:quality-gate -- --report artifacts/fullstack-audit/reports/fullstack-report.json
+```
+
+Pick the role packs the change touches from `domains/ROLES/` and satisfy their gates too.
+
+---
+
+## 8. "Make sure the skill itself is healthy"
+
+```bash
+npm test
+npm run validate
+npm run skill:conformance
+npm run docs:all-in-one
+```
+
+`npm run validate` is the one that matters: required files, JSON, syntax, dangerous
+patterns, the full unit suite, CLI help smoke tests, and the bundled example audits.
+
+<!-- END SOURCE: PLAYBOOKS.md -->
 
 ---
 
@@ -3310,6 +3573,2310 @@ Strengthen specificity through information architecture, content type, data dens
 
 ---
 
+## Source: `references/visual-delta-triage.md`
+
+<!-- BEGIN SOURCE: references/visual-delta-triage.md -->
+
+# Visual Delta Triage — ref vs cur, in the right order
+
+`ref` is the image the user actually wants. `cur` is what you produced and they rejected.
+Noticing that they differ is not the skill. Knowing **which difference to fix first**, and
+fixing exactly one thing per round, is the skill.
+
+## Why order matters
+
+A wrong colour on a correctly placed element is a small problem. A correct colour on a
+wrongly placed element is still wrong. If you repaint before you re-place, you throw away
+the only round where the paint judgement would have been valid.
+
+Fix in perceptual dependency order:
+
+```text
+1 structure   where things are, what leads the eye
+2 proportion  how big things are relative to each other
+3 value       lightness structure, shadow anchors, highlight accents
+4 colour      hue and saturation binding to the palette
+5 density     how much detail lives in each region
+6 polish      residual differences you may accept and stop
+```
+
+Never skip upward. Never fix stage 4 while stage 1 is open.
+
+## The loop
+
+```bash
+# 1. Measure both frames and rank every difference
+npm run vision:triage -- --ref design/ref.png --cur artifacts/cur.png \
+  --regions .fx/regions.json --history .fx/triage-history.json
+
+# 2. Read NEXT SINGLE CHANGE. Apply only that change.
+
+# 3. Re-capture cur, then run the same command again.
+```
+
+The command exits `1` while the frames still differ, so an agent loop can keep going until
+it exits `0`. Every round is appended to the history ledger.
+
+## One variable per round
+
+Batching fixes destroys attribution. If you change position, colour, and spacing in one
+round and the result improves slightly, you have learned nothing about which change helped
+and you cannot undo the one that hurt.
+
+The report always names one change. Apply that one. Re-measure.
+
+## The stall rule
+
+If three consecutive rounds do not reduce `totalDelta` by at least `0.02`, the loop is
+stalled. Stalling is not a reason to try harder in the same direction — it means the
+hypothesis is wrong:
+
+- Re-read the reference at region level, not as a whole picture.
+- Restate what the user asked for in one sentence and check it against the reference.
+- Ask whether the current structure can ever reach the reference, or whether it needs to
+  be rebuilt instead of nudged.
+
+Report the stall to the user rather than silently starting a fourth speculative round.
+
+## Reading the evidence
+
+- **Delta heatmap** — one digit per zone, `0` identical, `9` far off. Clusters tell you
+  whether the problem is local (one element) or global (exposure, palette, scale).
+- **Focal shift** — if the reference's densest zone is `C4` and yours is `A1`, the eye is
+  being led somewhere else. That is a structure defect, no matter how nice `A1` looks.
+- **Zone colour delta** — measured on mean RGB per zone, so it survives noise and texture.
+- **Zone detail delta** — negative means the reference has material there that you
+  abandoned; positive means you are busier than the reference and stealing attention.
+
+## Pairing with the other tools
+
+| Question | Tool |
+| --- | --- |
+| Which difference do I fix first? | `npm run vision:triage` |
+| Exactly how far did this one region move? | `npm run layout-structure -- check` |
+| What does this crop look like as characters I can reason over? | `npm run ascii-map` |
+| Is the frame finished in every corner? | `npm run audit:scene` |
+| Does the whole surface hold together aesthetically? | `npm run audit:aesthetics` |
+
+Triage tells you the order. The region tools tell you the amount. The scene gate tells you
+whether the parts nobody looked at are finished.
+
+## Claim discipline
+
+"Matched" is a measured verdict, not an impression. You may say the render matches the
+reference only when `vision:triage` returns `verdict=match` on the **current** artifacts,
+and you can name the ref/cur files that produced it. See
+`references/verification-and-claim-governance.md`.
+
+<!-- END SOURCE: references/visual-delta-triage.md -->
+
+---
+
+## Source: `references/scene-completeness.md`
+
+<!-- BEGIN SOURCE: references/scene-completeness.md -->
+
+# Scene Completeness — finish every corner, not only the subject
+
+The most common failure in generated and hand-built scenes is the same: a strong subject in
+the middle of a frame that was abandoned everywhere else. Flat corners, a background that is
+one grey wall, the same crate copy-pasted eight times, and a value range that never reaches
+real black or real white.
+
+A frame is finished when a player can look anywhere in it and find something that belongs.
+
+## The gate
+
+```bash
+npm run audit:scene -- --image artifacts/frame.png --brief design/scene-brief.json --grid 8x5
+```
+
+It measures the frame zone by zone and blocks on:
+
+| Code | Meaning |
+| --- | --- |
+| `SCENE_EMPTY_CORNER` | A corner zone carries almost no detail |
+| `SCENE_DEAD_ZONES` | Too much of the frame is below the detail floor |
+| `SCENE_NO_FOCAL_HIERARCHY` | Nothing leads the eye; the frame is uniform mush |
+| `SCENE_ISOLATED_SUBJECT` | One zone holds nearly all detail and the rest reads unfinished |
+| `SCENE_VALUE_STRUCTURE_FLAT` | No real darks or no real highlights |
+| `SCENE_TILING_REPETITION` | Near-identical zones betray copy-paste modules |
+
+Detail is measured as edge density, local luminance variance, and colourfulness — so noise
+alone does not pass, and a busy flat texture does not rescue an empty composition.
+
+## Reading the heatmap
+
+```text
+detail heatmap (0 empty → 9 dense):
+211112
+138831
+147741
+211112
+```
+
+Corners at `2` with a centre at `8` is the classic abandoned frame. What you want is a
+frame where the lowest zone is still inhabited and the focal zone leads by a clear margin —
+roughly a 1.4x to 4x ratio over the median, not 12x.
+
+## The brief comes first
+
+Measurement proves detail exists. The brief proves it was designed. A scene brief must
+declare:
+
+- **fantasy** — the moment in one concrete sentence, not praise words
+- **layers** — what occupies foreground, midground, and background, each named
+- **focalPoint** — the subject and how the eye is led to it
+- **lighting** — key direction, mood, and where the shadow anchors are
+- **palette** — binding to the aesthetic profile
+- **storyDetails** — at least three traces that prove the space is used: wear at hand
+  height, a repair, a stain, an object someone left behind
+- **negativeSpace** — where quiet is intentional, so the gate does not treat it as neglect
+
+Empty space is allowed when you declared it. Empty space you forgot about is a defect.
+
+## Filling corners without noise
+
+Detail is not clutter. Ranked from cheapest to most expensive:
+
+1. **Lighting falloff and shadow** — gives depth with no new geometry
+2. **Atmospheric layers** — haze, rain veils, dust shafts separating the depth planes
+3. **Framing geometry** — a beam, branch, or wall edge that occludes and holds the corner
+4. **Story props** — inhabited traces, placed where a person would actually leave them
+5. **Background silhouettes** — city, treeline, or structure that continues the world
+
+If you fill corners with random props and the repetition finding fires, you added clutter
+rather than composition. Vary rotation, wear, and lighting between repeated modules.
+
+## Product surfaces, not only games
+
+The same gate applies to marketing pages, dashboards, and game UI screens, with
+`--allow-flat-background` when a deliberate flat backdrop is the direction. In that mode a
+flat backdrop stops being a blocker but is still reported, so the choice stays visible.
+
+## Loop position
+
+```text
+scene brief → blockout → audit:scene (fail closed) → asset pass → audit:scene again
+   → in-context capture → vision:triage against the reference → match
+```
+
+Run the gate on the blockout **before** anyone spends hours on materials. An empty corner is
+cheap to fix in blockout and expensive to fix after lighting is baked.
+
+<!-- END SOURCE: references/scene-completeness.md -->
+
+---
+
+## Source: `references/game-vision-loop.md`
+
+<!-- BEGIN SOURCE: references/game-vision-loop.md -->
+
+# Game Vision Loop — from fantasy to a frame that matches the reference
+
+The frontend vision loop compares a rendered UI against a reference. Games need the same
+discipline with three extra pressures: the camera moves, the world extends past the frame,
+and everything has a runtime budget.
+
+## The loop
+
+```text
+1  Fantasy        one sentence: what the player is doing and feeling
+2  Direction      2–3 distinct visual options → user picks → aesthetic profile
+3  Style pack     domains/GAME/graphics/<style>.md becomes the binding contract
+4  Scene brief    layers, focal point, lighting, palette, story details
+5  Blockout       grey geometry only — composition, scale, traversal
+6  Scene gate     npm run audit:scene on the blockout, fail closed
+7  Asset pass     specs → npm run audit:game-assets → build
+8  In-context     capture from the gameplay camera, real lighting, play distance
+9  Triage         npm run vision:triage ref vs cur, fix one thing, repeat
+10 Match          triage returns verdict=match on current artifacts
+```
+
+Steps 5 and 6 are the ones teams skip and then pay for. Composition problems are nearly free
+to fix in grey boxes and brutally expensive after materials and lighting.
+
+## Direction before assets
+
+Never start modelling from "make it look good". Run visual direction exploration
+(`references/visual-direction-exploration.md`) and get a numbered choice, then write the
+aesthetic profile. For games the profile also fixes:
+
+- **camera** — distance, FOV, and whether the player ever sees the asset closer than X
+- **readability rule** — what must stay legible at play distance and at what size
+- **palette roles** — which colours mean interactive, dangerous, decorative, background
+- **budget class** — the platform's frame budget, which then constrains every asset
+
+A palette role that is not enforced becomes a bug report later: players will try to interact
+with decorative props that used the interactive accent.
+
+## Camera-first evaluation
+
+Every visual claim is made from a camera the player actually uses:
+
+| Shot | Purpose |
+| --- | --- |
+| Default gameplay camera | The only shot that can approve readability |
+| Combat/action distance | Proves silhouettes survive motion and clutter |
+| Night or worst-case lighting | Proves the palette still separates |
+| Wide establishing | Proves the scene gate: corners, depth layers, focal |
+| Thumbnail 64px | Proves silhouette identity |
+
+A hero beauty shot may exist for marketing. It never approves the design.
+
+## Frame budget as a design constraint
+
+Declare the budget before authoring, not after profiling:
+
+```json
+{ "policy": { "frameTriangleBudget": 260000, "maxStyleBindings": 1 } }
+```
+
+When the set audit exceeds the budget, cut density on background assets or add LODs. Do not
+approve the set and hope the profiler is kind.
+
+## Procedural and script-generated worlds
+
+When a map is generated rather than hand-placed, the generator is the artefact under review:
+
+- Fix the seed and capture the same seeds every round, or you cannot compare anything.
+- Run the scene gate on at least three seeds, including the worst one you can find.
+- Repetition findings are a generator problem, not an art problem: vary rotation, prop set,
+  wear, and lighting per instance.
+- Keep a rejected-seed list. A generator that only looks good on the demo seed is not done.
+
+See `references/world-building-and-level-blockout.md` for blockout and generator rules and
+`domains/GAME/platforms/roblox-maps.md` for platform specifics.
+
+## Multiplayer and live surfaces
+
+Visual evidence must include the states players actually see: other players present, UI at
+maximum information density, network-degraded states, and the moments after a live event
+changes the scene. A frame that only holds together empty is not shipped-quality.
+
+## Claim discipline
+
+Say the look is achieved only when, on current artifacts:
+
+- `npm run audit:scene` passes on the establishing shot,
+- `npm run audit:game-assets` passes for the set in that shot,
+- `npm run vision:triage` returns `verdict=match` against the approved reference.
+
+Anything less is progress, reported as progress.
+
+<!-- END SOURCE: references/game-vision-loop.md -->
+
+---
+
+## Source: `references/game-asset-direction.md`
+
+<!-- BEGIN SOURCE: references/game-asset-direction.md -->
+
+# Game Asset Direction — designing things that survive contact with the engine
+
+A model can produce a beautiful asset image and still hand over something unusable: wrong
+scale next to the avatar, a silhouette that dissolves at play distance, a palette that
+belongs to a different game, and a triangle count nobody budgeted.
+
+An asset is designed when it is **buildable, readable, on-style, and checkable in context**.
+
+## The gate
+
+```bash
+npm run audit:game-assets -- --assets design/game-assets.json --frame-triangle-budget 250000
+```
+
+Per asset it requires:
+
+| Field | Why it blocks |
+| --- | --- |
+| `class` | Routes the right budget and LOD expectations |
+| `styleBinding` | Without it every asset drifts to its own style |
+| `purpose` | What it does for the player, not what it looks like |
+| `silhouette` | The shape that identifies it as a black shape at thumbnail size |
+| `scale` | A number **and** a reference: "5.6 studs, about 1.1x avatar height" |
+| `materials` | Surface treatment, not just base colour |
+| `palette` | Binds the asset to one world |
+| `storyDetails` | Wear, repairs, maker marks — the difference between made and generated |
+| `budget` | Triangles, parts, texture size, or draw calls |
+| `acceptance` | Which distance, which lighting, which shot proves it works |
+| `inContextEvidence` | Verified in the scene, never on an empty turntable |
+
+Across the set it also checks duplicate ids, mixed scale units, split style bindings,
+palette sprawl, silhouette repetition, and the total triangle budget.
+
+## Silhouette first
+
+Players recognise assets as shapes before they see materials. Test every asset as a black
+fill at 64px. If two assets are indistinguishable at that size, players will confuse them in
+play, no matter how different their textures are.
+
+Give each asset a distinct dominant shape or proportion:
+
+- one **tall thin** thing, one **wide low** thing, one **compact dense** thing
+- one asymmetric feature per asset that survives scaling down
+- avoid giving three props the same bounding proportion
+
+## Scale is a fact, not a feeling
+
+State scale in the project's authoring unit with a comparison:
+
+```text
+5.6 studs tall, about 1.1x avatar height, base 1.2 studs wide
+1.8 m tall, door height, fits through the 2 m corridor
+3 tiles wide, blocks the 2-tile jump gap
+```
+
+Mixed units across a set is a blocker in practice even when each asset looks right alone —
+that is how a chair ends up the size of a car.
+
+## Story details are the anti-generic control
+
+Generated assets look generated because they are uniform and unused. Two or more concrete
+traces fix that:
+
+- paint worn away exactly at hand height
+- one plank replaced with fresher wood
+- a mismatched repair pane
+- salt bloom or rust starting at the ground contact
+
+Each trace must be tied to the fiction. "Random scratches" is noise; "scratches where the
+crane hook lands" is design.
+
+## Budget the frame, not the asset
+
+An asset that meets its own budget can still break the frame. Declare a frame budget and let
+the set audit total it:
+
+```json
+{ "policy": { "frameTriangleBudget": 260000 }, "assets": [ ... ] }
+```
+
+Background and repeated assets deserve the tightest budgets, because they are drawn most.
+
+## Prove it in context
+
+The acceptance evidence must be a capture from the **gameplay camera**, at the **play
+distance**, in the **real lighting**, next to the **avatar**. A hero render at 4K with studio
+lighting proves nothing about whether a player can tell what the object is while running past
+it at night.
+
+Route the capture into the scene gate and the triage loop:
+
+```bash
+npm run audit:scene -- --image artifacts/asset-in-context.png --brief design/scene-brief.json
+npm run vision:triage -- --ref design/asset-ref.png --cur artifacts/asset-in-context.png
+```
+
+## Templates and schema
+
+- `templates/game-asset-spec.md` — fill-in spec for one asset
+- `schemas/game-asset-spec.schema.json` — machine shape for a set
+- `examples/game-assets.example.json` — a set that passes its own policy
+
+Read `domains/GAME/graphics/` for the style pack that owns the look, and
+`domains/GAME/systems/assets-pipeline.md` for how the files land in the engine.
+
+<!-- END SOURCE: references/game-asset-direction.md -->
+
+---
+
+## Source: `references/world-building-and-level-blockout.md`
+
+<!-- BEGIN SOURCE: references/world-building-and-level-blockout.md -->
+
+# World Building and Level Blockout
+
+A map is a machine for producing player experiences. It is judged by what players do in it,
+then by how it looks. Both are checkable.
+
+## Blockout before beauty
+
+Build the level in untextured grey geometry first, with real collision and real player
+movement. The blockout is approved on:
+
+- **Traversal** — can the player get everywhere the design intends, at the intended cost?
+- **Sightlines** — what is visible from each spawn, each objective, each choke?
+- **Metrics** — jump height, step height, corridor width, door height, cover height, all
+  stated as numbers in the project unit and reused everywhere.
+- **Composition** — run `npm run audit:scene` on the establishing shots now. Empty corners
+  and missing depth layers are cheap to fix in grey boxes.
+- **Time-to-fun** — how many seconds from spawn to the first intended moment?
+
+Nothing gets a material until the blockout is approved. Materials on a bad blockout only
+make the problem more expensive to admit.
+
+## Layout languages
+
+| Layout | Reads as | Watch for |
+| --- | --- | --- |
+| Corridor / linear | Directed story pacing | Dead ends that feel like bugs |
+| Hub and spoke | Player-chosen order | Hub becoming a loading screen with walls |
+| Loop / arena | Continuous flow, PvP | Symmetry that erases landmarks |
+| Open field | Freedom, exploration | Featureless middle, navigation by minimap only |
+| Vertical tower | Escalating tension | Fall punishment without fall recovery |
+| Grid / tile | Generated content, puzzles | Repetition findings from the scene gate |
+
+## Landmarks and legibility
+
+Players navigate by silhouette, not by map. Every region needs:
+
+- one **landmark** visible from outside the region, unique in silhouette and colour role
+- one **local anchor** the player uses to orient inside the region
+- a **material or palette shift** at the boundary so the transition is felt
+
+If two regions photograph the same at thumbnail size, players will get lost in them.
+
+## Guiding attention without signage
+
+Ranked by subtlety:
+
+1. Light — players walk toward brighter, warmer, and moving light
+2. Contrast and value — the objective sits at the highest local contrast
+3. Leading lines — rails, pipes, cracks, and roads that point
+4. Colour role — the interactive accent used *only* on interactive things
+5. Motion — flags, steam, birds, particles at the intended destination
+6. Explicit signage — the fallback, not the plan
+
+## Generated maps
+
+When a script generates the map, review the generator, not one lucky output:
+
+```bash
+# capture the same fixed seeds every round
+npm run audit:scene -- --image artifacts/seed-01.png --brief design/scene-brief.json
+npm run audit:scene -- --image artifacts/seed-07.png --brief design/scene-brief.json
+npm run audit:scene -- --image artifacts/seed-13.png --brief design/scene-brief.json
+```
+
+Rules:
+
+- Seeds are fixed and recorded. An unseeded generator cannot be reviewed or regression-tested.
+- Test the worst seed you can find, not the demo seed.
+- Guarantee invariants in code: reachability, minimum room count, no soft-locks, spawn
+  distance from objectives. Assert them in tests, not by eye.
+- Vary rotation, prop sets, wear, and lighting per instance, or the tiling finding fires and
+  players see the pattern within minutes.
+- Hand-place the moments that carry the fiction. Fully procedural worlds read as texture.
+
+## Performance is part of the layout
+
+Occlusion is designed, not discovered. Break long sightlines with geometry the fiction
+justifies. Keep the drawn set bounded per region, and decide streaming boundaries while the
+blockout is still grey. Retro-fitting occlusion into an open plan costs a redesign.
+
+## Handoff
+
+The level is done when:
+
+- the blockout metrics document exists and matches the built geometry,
+- `npm run audit:scene` passes on every establishing shot and on the worst seed,
+- `npm run audit:game-assets` passes for the set used in the level,
+- the frame budget holds on the target device, measured, not estimated,
+- and `npm run vision:triage` matches the approved reference for the key shots.
+
+Platform specifics live in `domains/GAME/platforms/`.
+
+<!-- END SOURCE: references/world-building-and-level-blockout.md -->
+
+---
+
+## Source: `references/visual-delta-triage_TH.md`
+
+<!-- BEGIN SOURCE: references/visual-delta-triage_TH.md -->
+
+# Visual Delta Triage (สรุปภาษาไทย)
+
+`ref` คือภาพที่ผู้ใช้ต้องการ · `cur` คือสิ่งที่โมเดลทำออกมาแล้วผู้ใช้ยังไม่ถูกใจ
+
+การเห็นว่า “มันไม่เหมือน” ไม่ใช่ทักษะ ทักษะคือรู้ว่า **ต้องแก้อะไรก่อน** และแก้ทีละอย่าง
+
+## ลำดับการแก้ (ห้ามข้าม)
+
+```text
+1 structure   ของอยู่ตรงไหน สายตาไปตกที่ไหน
+2 proportion  ขนาดเทียบกันถูกไหม
+3 value       น้ำหนักแสงเงา มีดำจริง/สว่างจริงไหม
+4 colour      สีและความอิ่มตัว ผูกกับพาเลตต์ไหม
+5 density     รายละเอียดในแต่ละโซนมากไปหรือน้อยไป
+6 polish      ส่วนต่างเล็กน้อยที่เหลือ ยอมรับได้หรือไม่
+```
+
+สีที่ถูกบนของที่วางผิดตำแหน่ง = ยังผิดอยู่ดี ถ้าทาสีก่อนย้าย ต้องมาตัดสินสีใหม่อีกรอบ
+
+## วิธีรัน
+
+```bash
+npm run vision:triage -- --ref design/ref.png --cur artifacts/cur.png \
+  --regions .fx/regions.json --history .fx/triage-history.json
+```
+
+อ่านผลตามลำดับ: verdict → delta heatmap → รายการแก้ที่เรียงแล้ว → **NEXT SINGLE CHANGE**
+
+แก้เฉพาะข้อเดียวนั้น แล้ว capture ใหม่ แล้วรันซ้ำ คำสั่งจะ exit 1 ตราบใดที่ยังไม่ตรง จึงใช้วนลูปอัตโนมัติได้จนกว่าจะ exit 0
+
+## ทำไมต้องแก้ครั้งละอย่าง
+
+ถ้าแก้ทีเดียวสามอย่างแล้วดีขึ้นนิดหน่อย จะไม่รู้ว่าอันไหนช่วย และไม่รู้ว่าอันไหนทำให้แย่ลง — รอบนั้นเสียเปล่า
+
+## กฎ stall (สามรอบไม่ขยับ)
+
+ถ้าสามรอบติดกัน `totalDelta` ไม่ลดลงอย่างน้อย 0.02 ถือว่าตัน **ห้ามเดารอบที่สี่** ให้ทำแทน:
+
+- กลับไปอ่าน ref ทีละ region ด้วย `npm run ascii-map` และ `npm run layout-structure -- check`
+- เขียนใหม่หนึ่งประโยคว่าผู้ใช้ขออะไรจริง ๆ แล้วเทียบกับ ref ไม่ใช่เทียบกับงานตัวเอง
+- ถามว่าโครงปัจจุบันไปถึง ref ได้ไหม หรือควรรื้อใหม่
+- รายงานผู้ใช้ว่าตัน พร้อมสมมติฐาน อย่าเงียบแล้วลองต่อ
+
+## อ่าน heatmap
+
+```text
+delta heatmap (0 เหมือน → 9 ต่างมาก)
+000011
+013310
+024420
+000000
+```
+
+ต่างกระจุกที่เดียว = ปัญหาเฉพาะจุด · ต่างทั้งภาพ = ปัญหา exposure, พาเลตต์ หรือสเกลรวม
+
+## เครื่องมือคู่กัน
+
+| คำถาม | คำสั่ง |
+|---|---|
+| ต้องแก้อะไรก่อน | `npm run vision:triage` |
+| region นี้เลื่อนไปเท่าไร | `npm run layout-structure -- check` |
+| ขอเห็นพื้นที่นี้เป็นตัวอักษรเพื่อคิดต่อ | `npm run ascii-map` |
+| เฟรมนี้เก็บงานครบทุกมุมหรือยัง | `npm run audit:scene` |
+| งานรวมสวยได้มาตรฐานไหม | `npm run audit:aesthetics` |
+
+## การพูดว่า “ตรงแล้ว”
+
+พูดได้ต่อเมื่อ `vision:triage` คืน `verdict=match` บนไฟล์ปัจจุบัน และบอกได้ว่าไฟล์ ref/cur คู่ไหน นอกนั้นให้รายงานว่า “คืบหน้า” ไม่ใช่ “เสร็จ”
+
+<!-- END SOURCE: references/visual-delta-triage_TH.md -->
+
+---
+
+## Source: `references/game-vision-loop_TH.md`
+
+<!-- BEGIN SOURCE: references/game-vision-loop_TH.md -->
+
+# Game Vision Loop (สรุปภาษาไทย)
+
+งานเกมใช้วินัยเดียวกับ vision loop ของ UI แต่เพิ่มแรงกดสามอย่าง: กล้องขยับได้ โลกยาวเลยขอบเฟรม และทุกอย่างมีงบรันไทม์
+
+## ลำดับงาน
+
+```text
+1  Fantasy      หนึ่งประโยค: ผู้เล่นกำลังทำอะไรและรู้สึกอะไร
+2  Direction    เสนอ 2–3 ทางที่ต่างกันจริง → ผู้ใช้เลือก → เขียน aesthetic profile
+3  Style pack   domains/GAME/graphics/<style>.md กลายเป็นสัญญาที่ผูกทุก asset
+4  Scene brief  เลเยอร์ความลึก จุดโฟกัส แสง พาเลตต์ รายละเอียดเชิงเรื่อง
+5  Blockout     กล่องเทาล้วน — คุมองค์ประกอบ สเกล การเดิน
+6  Scene gate   npm run audit:scene บน blockout ไม่ผ่านห้ามไปต่อ
+7  Asset pass   เขียนสเปก → npm run audit:game-assets → ค่อยลงมือปั้น
+8  In-context   ถ่ายจากกล้องเกมจริง แสงจริง ระยะเล่นจริง
+9  Triage       npm run vision:triage เทียบ ref กับ cur แก้ทีละอย่าง
+10 Match        triage คืน verdict=match บนไฟล์ปัจจุบัน
+```
+
+ข้อ 5–6 คือข้อที่คนชอบข้าม แล้วต้องจ่ายแพงทีหลัง ปัญหาองค์ประกอบแก้ตอนกล่องเทาแทบไม่มีต้นทุน แต่แก้หลังใส่วัสดุและอบแสงคือรื้อ
+
+## Direction ต้องมาก่อน asset
+
+ห้ามเริ่มปั้นจากคำว่า “ทำให้สวย” ต้องมีตัวเลือกให้เลือกก่อน แล้ว profile ของเกมต้องระบุเพิ่ม:
+
+- **camera** — ระยะ, FOV, ผู้เล่นเห็นของชิ้นนี้ใกล้สุดแค่ไหน
+- **readability rule** — อะไรต้องอ่านออกที่ระยะเล่น และที่ขนาดเท่าไร
+- **palette roles** — สีไหนแปลว่ากดได้ อันตราย ตกแต่ง หรือฉากหลัง
+- **budget class** — งบเฟรมของแพลตฟอร์ม ซึ่งจะคุมทุก asset ต่อไป
+
+ถ้าไม่บังคับ palette role ผู้เล่นจะพยายามกดของตกแต่งที่ดันใช้สีเดียวกับของที่กดได้
+
+## กล้องเป็นตัวตัดสิน
+
+| ช็อต | ใช้พิสูจน์ |
+|---|---|
+| กล้องเกมปกติ | ช็อตเดียวที่อนุมัติเรื่องการอ่านออกได้ |
+| ระยะต่อสู้/แอ็กชัน | เงาของวัตถุยังแยกออกตอนเคลื่อนไหวและรกไหม |
+| แสงกลางคืน/แย่สุด | พาเลตต์ยังแยกของออกจากกันไหม |
+| ช็อตกว้าง | เกตฉาก: มุมภาพ เลเยอร์ความลึก จุดโฟกัส |
+| ย่อ 64px | เงา (silhouette) ยังบอกได้ไหมว่านี่คืออะไร |
+
+ช็อตสวยไว้ทำการตลาดได้ แต่ห้ามใช้อนุมัติงานออกแบบ
+
+## แมพที่เจนด้วยสคริปต์
+
+ถ้าแมพเกิดจากตัวเจน ให้รีวิว “ตัวเจน” ไม่ใช่ผลลัพธ์ที่ดวงดี:
+
+- ล็อก seed และถ่ายชุด seed เดิมทุกรอบ ไม่งั้นเทียบอะไรไม่ได้เลย
+- รันเกตฉากอย่างน้อย 3 seed รวม seed ที่แย่ที่สุดที่หาได้
+- ถ้าเจอ finding เรื่องซ้ำ นั่นคือปัญหาของตัวเจน ให้สุ่มการหมุน ชุดพร็อพ ความสึก และแสงต่อ instance
+- การันตี invariant ด้วยโค้ดและเทสต์: เดินถึงทุกจุด ห้องขั้นต่ำ ไม่มี soft-lock ระยะจุดเกิดถึงเป้าหมาย
+- ฉากที่แบกเรื่องเล่าให้วางมือ โลกที่เจนล้วนจะอ่านออกเป็น “พื้นผิว” ไม่ใช่ “สถานที่”
+
+ดูต่อ: `references/world-building-and-level-blockout.md` และ `domains/GAME/platforms/roblox-maps.md`
+
+## การพูดว่า “ได้ลุคแล้ว”
+
+พูดได้ต่อเมื่อบนไฟล์ปัจจุบัน `audit:scene` ผ่านช็อตกว้าง, `audit:game-assets` ผ่านชุดที่อยู่ในช็อตนั้น และ `vision:triage` คืน `verdict=match` เทียบกับ ref ที่อนุมัติไว้ นอกนั้นคือ “คืบหน้า”
+
+<!-- END SOURCE: references/game-vision-loop_TH.md -->
+
+---
+
+## Source: `prompts/vision-triage-loop.md`
+
+<!-- BEGIN SOURCE: prompts/vision-triage-loop.md -->
+
+# Vision Triage Loop Prompt
+
+You are closing the gap between a reference the user wants (`ref`) and the render you
+produced (`cur`). Follow this procedure exactly. Do not improvise a different order.
+
+## Inputs
+
+- `ref` — the image the user wants, or the approved direction option
+- `cur` — a **current** capture of what you built, not a memory or an older shot
+- optional named regions with rects, when specific elements must land in specific places
+
+## Procedure
+
+1. Capture `cur` now. If you cannot capture, stop and report a verification gap — do not
+   compare from memory.
+
+2. Run the triage:
+
+```bash
+npm run vision:triage -- --ref <ref.png> --cur <cur.png> \
+  [--regions <regions.json>] --history .fx/triage-history.json
+```
+
+3. Read the output in this order: verdict, delta heatmap, ordered corrections, then
+   `NEXT SINGLE CHANGE`.
+
+4. Apply **only** the single next change. Not the change plus a small improvement you
+   noticed. Not three changes because they are all in the same file.
+
+5. Re-capture `cur` and return to step 2.
+
+6. Stop when the verdict is `match`. Report the ref/cur file identities that produced it.
+
+## Correction order
+
+```text
+structure → proportion → value → colour → density → polish
+```
+
+Never work on a later stage while an earlier one is open. A correct colour on a
+mis-positioned element is still wrong, and you will have to redo the colour judgement after
+you move it.
+
+## When the loop stalls
+
+If the report says the loop stalled — three rounds with no measurable convergence — do not
+start a fourth speculative round. Instead:
+
+1. Re-read the reference at region level, using `npm run ascii-map` on the regions that
+   still differ, and `npm run layout-structure -- check` for position and size.
+2. Restate in one sentence what the user actually asked for, and check that sentence against
+   the reference rather than against your render.
+3. Ask whether the current structure can ever reach the reference or whether it must be
+   rebuilt.
+4. Report the stall and your hypothesis to the user before continuing.
+
+## Output for each round
+
+```text
+round N
+ref / cur: <files>
+verdict: <match|iterate>   score: <n>   meanDelta: <n>
+top correction applied: <stage> <code> — <what you changed>
+result after change: <new score / delta>
+next: <the single next change, or "match">
+```
+
+## Prohibitions
+
+- Do not batch changes across stages.
+- Do not claim a match without a `verdict=match` run on current artifacts.
+- Do not adjust the tolerance policy to make a failing comparison pass.
+- Do not describe a difference you did not measure as if you had measured it.
+- Do not silently accept a residual difference; state it and let the user decide.
+
+<!-- END SOURCE: prompts/vision-triage-loop.md -->
+
+---
+
+## Source: `agents/scene-and-asset-critic.md`
+
+<!-- BEGIN SOURCE: agents/scene-and-asset-critic.md -->
+
+# Scene and Asset Critic Role
+
+## Mission
+
+Judge whether a rendered scene is finished everywhere and whether the assets inside it are
+usable in the shipping game — not whether the hero shot is pretty. This role complements the
+aesthetic critic, which judges craft and expression, and the visual critic, which judges
+fidelity to a reference.
+
+## Inputs
+
+- Current captures from the cameras the player actually uses, including the establishing
+  shot, play distance, and worst-case lighting.
+- The scene brief: fantasy, depth layers, focal point, lighting, palette, story details.
+- The asset set specs with scale, silhouette, budget, and acceptance statements.
+- The mechanical results of `npm run audit:scene` and `npm run audit:game-assets`.
+
+## Required Work
+
+- Confirm the captures are current and were taken from a gameplay camera. A turntable or
+  marketing render cannot approve anything.
+- Read the mechanical results first. Do not spend judgment on defects already measured.
+- For the frame: check that each depth layer is present and separable, that the eye lands
+  where the brief says, that the corners belong to the world, and that repetition is not
+  visible in play.
+- For each asset: check the silhouette as a black fill at thumbnail size, the scale against
+  the avatar, the palette role usage, and whether the story details are tied to the fiction
+  rather than sprinkled.
+- Distinguish intentional negative space, which the brief declared, from neglect, which it
+  did not.
+- Order remediation by what a player would notice first at play distance.
+
+## Output Contract
+
+For each capture:
+
+- verdict, with the gate results that support it;
+- findings with zone or asset id, expected condition, observed condition, and the rule
+  violated;
+- the three changes with the most leverage, ordered;
+- what you could not conclude and why.
+
+## Boundaries
+
+- Do not review a scene or asset you built.
+- Do not approve from a hero shot.
+- Do not accept "it will be covered by the lighting pass" as a resolution.
+- Do not treat a passing measurement as proof that the scene reads; the measurement proves
+  detail exists, not that it means anything.
+- Do not raise a preference as a defect. Tie every finding to the brief, the style pack, or
+  a measured gate result.
+
+<!-- END SOURCE: agents/scene-and-asset-critic.md -->
+
+---
+
+## Source: `domains/README.md`
+
+<!-- BEGIN SOURCE: domains/README.md -->
+
+# Domains
+
+Work packs for this skill, separated by product shape. Core process, vision loop, and aesthetic gates still apply; open only the domain folder that matches the task.
+
+| Folder | Use when |
+|---|---|
+| [`GAME/`](GAME/README.md) | Games — many genres, UI/HUD, assets, systems, tools |
+| [`APPLICATION/`](APPLICATION/README.md) | Apps and products — web/mobile/desktop surfaces |
+| [`DESIGN/`](DESIGN/README.md) | Visual direction, brand, craft, screenshots → options |
+| [`GENERAL/`](GENERAL/README.md) | Cross-cutting work — process, backend, release, docs |
+| [`ROLES/`](ROLES/README.md) | Discipline packs — what each role owns, its gates, its red flags |
+
+## How to route
+
+```text
+identify domain (GAME | APPLICATION | DESIGN | GENERAL)
+→ open that folder’s README
+→ load only the genre/system notes you need
+→ add the ROLES pack(s) for the disciplines the task touches
+→ still follow SKILL.md process + visual-direction rules when UI is involved
+```
+
+Agents outside Cursor (CLI, DeepSeek, etc.) should treat these folders as the map of what to load, then run the matching `npm run …` gates from the skill root.
+
+<!-- END SOURCE: domains/README.md -->
+
+---
+
+## Source: `domains/ROLES/README.md`
+
+<!-- BEGIN SOURCE: domains/ROLES/README.md -->
+
+# Roles
+
+Each pack answers the same three questions for one role: **what you own**, **which gates you
+must pass**, and **which references you read before touching anything**.
+
+Roles are not job titles. If one agent does all of them, it still passes all of their gates.
+
+| Pack | Use when |
+|---|---|
+| [`frontend-engineer.md`](frontend-engineer.md) | Rendered surfaces, state matrices, accessibility, runtime cost |
+| [`backend-engineer.md`](backend-engineer.md) | Domain boundaries, APIs, transactions, resilience |
+| [`security-engineer.md`](security-engineer.md) | AuthN/AuthZ, threat models, data classification, supply chain |
+| [`data-engineer.md`](data-engineer.md) | Schemas, migrations, backfills, invariants, analytics contracts |
+| [`platform-sre.md`](platform-sre.md) | Deploys, SLOs, observability, rollback, incident readiness |
+| [`qa-engineer.md`](qa-engineer.md) | Test strategy, evidence quality, negative controls, regressions |
+| [`product-designer.md`](product-designer.md) | Flows, states, information architecture, experience contracts |
+| [`visual-designer.md`](visual-designer.md) | Direction, palette, type, spacing, craft, style signature |
+| [`game-designer.md`](game-designer.md) | Fantasy, loops, economy, level intent, difficulty |
+| [`gameplay-engineer.md`](gameplay-engineer.md) | Controls, feel, netcode, systems code, frame budget |
+| [`technical-artist.md`](technical-artist.md) | Pipeline, shaders, LODs, lighting, asset budgets |
+
+## Routing
+
+```text
+task → role pack(s) → their required gates → run the gates → report with evidence
+```
+
+More than one pack usually applies. A "make the checkout page prettier" task is
+`visual-designer` plus `frontend-engineer`; if it touches payment state it is also
+`backend-engineer` and `security-engineer`.
+
+## The rule every pack shares
+
+A role's opinion is not evidence. Each pack lists commands that produce evidence, and the
+completion report cites those results — not the fact that the role looked at it.
+
+<!-- END SOURCE: domains/ROLES/README.md -->
+
+---
+
+## Source: `lib/scene-completeness-engine.mjs`
+
+<!-- BEGIN SOURCE: lib/scene-completeness-engine.mjs -->
+
+/**
+ * Scene completeness for game frames and rendered worlds.
+ *
+ * A frame can have a beautiful hero asset in the centre and still fail, because the
+ * corners are empty, the background is a flat wall, the same tile is copy-pasted, or
+ * the value structure is mush. This engine measures the whole frame zone by zone so
+ * "every corner is detailed" becomes evidence instead of an impression.
+ */
+
+import { finalizeProcessAudit, processFinding, nonEmpty } from './process-audit-utils.mjs';
+
+const VAGUE_BRIEF = /\b(nice|cool|awesome|beautiful|epic|amazing|good looking|stunning|next[- ]gen|aaa quality)\b/i;
+
+function clamp01(value) {
+  return Math.min(1, Math.max(0, value));
+}
+
+function assertImage(image) {
+  const width = Number(image?.width);
+  const height = Number(image?.height);
+  const data = image?.data;
+  if (!Number.isInteger(width) || !Number.isInteger(height) || width <= 0 || height <= 0) {
+    throw new TypeError('Scene image width and height must be positive integers.');
+  }
+  if (!data || typeof data.length !== 'number' || data.length < width * height * 4) {
+    throw new TypeError('Scene image data must contain RGBA bytes for every pixel.');
+  }
+  return { width, height, data };
+}
+
+export function parseGrid(value, fallback = { cols: 6, rows: 4 }) {
+  if (value == null || value === '') return { ...fallback };
+  const text = String(value).toLowerCase().replace(/\s+/g, '');
+  const match = text.match(/^(\d+)[x×](\d+)$/);
+  if (!match) throw new TypeError(`Grid must look like 6x4, received "${value}".`);
+  const cols = Number(match[1]);
+  const rows = Number(match[2]);
+  if (cols < 2 || rows < 2 || cols > 24 || rows > 24) throw new RangeError('Grid columns and rows must be between 2 and 24.');
+  return { cols, rows };
+}
+
+function luma(r, g, b) {
+  return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+}
+
+/** Hasler–Süsstrunk colourfulness, normalized into roughly 0..1 for UI/game frames. */
+function colourfulness(rgMean, rgStd, ybMean, ybStd) {
+  const stdRoot = Math.sqrt((rgStd ** 2) + (ybStd ** 2));
+  const meanRoot = Math.sqrt((rgMean ** 2) + (ybMean ** 2));
+  return clamp01((stdRoot + 0.3 * meanRoot) / 120);
+}
+
+function zoneStats(image, x0, y0, x1, y1, step) {
+  const { width, data } = image;
+  let count = 0;
+  let redSum = 0;
+  let greenSum = 0;
+  let blueSum = 0;
+  let lumaSum = 0;
+  let lumaSquares = 0;
+  let rgSum = 0;
+  let rgSquares = 0;
+  let ybSum = 0;
+  let ybSquares = 0;
+  let edgeSum = 0;
+  let edgeCount = 0;
+  let darkPixels = 0;
+  let lightPixels = 0;
+
+  const subCols = 4;
+  const subRows = 4;
+  const subSums = new Float64Array(subCols * subRows);
+  const subCounts = new Float64Array(subCols * subRows);
+  const zoneWidth = Math.max(1, x1 - x0);
+  const zoneHeight = Math.max(1, y1 - y0);
+
+  for (let y = y0; y < y1; y += step) {
+    for (let x = x0; x < x1; x += step) {
+      const offset = (y * width + x) * 4;
+      const r = data[offset];
+      const g = data[offset + 1];
+      const b = data[offset + 2];
+      const value = luma(r, g, b);
+
+      redSum += r;
+      greenSum += g;
+      blueSum += b;
+      lumaSum += value;
+      lumaSquares += value * value;
+      const rg = r - g;
+      const yb = 0.5 * (r + g) - b;
+      rgSum += rg;
+      rgSquares += rg * rg;
+      ybSum += yb;
+      ybSquares += yb * yb;
+      if (value < 0.2) darkPixels += 1;
+      if (value > 0.8) lightPixels += 1;
+      count += 1;
+
+      const sx = Math.min(subCols - 1, Math.floor(((x - x0) / zoneWidth) * subCols));
+      const sy = Math.min(subRows - 1, Math.floor(((y - y0) / zoneHeight) * subRows));
+      const cell = sy * subCols + sx;
+      subSums[cell] += value;
+      subCounts[cell] += 1;
+
+      if (x + step < x1) {
+        const right = (y * width + (x + step)) * 4;
+        edgeSum += Math.abs(value - luma(data[right], data[right + 1], data[right + 2]));
+        edgeCount += 1;
+      }
+      if (y + step < y1) {
+        const below = ((y + step) * width + x) * 4;
+        edgeSum += Math.abs(value - luma(data[below], data[below + 1], data[below + 2]));
+        edgeCount += 1;
+      }
+    }
+  }
+
+  if (!count) {
+    return {
+      meanLuma: 0, lumaStd: 0, edgeDensity: 0, colourfulness: 0, detail: 0,
+      darkRatio: 0, lightRatio: 0, meanRgb: [0, 0, 0],
+      signature: Array.from({ length: subCols * subRows }, () => 0)
+    };
+  }
+
+  const meanLuma = lumaSum / count;
+  const lumaStd = Math.sqrt(Math.max(0, lumaSquares / count - meanLuma * meanLuma));
+  const rgMean = rgSum / count;
+  const rgStd = Math.sqrt(Math.max(0, rgSquares / count - rgMean * rgMean));
+  const ybMean = ybSum / count;
+  const ybStd = Math.sqrt(Math.max(0, ybSquares / count - ybMean * ybMean));
+  const edgeDensity = clamp01((edgeCount ? edgeSum / edgeCount : 0) * 6);
+  const chroma = colourfulness(rgMean, rgStd, ybMean, ybStd);
+  const detail = clamp01(0.55 * edgeDensity + 0.30 * clamp01(lumaStd * 3) + 0.15 * chroma);
+
+  const signature = [];
+  for (let index = 0; index < subSums.length; index += 1) {
+    signature.push(Number((subCounts[index] ? subSums[index] / subCounts[index] : 0).toFixed(4)));
+  }
+
+  return {
+    meanLuma: Number(meanLuma.toFixed(4)),
+    lumaStd: Number(lumaStd.toFixed(4)),
+    edgeDensity: Number(edgeDensity.toFixed(4)),
+    colourfulness: Number(chroma.toFixed(4)),
+    detail: Number(detail.toFixed(4)),
+    darkRatio: Number((darkPixels / count).toFixed(4)),
+    lightRatio: Number((lightPixels / count).toFixed(4)),
+    meanRgb: [
+      Number((redSum / count).toFixed(2)),
+      Number((greenSum / count).toFixed(2)),
+      Number((blueSum / count).toFixed(2))
+    ],
+    signature
+  };
+}
+
+function signatureDistance(left, right) {
+  const length = Math.min(left.length, right.length);
+  if (!length) return 1;
+  let total = 0;
+  for (let index = 0; index < length; index += 1) total += Math.abs(left[index] - right[index]);
+  return total / length;
+}
+
+function median(values) {
+  if (!values.length) return 0;
+  const sorted = [...values].sort((a, b) => a - b);
+  const middle = Math.floor(sorted.length / 2);
+  return sorted.length % 2 ? sorted[middle] : (sorted[middle - 1] + sorted[middle]) / 2;
+}
+
+/** Measures every zone of the frame plus global value structure and repetition. */
+export function measureScene(image, options = {}) {
+  const source = assertImage(image);
+  const { cols, rows } = parseGrid(options.grid, {
+    cols: Number(options.cols) || 6,
+    rows: Number(options.rows) || 4
+  });
+  const pixels = source.width * source.height;
+  const step = Math.max(1, Math.floor(Number(options.sampleStep) || Math.ceil(Math.sqrt(pixels / 240000))));
+
+  const zones = [];
+  for (let row = 0; row < rows; row += 1) {
+    const y0 = Math.floor((row / rows) * source.height);
+    const y1 = Math.max(y0 + 1, Math.floor(((row + 1) / rows) * source.height));
+    for (let col = 0; col < cols; col += 1) {
+      const x0 = Math.floor((col / cols) * source.width);
+      const x1 = Math.max(x0 + 1, Math.floor(((col + 1) / cols) * source.width));
+      const stats = zoneStats(source, x0, y0, x1, y1, step);
+      const isCorner = (row === 0 || row === rows - 1) && (col === 0 || col === cols - 1);
+      const isEdge = !isCorner && (row === 0 || row === rows - 1 || col === 0 || col === cols - 1);
+      zones.push({
+        name: `${String.fromCharCode(65 + row)}${col + 1}`,
+        col,
+        row,
+        rect: { x: x0, y: y0, width: x1 - x0, height: y1 - y0 },
+        band: isCorner ? 'corner' : isEdge ? 'edge' : 'interior',
+        ...stats
+      });
+    }
+  }
+
+  const details = zones.map((zone) => zone.detail);
+  const medianDetail = Number(median(details).toFixed(4));
+  const maxDetail = Number(Math.max(...details).toFixed(4));
+  const minDetail = Number(Math.min(...details).toFixed(4));
+  const meanLuma = Number((zones.reduce((sum, zone) => sum + zone.meanLuma, 0) / zones.length).toFixed(4));
+  const darkRatio = Number((zones.reduce((sum, zone) => sum + zone.darkRatio, 0) / zones.length).toFixed(4));
+  const lightRatio = Number((zones.reduce((sum, zone) => sum + zone.lightRatio, 0) / zones.length).toFixed(4));
+  const midRatio = Number(Math.max(0, 1 - darkRatio - lightRatio).toFixed(4));
+  const focal = zones.reduce((best, zone) => (zone.detail > best.detail ? zone : best), zones[0]);
+
+  const repeated = [];
+  const repetitionEpsilon = Number(options.repetitionEpsilon ?? 0.012);
+  for (let i = 0; i < zones.length; i += 1) {
+    for (let j = i + 1; j < zones.length; j += 1) {
+      const distance = signatureDistance(zones[i].signature, zones[j].signature);
+      if (distance <= repetitionEpsilon && zones[i].detail > 0.02) {
+        repeated.push({ left: zones[i].name, right: zones[j].name, distance: Number(distance.toFixed(5)) });
+      }
+    }
+  }
+
+  return {
+    schemaVersion: 1,
+    page: { width: source.width, height: source.height },
+    grid: { cols, rows },
+    sampleStep: step,
+    zones,
+    summary: {
+      medianDetail,
+      maxDetail,
+      minDetail,
+      meanLuma,
+      darkRatio,
+      midRatio,
+      lightRatio,
+      focalZone: focal.name,
+      focalDetail: focal.detail,
+      focalRatio: Number((medianDetail ? focal.detail / medianDetail : 0).toFixed(3))
+    },
+    repeatedZones: repeated
+  };
+}
+
+/**
+ * Turns scene measurements into pass/fail findings.
+ * Policy defaults target "readable game frame where no region was abandoned".
+ */
+export function auditSceneMeasurements(measurement, policy = {}) {
+  const findings = [];
+  const minZoneDetail = Number(policy.minZoneDetail ?? 0.08);
+  const minCornerDetail = Number(policy.minCornerDetail ?? minZoneDetail * 0.75);
+  const maxDeadZoneRatio = Number(policy.maxDeadZoneRatio ?? 0.15);
+  const minFocalRatio = Number(policy.minFocalRatio ?? 1.35);
+  const maxFocalRatio = Number(policy.maxFocalRatio ?? 12);
+  const minDarkRatio = Number(policy.minDarkRatio ?? 0.02);
+  const minLightRatio = Number(policy.minLightRatio ?? 0.01);
+  const maxRepeatedPairs = Number(policy.maxRepeatedPairs ?? 2);
+  const allowFlatBackground = policy.allowFlatBackground === true;
+
+  const zones = measurement.zones ?? [];
+  if (!zones.length) {
+    return {
+      ...finalizeProcessAudit([processFinding('SCENE_NO_ZONES', 'blocker', 'Scene measurement produced no zones.')], {
+        schemaVersion: 1, evidenceCount: 0, evidenceConfidence: 0
+      }),
+      measurement
+    };
+  }
+
+  const deadZones = zones.filter((zone) => zone.detail < (zone.band === 'corner' ? minCornerDetail : minZoneDetail));
+  const deadCorners = deadZones.filter((zone) => zone.band === 'corner');
+  const deadRatio = deadZones.length / zones.length;
+
+  if (deadCorners.length && !allowFlatBackground) {
+    findings.push(processFinding(
+      'SCENE_EMPTY_CORNER',
+      'blocker',
+      `${deadCorners.length} corner zone(s) carry almost no detail: ${deadCorners.map((zone) => zone.name).join(', ')}.`,
+      {
+        detail: deadCorners.map((zone) => ({ zone: zone.name, detail: zone.detail })),
+        remediation: 'Add occlusion, props, wear, lighting falloff, or framing geometry so the corners belong to the world.'
+      }
+    ));
+  }
+
+  if (deadRatio > maxDeadZoneRatio) {
+    findings.push(processFinding(
+      'SCENE_DEAD_ZONES',
+      allowFlatBackground ? 'medium' : 'blocker',
+      `${deadZones.length}/${zones.length} zones (${Math.round(deadRatio * 100)}%) fall below the detail floor.`,
+      {
+        detail: deadZones.map((zone) => zone.name),
+        remediation: 'Fill abandoned regions with midground or background content, or reframe the shot.'
+      }
+    ));
+  } else if (deadZones.length) {
+    findings.push(processFinding(
+      'SCENE_SPARSE_ZONES',
+      'low',
+      `${deadZones.length} low-detail zone(s) remain: ${deadZones.map((zone) => zone.name).join(', ')}.`,
+      { remediation: 'Confirm each is intentional negative space, not an unfinished area.' }
+    ));
+  }
+
+  const summary = measurement.summary ?? {};
+  if (summary.focalRatio < minFocalRatio) {
+    findings.push(processFinding(
+      'SCENE_NO_FOCAL_HIERARCHY',
+      'high',
+      `No region leads the eye (focal/median detail ratio ${summary.focalRatio}).`,
+      { remediation: 'Raise contrast, density, or lighting on the intended subject so hierarchy is measurable.' }
+    ));
+  } else if (summary.focalRatio > maxFocalRatio) {
+    findings.push(processFinding(
+      'SCENE_ISOLATED_SUBJECT',
+      'high',
+      `One zone carries nearly all detail (ratio ${summary.focalRatio}); the rest of the frame reads unfinished.`,
+      { remediation: 'Extend the world around the subject: midground, background layers, and grounded contact.' }
+    ));
+  }
+
+  if (summary.darkRatio < minDarkRatio || summary.lightRatio < minLightRatio) {
+    findings.push(processFinding(
+      'SCENE_VALUE_STRUCTURE_FLAT',
+      'medium',
+      `Value structure is compressed (dark ${summary.darkRatio}, mid ${summary.midRatio}, light ${summary.lightRatio}).`,
+      { remediation: 'Introduce real shadow anchors and highlight accents so the frame has depth.' }
+    ));
+  }
+
+  const repeated = measurement.repeatedZones ?? [];
+  if (repeated.length > maxRepeatedPairs) {
+    findings.push(processFinding(
+      'SCENE_TILING_REPETITION',
+      'high',
+      `${repeated.length} zone pairs are near-identical, which reads as copy-paste tiling.`,
+      {
+        detail: repeated.slice(0, 8),
+        remediation: 'Vary props, rotation, wear, and lighting between repeated modules.'
+      }
+    ));
+  }
+
+  const evidenceCount = zones.length;
+  const audit = finalizeProcessAudit(findings, {
+    schemaVersion: 1,
+    evidenceCount,
+    evidenceConfidence: 100
+  });
+
+  return {
+    ...audit,
+    verdict: audit.hardFailures.length
+      ? 'fail-scene-incomplete'
+      : audit.warnings.length
+        ? 'pass-with-notes'
+        : 'pass-scene-complete',
+    policy: {
+      minZoneDetail, minCornerDetail, maxDeadZoneRatio, minFocalRatio, maxFocalRatio,
+      minDarkRatio, minLightRatio, maxRepeatedPairs, allowFlatBackground
+    },
+    measurement
+  };
+}
+
+const BRIEF_LAYERS = Object.freeze(['foreground', 'midground', 'background']);
+
+/**
+ * Audits the authored intent for a scene. Measurement proves detail exists;
+ * the brief proves the detail was designed rather than sprinkled.
+ */
+export function auditSceneBrief(brief = {}, policy = {}) {
+  const findings = [];
+  let evidenceCount = 0;
+
+  if (!nonEmpty(brief.name)) findings.push(processFinding('SCENE_BRIEF_NAME_MISSING', 'blocker', 'Scene brief requires a name.'));
+  if (!nonEmpty(brief.fantasy) || String(brief.fantasy).length < 12) {
+    findings.push(processFinding('SCENE_BRIEF_FANTASY_WEAK', 'blocker', 'Scene brief requires the player fantasy in one concrete sentence.'));
+  } else if (VAGUE_BRIEF.test(brief.fantasy)) {
+    findings.push(processFinding('SCENE_BRIEF_FANTASY_VAGUE', 'blocker', 'Scene fantasy uses empty praise words instead of describing the moment.'));
+  } else evidenceCount += 1;
+
+  const layers = brief.layers ?? {};
+  const missingLayers = BRIEF_LAYERS.filter((layer) => !nonEmpty(layers[layer]));
+  if (missingLayers.length) {
+    findings.push(processFinding(
+      'SCENE_BRIEF_LAYERS_MISSING',
+      'blocker',
+      `Scene brief must describe every depth layer. Missing: ${missingLayers.join(', ')}.`,
+      { remediation: 'Name what occupies foreground, midground, and background so no plane is left empty.' }
+    ));
+  } else evidenceCount += BRIEF_LAYERS.length;
+
+  if (!nonEmpty(brief.focalPoint)) {
+    findings.push(processFinding('SCENE_BRIEF_FOCAL_MISSING', 'blocker', 'Scene brief must name the focal point and how the eye is led to it.'));
+  } else evidenceCount += 1;
+
+  if (!nonEmpty(brief.lighting)) {
+    findings.push(processFinding('SCENE_BRIEF_LIGHTING_MISSING', 'blocker', 'Scene brief must declare the key light direction and mood.'));
+  } else evidenceCount += 1;
+
+  if (!nonEmpty(brief.palette)) {
+    findings.push(processFinding('SCENE_BRIEF_PALETTE_MISSING', 'high', 'Scene brief should bind to a palette or aesthetic profile.'));
+  } else evidenceCount += 1;
+
+  const storyDetails = Array.isArray(brief.storyDetails) ? brief.storyDetails.filter(nonEmpty) : [];
+  const minStoryDetails = Number(policy.minStoryDetails ?? 3);
+  if (storyDetails.length < minStoryDetails) {
+    findings.push(processFinding(
+      'SCENE_BRIEF_STORY_DETAILS_THIN',
+      'high',
+      `Only ${storyDetails.length} story details declared; at least ${minStoryDetails} keep corners inhabited.`,
+      { remediation: 'List wear, debris, signage, tool marks, or inhabitant traces that prove the space is used.' }
+    ));
+  } else evidenceCount += storyDetails.length;
+
+  if (brief.styleBinding !== undefined && !nonEmpty(brief.styleBinding)) {
+    findings.push(processFinding('SCENE_BRIEF_STYLE_EMPTY', 'medium', 'styleBinding is present but empty.'));
+  }
+
+  if (brief.negativeSpace !== undefined && !nonEmpty(brief.negativeSpace)) {
+    findings.push(processFinding('SCENE_BRIEF_NEGATIVE_SPACE_EMPTY', 'low', 'negativeSpace is present but empty; say where quiet is intentional.'));
+  }
+
+  const audit = finalizeProcessAudit(findings, {
+    schemaVersion: 1,
+    evidenceCount,
+    evidenceConfidence: evidenceCount ? 100 : 0
+  });
+
+  return { ...audit, brief: { ...brief, storyDetails } };
+}
+
+/** Combined gate: authored intent plus measured frame. */
+export function auditScene({ image, measurement, brief } = {}, policy = {}) {
+  const measured = measurement ?? (image ? measureScene(image, policy) : null);
+  const measurementAudit = measured ? auditSceneMeasurements(measured, policy) : null;
+  const briefAudit = brief ? auditSceneBrief(brief, policy) : null;
+
+  const findings = [
+    ...(briefAudit?.findings ?? []).map((finding) => ({ ...finding, section: 'brief' })),
+    ...(measurementAudit?.findings ?? []).map((finding) => ({ ...finding, section: 'frame' }))
+  ];
+
+  if (!measurementAudit && !briefAudit) {
+    findings.push(processFinding('SCENE_NO_INPUT', 'blocker', 'auditScene requires an image, a measurement, or a brief.'));
+  }
+  if (!measurementAudit && briefAudit) {
+    findings.push(processFinding(
+      'SCENE_FRAME_EVIDENCE_MISSING',
+      'high',
+      'Scene brief was audited without a rendered frame; detail coverage is unproven.',
+      { remediation: 'Capture the frame and re-run with --image so corners are measured.' }
+    ));
+  }
+
+  const audit = finalizeProcessAudit(findings, {
+    schemaVersion: 1,
+    evidenceCount: (measurementAudit?.evidenceCount ?? 0) + (briefAudit?.evidenceCount ?? 0),
+    evidenceConfidence: measurementAudit ? 100 : 40
+  });
+
+  return {
+    ...audit,
+    verdict: audit.hardFailures.length
+      ? 'fail-scene-incomplete'
+      : audit.warnings.length
+        ? 'pass-with-notes'
+        : 'pass-scene-complete',
+    brief: briefAudit ? briefAudit.brief : null,
+    measurement: measured,
+    sections: {
+      brief: briefAudit ? { ok: briefAudit.ok, score: briefAudit.score } : null,
+      frame: measurementAudit ? { ok: measurementAudit.ok, score: measurementAudit.score } : null
+    }
+  };
+}
+
+/** Digit heatmap of per-zone detail so an agent can see where the frame is empty. */
+export function renderSceneHeatmap(measurement) {
+  const { cols, rows } = measurement.grid;
+  const lines = [];
+  for (let row = 0; row < rows; row += 1) {
+    let line = '';
+    for (let col = 0; col < cols; col += 1) {
+      const zone = measurement.zones[row * cols + col];
+      line += String(Math.min(9, Math.round(zone.detail * 9)));
+    }
+    lines.push(line);
+  }
+  return lines.join('\n');
+}
+
+export function formatSceneReport(result) {
+  const measurement = result.measurement;
+  const lines = ['=== SCENE COMPLETENESS ===', `verdict=${result.verdict}  ok=${result.ok}  score=${result.score}`];
+
+  if (measurement) {
+    const { summary, grid, page } = measurement;
+    lines.push(
+      `frame=${page.width}x${page.height}  grid=${grid.cols}x${grid.rows}`,
+      `focal=${summary.focalZone} ratio=${summary.focalRatio}  detail min/median/max=${summary.minDetail}/${summary.medianDetail}/${summary.maxDetail}`,
+      `value dark/mid/light=${summary.darkRatio}/${summary.midRatio}/${summary.lightRatio}`,
+      '',
+      'detail heatmap (0 empty → 9 dense):',
+      renderSceneHeatmap(measurement)
+    );
+  }
+
+  const actionable = (result.findings ?? []).filter((finding) => finding.severity !== 'info');
+  if (actionable.length) {
+    lines.push('', 'findings:');
+    for (const finding of actionable) {
+      lines.push(`- [${finding.severity}] ${finding.code}: ${finding.message}`);
+      if (finding.remediation) lines.push(`  fix: ${finding.remediation}`);
+    }
+  } else {
+    lines.push('', 'No blocking scene findings.');
+  }
+  return `${lines.join('\n')}\n`;
+}
+
+export async function measureSceneFromPng(filePath, options = {}) {
+  const fs = await import('node:fs/promises');
+  const { PNG } = await import('pngjs');
+  const png = PNG.sync.read(await fs.readFile(filePath));
+  const measurement = measureScene({ width: png.width, height: png.height, data: png.data }, options);
+  return { ...measurement, source: String(filePath) };
+}
+
+<!-- END SOURCE: lib/scene-completeness-engine.mjs -->
+
+---
+
+## Source: `scripts/audit-scene.mjs`
+
+<!-- BEGIN SOURCE: scripts/audit-scene.mjs -->
+
+#!/usr/bin/env node
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { fail, parseLooseArgs, printHelp } from '../lib/cli.mjs';
+import { writeJsonAtomic } from '../lib/io.mjs';
+import {
+  auditScene,
+  formatSceneReport,
+  measureSceneFromPng
+} from '../lib/scene-completeness-engine.mjs';
+
+const HELP = `Usage:
+  node scripts/audit-scene.mjs --image frame.png [--brief scene-brief.json] [options]
+  node scripts/audit-scene.mjs --brief scene-brief.json
+
+Audits whether a rendered game frame is finished in every corner, not only at the subject.
+
+Options:
+  --image <path>          Rendered frame (PNG)
+  --brief <path>          Scene brief JSON (fantasy, layers, focalPoint, lighting, storyDetails)
+  --grid <CxR>            Zone grid (default 6x4)
+  --min-zone-detail <n>   Detail floor per zone (default 0.08)
+  --min-focal-ratio <n>   Required focal/median detail ratio (default 1.35)
+  --max-focal-ratio <n>   Above this the subject is isolated in an empty frame (default 12)
+  --max-dead-ratio <n>    Allowed share of low-detail zones (default 0.15)
+  --allow-flat-background Treat flat backdrops as intentional (studio/product shots)
+  --write <path>          Write the JSON result
+  --json                  Emit JSON instead of the text report
+  -h, --help
+
+Exit 1 when the scene fails, so the loop keeps iterating until every corner is finished.
+
+Example:
+  npm run audit:scene -- --image artifacts/frame.png --brief design/scene-brief.json --grid 8x5
+`;
+
+try {
+  const args = parseLooseArgs();
+  if (args.help || args.h) printHelp(HELP);
+  else if (!args.image && !args.brief) {
+    printHelp(HELP);
+    process.exitCode = 1;
+  } else {
+    const policy = {
+      grid: args.grid,
+      minZoneDetail: args['min-zone-detail'],
+      minCornerDetail: args['min-corner-detail'],
+      maxDeadZoneRatio: args['max-dead-ratio'],
+      minFocalRatio: args['min-focal-ratio'],
+      maxFocalRatio: args['max-focal-ratio'],
+      maxRepeatedPairs: args['max-repeated-pairs'],
+      allowFlatBackground: args['allow-flat-background'] === true
+    };
+    for (const key of Object.keys(policy)) if (policy[key] === undefined) delete policy[key];
+
+    const measurement = args.image
+      ? await measureSceneFromPng(path.resolve(String(args.image)), policy)
+      : null;
+    const brief = args.brief
+      ? JSON.parse(await fs.readFile(path.resolve(String(args.brief)), 'utf8'))
+      : null;
+
+    const result = auditScene({ measurement, brief: brief?.scene ?? brief }, policy);
+
+    if (args.write) await writeJsonAtomic(path.resolve(String(args.write)), result);
+    if (args.json) process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
+    else process.stdout.write(formatSceneReport(result));
+    if (!result.ok) process.exitCode = 1;
+  }
+} catch (error) { fail(error); }
+
+<!-- END SOURCE: scripts/audit-scene.mjs -->
+
+---
+
+## Source: `lib/game-asset-engine.mjs`
+
+<!-- BEGIN SOURCE: lib/game-asset-engine.mjs -->
+
+/**
+ * Game asset direction.
+ *
+ * An asset is not "designed" because a picture exists. It is designed when the
+ * silhouette reads, the scale is stated against a known reference, the material and
+ * palette bind to the declared style, the budget is engine-real, and there is a plan
+ * to verify it in context rather than floating on a turntable.
+ *
+ * This engine audits one asset spec and a whole asset set for coherence.
+ */
+
+import { containsPlaceholder, finalizeProcessAudit, nonEmpty, processFinding, unique } from './process-audit-utils.mjs';
+
+export const ASSET_CLASSES = Object.freeze([
+  'character', 'creature', 'prop', 'weapon', 'vehicle', 'environment',
+  'architecture', 'terrain', 'vfx', 'ui', 'audio', 'animation'
+]);
+
+const VAGUE_TERMS = /\b(cool|awesome|nice|epic|modern|clean|premium|high[- ]quality|beautiful|stylish|next[- ]gen|realistic looking)\b/i;
+const SCALE_UNIT = /(\d+(?:\.\d+)?)\s*(stud|studs|m|meter|meters|cm|px|pixel|pixels|tile|tiles|block|blocks|voxel|voxels|unit|units)\b/i;
+const SCALE_REFERENCE = /\b(avatar|player|character|door|human|humanoid|hand|torso|camera|tile|block|grid|reference)\b/i;
+
+function severityFor(policy, key, fallback) {
+  const value = policy?.severity?.[key];
+  return typeof value === 'string' ? value : fallback;
+}
+
+function text(value) {
+  return String(value ?? '').trim();
+}
+
+/** One asset spec: is this buildable, checkable, and on-style? */
+export function auditAssetSpec(spec = {}, policy = {}) {
+  const findings = [];
+  let evidenceCount = 0;
+  const id = text(spec.id) || text(spec.name) || '<unnamed asset>';
+  const at = (field) => ({ path: `${id}.${field}` });
+
+  if (!nonEmpty(spec.id)) findings.push(processFinding('ASSET_ID_MISSING', 'blocker', 'Asset spec requires a stable id.', at('id')));
+  if (!nonEmpty(spec.name)) findings.push(processFinding('ASSET_NAME_MISSING', 'blocker', 'Asset spec requires a human name.', at('name')));
+
+  const assetClass = text(spec.class).toLowerCase();
+  if (!ASSET_CLASSES.includes(assetClass)) {
+    findings.push(processFinding(
+      'ASSET_CLASS_INVALID', 'blocker',
+      `Asset class must be one of: ${ASSET_CLASSES.join(', ')}.`,
+      { ...at('class'), detail: spec.class ?? null }
+    ));
+  } else evidenceCount += 1;
+
+  if (!nonEmpty(spec.styleBinding)) {
+    findings.push(processFinding(
+      'ASSET_STYLE_BINDING_MISSING', 'blocker',
+      'Asset must bind to a declared style pack or aesthetic profile, otherwise every asset drifts on its own.',
+      { ...at('styleBinding'), remediation: 'Reference the graphics pack (for example domains/GAME/graphics/low-poly.md) or aesthetic-profile.json.' }
+    ));
+  } else evidenceCount += 1;
+
+  const purpose = text(spec.purpose);
+  if (!purpose || purpose.length < 12) {
+    findings.push(processFinding('ASSET_PURPOSE_MISSING', 'blocker', 'Asset must state what it does for the player, not only what it looks like.', at('purpose')));
+  } else if (VAGUE_TERMS.test(purpose)) {
+    findings.push(processFinding('ASSET_PURPOSE_VAGUE', 'high', 'Asset purpose uses unconstraining praise words instead of function.', at('purpose')));
+  } else evidenceCount += 1;
+
+  const silhouette = text(spec.silhouette);
+  if (!silhouette) {
+    findings.push(processFinding(
+      'ASSET_SILHOUETTE_MISSING', 'blocker',
+      'Asset must describe the silhouette read: what shape identifies it as a black shape at thumbnail size.',
+      { ...at('silhouette'), remediation: 'Name the dominant shape language and the one feature that stays legible when scaled down.' }
+    ));
+  } else if (VAGUE_TERMS.test(silhouette)) {
+    findings.push(processFinding('ASSET_SILHOUETTE_VAGUE', 'high', 'Silhouette description is decoration, not a shape statement.', at('silhouette')));
+  } else evidenceCount += 1;
+
+  const scale = text(spec.scale);
+  if (!scale) {
+    findings.push(processFinding(
+      'ASSET_SCALE_MISSING', 'blocker',
+      'Asset must state real in-engine size.',
+      { ...at('scale'), remediation: 'State size with units and a reference, for example "4.2 studs tall, 0.8x avatar height".' }
+    ));
+  } else {
+    const hasUnit = SCALE_UNIT.test(scale);
+    const hasReference = SCALE_REFERENCE.test(scale);
+    if (!hasUnit) findings.push(processFinding('ASSET_SCALE_UNIT_MISSING', 'blocker', 'Scale has no numeric unit (studs, metres, tiles, voxels, pixels).', at('scale')));
+    if (!hasReference) {
+      findings.push(processFinding(
+        'ASSET_SCALE_REFERENCE_MISSING', 'high',
+        'Scale has no comparison reference, so nobody can tell whether it feels right in the world.',
+        { ...at('scale'), remediation: 'Compare against the avatar, a door, a tile, or the camera framing.' }
+      ));
+    }
+    if (hasUnit && hasReference) evidenceCount += 1;
+  }
+
+  const materials = Array.isArray(spec.materials) ? spec.materials.filter(nonEmpty) : nonEmpty(spec.materials) ? [text(spec.materials)] : [];
+  if (!materials.length) findings.push(processFinding('ASSET_MATERIALS_MISSING', 'high', 'Asset must name its materials and surface treatment.', at('materials')));
+  else evidenceCount += materials.length;
+
+  if (!nonEmpty(spec.palette)) {
+    findings.push(processFinding('ASSET_PALETTE_MISSING', 'high', 'Asset must bind to the palette so the set stays one world.', at('palette')));
+  } else evidenceCount += 1;
+
+  const wear = Array.isArray(spec.storyDetails) ? spec.storyDetails.filter(nonEmpty) : [];
+  const minStoryDetails = Number(policy.minStoryDetails ?? 2);
+  if (wear.length < minStoryDetails) {
+    findings.push(processFinding(
+      'ASSET_STORY_DETAILS_THIN', severityFor(policy, 'storyDetails', 'medium'),
+      `Only ${wear.length} story detail(s); at least ${minStoryDetails} keep the asset from looking generated.`,
+      { ...at('storyDetails'), remediation: 'Add use marks, repairs, maker marks, weathering, or owner traces tied to the fiction.' }
+    ));
+  } else evidenceCount += wear.length;
+
+  const budget = spec.budget ?? {};
+  const budgetKeys = Object.keys(budget).filter((key) => Number.isFinite(Number(budget[key])) || nonEmpty(budget[key]));
+  if (!budgetKeys.length) {
+    findings.push(processFinding(
+      'ASSET_BUDGET_MISSING', 'blocker',
+      'Asset must declare an engine budget (triangles, parts, texture size, draw calls, or memory).',
+      { ...at('budget'), remediation: 'A budget makes the artist and the frame-rate argument the same conversation.' }
+    ));
+  } else evidenceCount += budgetKeys.length;
+
+  if (['character', 'creature', 'vehicle', 'environment', 'architecture'].includes(assetClass) && !nonEmpty(spec.lod)) {
+    findings.push(processFinding(
+      'ASSET_LOD_MISSING', 'medium',
+      'Large or frequently drawn assets should declare LOD or streaming behaviour.',
+      at('lod')
+    ));
+  }
+
+  const variants = Array.isArray(spec.variants) ? spec.variants.filter(nonEmpty) : [];
+  if (spec.variants !== undefined && !variants.length) {
+    findings.push(processFinding('ASSET_VARIANTS_EMPTY', 'low', 'variants is present but empty.', at('variants')));
+  }
+
+  const acceptance = Array.isArray(spec.acceptance) ? spec.acceptance.filter(nonEmpty) : [];
+  if (!acceptance.length) {
+    findings.push(processFinding(
+      'ASSET_ACCEPTANCE_MISSING', 'blocker',
+      'Asset must declare how it is accepted: which shots, which distance, which lighting.',
+      { ...at('acceptance'), remediation: 'For example: "reads at 20 studs in night lighting", "silhouette legible at 64px".' }
+    ));
+  } else evidenceCount += acceptance.length;
+
+  const inContext = spec.inContextEvidence ?? spec.inContext;
+  if (!nonEmpty(inContext)) {
+    findings.push(processFinding(
+      'ASSET_IN_CONTEXT_EVIDENCE_MISSING', 'blocker',
+      'Asset must be verified inside the scene, not on an empty turntable.',
+      { ...at('inContextEvidence'), remediation: 'Name the capture: gameplay camera, real lighting, next to the avatar, at play distance.' }
+    ));
+  } else evidenceCount += 1;
+
+  for (const [key, value] of Object.entries(spec)) {
+    if (typeof value === 'string' && containsPlaceholder(value)) {
+      findings.push(processFinding('ASSET_PLACEHOLDER_LANGUAGE', 'blocker', `Field "${key}" still contains placeholder language.`, at(key)));
+    }
+  }
+
+  const audit = finalizeProcessAudit(findings, { schemaVersion: 1, evidenceCount, evidenceConfidence: evidenceCount ? 100 : 0 });
+  return { ...audit, assetId: id, assetClass: assetClass || null };
+}
+
+function normalizeScaleUnit(scale) {
+  const match = SCALE_UNIT.exec(text(scale));
+  if (!match) return null;
+  const unit = match[2].toLowerCase().replace(/s$/, '');
+  if (['meter', 'm'].includes(unit)) return 'meter';
+  if (['pixel', 'px'].includes(unit)) return 'pixel';
+  return unit;
+}
+
+/** A set of assets must feel like one world: same style, same scale language, distinct silhouettes. */
+export function auditAssetSet(assets = [], policy = {}) {
+  const list = Array.isArray(assets) ? assets : [];
+  const findings = [];
+  let evidenceCount = 0;
+
+  if (!list.length) {
+    return finalizeProcessAudit([processFinding('ASSET_SET_EMPTY', 'blocker', 'Asset set contains no assets.')], { schemaVersion: 1 });
+  }
+
+  const perAsset = list.map((asset) => auditAssetSpec(asset, policy));
+  for (const result of perAsset) {
+    evidenceCount += result.evidenceCount;
+    for (const finding of result.findings) findings.push({ ...finding, section: 'asset' });
+  }
+
+  const ids = list.map((asset) => text(asset.id)).filter(Boolean);
+  const duplicates = unique(ids.filter((value, index) => ids.indexOf(value) !== index));
+  if (duplicates.length) {
+    findings.push(processFinding('ASSET_SET_DUPLICATE_IDS', 'blocker', `Duplicate asset ids: ${duplicates.join(', ')}.`, { detail: duplicates }));
+  }
+
+  const styles = unique(list.map((asset) => text(asset.styleBinding)).filter(Boolean));
+  const maxStyles = Number(policy.maxStyleBindings ?? 1);
+  if (styles.length > maxStyles) {
+    findings.push(processFinding(
+      'ASSET_SET_STYLE_SPLIT', 'high',
+      `Assets bind to ${styles.length} different style packs, so the set will not read as one world.`,
+      { detail: styles, remediation: 'Collapse to one style pack, or state the deliberate contrast rule that keeps them coherent.' }
+    ));
+  } else evidenceCount += 1;
+
+  const units = unique(list.map((asset) => normalizeScaleUnit(asset.scale)).filter(Boolean));
+  if (units.length > 1) {
+    findings.push(processFinding(
+      'ASSET_SET_SCALE_UNIT_MIXED', 'high',
+      `Scales are stated in mixed units (${units.join(', ')}), which hides sizing mistakes.`,
+      { detail: units, remediation: 'Pick one authoring unit for the project and convert everything to it.' }
+    ));
+  } else if (units.length === 1) evidenceCount += 1;
+
+  const silhouettes = list.map((asset) => text(asset.silhouette).toLowerCase()).filter(Boolean);
+  const distinctSilhouettes = new Set(silhouettes);
+  if (silhouettes.length >= 3 && distinctSilhouettes.size < Math.ceil(silhouettes.length * 0.75)) {
+    findings.push(processFinding(
+      'ASSET_SET_SILHOUETTE_REPETITION', 'medium',
+      'Silhouette descriptions repeat across the set; assets will be hard to tell apart in play.',
+      { remediation: 'Give each asset a different dominant shape or proportion so players read them instantly.' }
+    ));
+  }
+
+  const palettes = unique(list.map((asset) => text(asset.palette)).filter(Boolean));
+  const maxPalettes = Number(policy.maxPalettes ?? 3);
+  if (palettes.length > maxPalettes) {
+    findings.push(processFinding(
+      'ASSET_SET_PALETTE_SPRAWL', 'medium',
+      `${palettes.length} palette bindings across the set exceeds the limit of ${maxPalettes}.`,
+      { detail: palettes }
+    ));
+  }
+
+  const frameBudget = Number(policy.frameTriangleBudget ?? 0);
+  if (frameBudget > 0) {
+    const total = list.reduce((sum, asset) => sum + (Number(asset?.budget?.triangles) || 0), 0);
+    if (total > frameBudget) {
+      findings.push(processFinding(
+        'ASSET_SET_BUDGET_EXCEEDED', 'high',
+        `Declared triangles total ${total}, above the frame budget of ${frameBudget}.`,
+        { detail: { total, frameBudget }, remediation: 'Cut density on background assets or add LODs before authoring continues.' }
+      ));
+    } else evidenceCount += 1;
+  }
+
+  const audit = finalizeProcessAudit(findings, { schemaVersion: 1, evidenceCount, evidenceConfidence: 100 });
+  return {
+    ...audit,
+    verdict: audit.hardFailures.length ? 'fail-asset-set' : audit.warnings.length ? 'pass-with-notes' : 'pass-asset-set',
+    assetCount: list.length,
+    assets: perAsset.map((result) => ({
+      id: result.assetId,
+      class: result.assetClass,
+      ok: result.ok,
+      score: result.score,
+      blockers: result.hardFailures.length
+    }))
+  };
+}
+
+export function formatAssetReport(result) {
+  const lines = ['=== GAME ASSET DIRECTION ===', `verdict=${result.verdict ?? (result.ok ? 'pass' : 'fail')}  ok=${result.ok}  score=${result.score}`];
+  if (Array.isArray(result.assets)) {
+    lines.push('', 'assets:');
+    for (const asset of result.assets) {
+      lines.push(`- ${asset.ok ? 'PASS' : 'FAIL'} ${asset.id} (${asset.class ?? 'unclassed'}) score=${asset.score} blockers=${asset.blockers}`);
+    }
+  }
+  const actionable = (result.findings ?? []).filter((finding) => finding.severity !== 'info');
+  if (actionable.length) {
+    lines.push('', 'findings:');
+    for (const finding of actionable) {
+      lines.push(`- [${finding.severity}] ${finding.code}${finding.path ? ` (${finding.path})` : ''}: ${finding.message}`);
+      if (finding.remediation) lines.push(`  fix: ${finding.remediation}`);
+    }
+  } else {
+    lines.push('', 'No blocking asset findings.');
+  }
+  return `${lines.join('\n')}\n`;
+}
+
+<!-- END SOURCE: lib/game-asset-engine.mjs -->
+
+---
+
+## Source: `scripts/audit-game-assets.mjs`
+
+<!-- BEGIN SOURCE: scripts/audit-game-assets.mjs -->
+
+#!/usr/bin/env node
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { fail, parseLooseArgs, printHelp } from '../lib/cli.mjs';
+import { writeJsonAtomic } from '../lib/io.mjs';
+import { auditAssetSet, formatAssetReport } from '../lib/game-asset-engine.mjs';
+
+const HELP = `Usage:
+  node scripts/audit-game-assets.mjs --assets design/game-assets.json [options]
+
+Audits a game asset set: silhouette read, in-engine scale with a reference, style binding,
+materials, palette, budget, and in-context acceptance evidence.
+
+Input shapes accepted:
+  [ { asset }, ... ]
+  { "assets": [ { asset }, ... ], "policy": { ... } }
+
+Options:
+  --assets <path>              Asset set JSON
+  --frame-triangle-budget <n>  Fail when declared triangles exceed the frame budget
+  --max-style-bindings <n>     Allowed distinct style packs in one set (default 1)
+  --min-story-details <n>      Required story/wear details per asset (default 2)
+  --write <path>               Write the JSON result
+  --json                       Emit JSON instead of the text report
+  -h, --help
+
+Example:
+  npm run audit:game-assets -- --assets design/game-assets.json --frame-triangle-budget 250000
+`;
+
+try {
+  const args = parseLooseArgs();
+  if (args.help || args.h) printHelp(HELP);
+  else if (!args.assets) {
+    printHelp(HELP);
+    process.exitCode = 1;
+  } else {
+    const raw = JSON.parse(await fs.readFile(path.resolve(String(args.assets)), 'utf8'));
+    const assets = Array.isArray(raw) ? raw : Array.isArray(raw.assets) ? raw.assets : [];
+    const policy = { ...(raw.policy ?? {}) };
+    if (args['frame-triangle-budget'] !== undefined) policy.frameTriangleBudget = Number(args['frame-triangle-budget']);
+    if (args['max-style-bindings'] !== undefined) policy.maxStyleBindings = Number(args['max-style-bindings']);
+    if (args['min-story-details'] !== undefined) policy.minStoryDetails = Number(args['min-story-details']);
+
+    const result = auditAssetSet(assets, policy);
+    if (args.write) await writeJsonAtomic(path.resolve(String(args.write)), result);
+    if (args.json) process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
+    else process.stdout.write(formatAssetReport(result));
+    if (!result.ok) process.exitCode = 1;
+  }
+} catch (error) { fail(error); }
+
+<!-- END SOURCE: scripts/audit-game-assets.mjs -->
+
+---
+
+## Source: `lib/visual-diff-triage-engine.mjs`
+
+<!-- BEGIN SOURCE: lib/visual-diff-triage-engine.mjs -->
+
+/**
+ * Visual delta triage.
+ *
+ * `cur` is what the model produced. `ref` is what the user actually wanted.
+ * Seeing that they differ is easy; knowing which difference to fix first is the skill.
+ *
+ * This engine ranks differences in perceptual order — structure, proportion, value,
+ * colour, density, polish — and returns exactly one next change, because a loop that
+ * edits five variables per round cannot attribute the improvement to anything.
+ */
+
+import { measureScene } from './scene-completeness-engine.mjs';
+
+export const STAGE_ORDER = Object.freeze(['structure', 'proportion', 'value', 'colour', 'density', 'polish']);
+
+const STAGE_RANK = Object.freeze(Object.fromEntries(STAGE_ORDER.map((stage, index) => [stage, index])));
+
+const DEFAULT_POLICY = Object.freeze({
+  grid: '6x4',
+  focalShiftCells: 1,
+  zoneLumaDelta: 0.1,
+  zoneColourDelta: 24,
+  zoneDetailDelta: 0.12,
+  globalLumaDelta: 0.06,
+  globalColourDelta: 0.08,
+  valueStructureDelta: 0.08,
+  regionShiftRatio: 0.02,
+  regionScaleRatio: 0.1,
+  maxZoneReports: 6,
+  matchScore: 92,
+  minRoundImprovement: 0.02,
+  stallRounds: 3
+});
+
+function policyWith(policy = {}) {
+  const merged = { ...DEFAULT_POLICY };
+  for (const [key, value] of Object.entries(policy)) if (value !== undefined && value !== null) merged[key] = value;
+  return merged;
+}
+
+function round(value, digits = 4) {
+  return Number(Number(value).toFixed(digits));
+}
+
+function rgbDistance(left = [0, 0, 0], right = [0, 0, 0]) {
+  const dr = left[0] - right[0];
+  const dg = left[1] - right[1];
+  const db = left[2] - right[2];
+  return Math.sqrt(dr * dr + dg * dg + db * db) / Math.sqrt(3);
+}
+
+function issue(stage, code, message, fix, evidence = {}) {
+  if (!STAGE_RANK[stage] && STAGE_RANK[stage] !== 0) throw new TypeError(`Unknown triage stage: ${stage}`);
+  return { stage, rank: STAGE_RANK[stage], code, message, fix, evidence };
+}
+
+function zoneByName(measurement, name) {
+  return (measurement.zones ?? []).find((zone) => zone.name === name) ?? null;
+}
+
+function focalDistance(reference, current) {
+  const left = zoneByName(reference, reference.summary.focalZone);
+  const right = zoneByName(current, current.summary.focalZone);
+  if (!left || !right) return 0;
+  return Math.hypot(left.col - right.col, left.row - right.row);
+}
+
+function normalizeRegions(regions) {
+  if (!regions) return [];
+  const entries = Array.isArray(regions)
+    ? regions.map((region) => [region.name, region])
+    : Object.entries(regions);
+  return entries.map(([name, value]) => {
+    const asRect = (rect) => {
+      const list = Array.isArray(rect) ? rect : [rect?.x, rect?.y, rect?.width, rect?.height];
+      const [x, y, width, height] = list.map(Number);
+      if (![x, y, width, height].every(Number.isFinite) || width <= 0 || height <= 0) {
+        throw new TypeError(`Region "${name}" needs a rect as [x, y, width, height].`);
+      }
+      return { x, y, width, height };
+    };
+    const reference = value?.ref ?? value?.reference ?? value?.rect ?? value;
+    const current = value?.cur ?? value?.current ?? reference;
+    return { name: String(name), reference: asRect(reference), current: asRect(current) };
+  });
+}
+
+/** Compares two measured frames and returns an ordered correction plan. */
+export function triageVisualDelta({ reference, current, regions } = {}, policyInput = {}) {
+  if (!reference?.zones?.length || !current?.zones?.length) {
+    throw new TypeError('triageVisualDelta requires measured reference and current frames.');
+  }
+  if (reference.grid.cols !== current.grid.cols || reference.grid.rows !== current.grid.rows) {
+    throw new TypeError('Reference and current measurements must use the same grid.');
+  }
+
+  const policy = policyWith(policyInput);
+  const issues = [];
+  const zoneDeltas = [];
+
+  for (let index = 0; index < reference.zones.length; index += 1) {
+    const left = reference.zones[index];
+    const right = current.zones[index];
+    const lumaDelta = round(right.meanLuma - left.meanLuma);
+    const colourDelta = round(rgbDistance(left.meanRgb ?? [0, 0, 0], right.meanRgb ?? [0, 0, 0]), 2);
+    const detailDelta = round(right.detail - left.detail);
+    zoneDeltas.push({
+      zone: left.name,
+      band: left.band,
+      lumaDelta,
+      colourDelta,
+      detailDelta,
+      total: round(Math.abs(lumaDelta) + colourDelta / 255 + Math.abs(detailDelta))
+    });
+  }
+
+  const worst = [...zoneDeltas].sort((a, b) => b.total - a.total);
+
+  const shift = round(focalDistance(reference, current), 2);
+  if (shift > policy.focalShiftCells) {
+    issues.push(issue(
+      'structure',
+      'FOCAL_ZONE_MOVED',
+      `The eye lands in a different place: reference focal zone ${reference.summary.focalZone}, current ${current.summary.focalZone} (${shift} cells apart).`,
+      `Move or re-light the subject so the densest, highest-contrast region returns to ${reference.summary.focalZone} before touching colour or texture.`,
+      { referenceFocal: reference.summary.focalZone, currentFocal: current.summary.focalZone, cells: shift }
+    ));
+  }
+
+  for (const region of normalizeRegions(regions)) {
+    const dx = region.current.x - region.reference.x;
+    const dy = region.current.y - region.reference.y;
+    const shiftRatioX = Math.abs(dx) / Math.max(1, reference.page.width);
+    const shiftRatioY = Math.abs(dy) / Math.max(1, reference.page.height);
+    if (shiftRatioX > policy.regionShiftRatio || shiftRatioY > policy.regionShiftRatio) {
+      issues.push(issue(
+        'structure',
+        'REGION_POSITION_DRIFT',
+        `Region "${region.name}" sits ${dx >= 0 ? '+' : ''}${dx}px horizontally and ${dy >= 0 ? '+' : ''}${dy}px vertically from the reference.`,
+        `Move "${region.name}" by ${-dx}px x and ${-dy}px y, then re-capture before changing anything else.`,
+        { region: region.name, dx, dy }
+      ));
+    }
+    const widthRatio = region.current.width / region.reference.width;
+    const heightRatio = region.current.height / region.reference.height;
+    if (Math.abs(widthRatio - 1) > policy.regionScaleRatio || Math.abs(heightRatio - 1) > policy.regionScaleRatio) {
+      issues.push(issue(
+        'proportion',
+        'REGION_SCALE_DRIFT',
+        `Region "${region.name}" is ${round(widthRatio, 3)}x wide and ${round(heightRatio, 3)}x tall relative to the reference.`,
+        `Resize "${region.name}" to ${region.reference.width}x${region.reference.height}px (or the equivalent layout constraint) rather than nudging spacing around it.`,
+        { region: region.name, widthRatio: round(widthRatio, 3), heightRatio: round(heightRatio, 3) }
+      ));
+    }
+  }
+
+  const lumaDelta = round(current.summary.meanLuma - reference.summary.meanLuma);
+  if (Math.abs(lumaDelta) > policy.globalLumaDelta) {
+    issues.push(issue(
+      'value',
+      'GLOBAL_BRIGHTNESS_OFF',
+      `The whole frame is ${lumaDelta > 0 ? 'brighter' : 'darker'} than the reference by ${Math.abs(lumaDelta)} luma.`,
+      `Correct overall exposure or surface lightness first; every local judgement below depends on it.`,
+      { lumaDelta }
+    ));
+  }
+
+  const darkDelta = round(current.summary.darkRatio - reference.summary.darkRatio);
+  const lightDelta = round(current.summary.lightRatio - reference.summary.lightRatio);
+  if (Math.abs(darkDelta) > policy.valueStructureDelta || Math.abs(lightDelta) > policy.valueStructureDelta) {
+    issues.push(issue(
+      'value',
+      'VALUE_STRUCTURE_OFF',
+      `Shadow and highlight distribution differs (dark ${darkDelta >= 0 ? '+' : ''}${darkDelta}, light ${lightDelta >= 0 ? '+' : ''}${lightDelta}).`,
+      darkDelta < 0
+        ? 'Deepen the shadow anchors; the current frame is missing the darks that give the reference its weight.'
+        : 'Recover highlights or reduce crushed shadows so the value ladder matches the reference.',
+      { darkDelta, lightDelta }
+    ));
+  }
+
+  const colourZones = worst.filter((zone) => zone.colourDelta > policy.zoneColourDelta).slice(0, policy.maxZoneReports);
+  if (colourZones.length) {
+    issues.push(issue(
+      'colour',
+      'ZONE_COLOUR_DRIFT',
+      `${colourZones.length} zone(s) differ in hue or saturation beyond tolerance: ${colourZones.map((zone) => `${zone.zone}(${zone.colourDelta})`).join(', ')}.`,
+      `Rebind those zones to the palette from the reference, starting with ${colourZones[0].zone}.`,
+      { zones: colourZones }
+    ));
+  }
+
+  const chromaDelta = round(
+    (current.zones.reduce((sum, zone) => sum + zone.colourfulness, 0) / current.zones.length)
+    - (reference.zones.reduce((sum, zone) => sum + zone.colourfulness, 0) / reference.zones.length)
+  );
+  if (Math.abs(chromaDelta) > policy.globalColourDelta) {
+    issues.push(issue(
+      'colour',
+      'GLOBAL_SATURATION_OFF',
+      `Overall colourfulness is ${chromaDelta > 0 ? 'higher' : 'lower'} than the reference by ${Math.abs(chromaDelta)}.`,
+      chromaDelta > 0 ? 'Desaturate toward the reference palette instead of repainting individual elements.' : 'Raise chroma on the palette anchors rather than boosting everything globally.',
+      { chromaDelta }
+    ));
+  }
+
+  const densityZones = worst.filter((zone) => Math.abs(zone.detailDelta) > policy.zoneDetailDelta).slice(0, policy.maxZoneReports);
+  if (densityZones.length) {
+    const missing = densityZones.filter((zone) => zone.detailDelta < 0);
+    issues.push(issue(
+      'density',
+      'ZONE_DETAIL_DELTA',
+      `${densityZones.length} zone(s) carry the wrong amount of detail: ${densityZones.map((zone) => `${zone.zone}(${zone.detailDelta >= 0 ? '+' : ''}${zone.detailDelta})`).join(', ')}.`,
+      missing.length
+        ? `Add the missing content in ${missing[0].zone} — the reference has material there that the current frame abandoned.`
+        : `Simplify ${densityZones[0].zone}; the current frame is busier than the reference and steals attention.`,
+      { zones: densityZones }
+    ));
+  }
+
+  const lumaZones = worst.filter((zone) => Math.abs(zone.lumaDelta) > policy.zoneLumaDelta).slice(0, policy.maxZoneReports);
+  if (lumaZones.length && !issues.some((item) => item.stage === 'value')) {
+    issues.push(issue(
+      'value',
+      'ZONE_BRIGHTNESS_DELTA',
+      `${lumaZones.length} zone(s) differ in local brightness: ${lumaZones.map((zone) => `${zone.zone}(${zone.lumaDelta >= 0 ? '+' : ''}${zone.lumaDelta})`).join(', ')}.`,
+      `Match local lighting in ${lumaZones[0].zone} before adjusting its colour or texture.`,
+      { zones: lumaZones }
+    ));
+  }
+
+  const residual = worst.filter((zone) => zone.total > 0.02 && zone.total <= 0.08);
+  if (!issues.length && residual.length) {
+    issues.push(issue(
+      'polish',
+      'RESIDUAL_DELTA',
+      `Only small residual differences remain (largest ${residual[0].zone} at ${residual[0].total}).`,
+      'Decide explicitly whether this residual is acceptable, then stop iterating.',
+      { zones: residual.slice(0, policy.maxZoneReports) }
+    ));
+  }
+
+  issues.sort((a, b) => a.rank - b.rank || a.code.localeCompare(b.code));
+
+  const totalDelta = round(zoneDeltas.reduce((sum, zone) => sum + zone.total, 0) / zoneDeltas.length);
+  const score = Math.max(0, Math.min(100, Math.round(100 - totalDelta * 180)));
+  const blocking = issues.filter((item) => item.stage !== 'polish');
+  const matched = blocking.length === 0 && score >= policy.matchScore;
+
+  return {
+    schemaVersion: 1,
+    verdict: matched ? 'match' : 'iterate',
+    matched,
+    score,
+    totalDelta,
+    grid: reference.grid,
+    stages: STAGE_ORDER.filter((stage) => issues.some((item) => item.stage === stage)),
+    issues,
+    nextAction: issues.length
+      ? {
+          stage: issues[0].stage,
+          code: issues[0].code,
+          change: issues[0].fix,
+          rule: 'Change this one thing, re-capture, and re-run the triage. Do not batch fixes across stages.'
+        }
+      : null,
+    zoneDeltas,
+    worstZones: worst.slice(0, policy.maxZoneReports),
+    summary: {
+      reference: reference.summary,
+      current: current.summary,
+      lumaDelta,
+      chromaDelta,
+      focalShiftCells: shift
+    },
+    policy
+  };
+}
+
+/** Detects a loop that keeps editing without getting closer. */
+export function evaluateLoopProgress(history = [], policyInput = {}) {
+  const policy = policyWith(policyInput);
+  const rounds = history
+    .map((entry, index) => ({
+      round: Number(entry.round ?? index + 1),
+      totalDelta: Number(entry.totalDelta ?? entry.delta ?? NaN),
+      change: entry.change ?? entry.nextAction?.change ?? null
+    }))
+    .filter((entry) => Number.isFinite(entry.totalDelta));
+
+  if (rounds.length < policy.stallRounds) {
+    return { stalled: false, rounds: rounds.length, improvement: null, recommendation: null };
+  }
+
+  const window = rounds.slice(-policy.stallRounds);
+  const improvement = round(window[0].totalDelta - window[window.length - 1].totalDelta);
+  const stalled = improvement < policy.minRoundImprovement;
+
+  return {
+    stalled,
+    rounds: rounds.length,
+    improvement,
+    window,
+    recommendation: stalled
+      ? 'Three rounds produced no measurable convergence. Stop guessing: re-read the reference at region level, restate what the user actually asked for, and question whether the current structure can ever reach it.'
+      : null
+  };
+}
+
+export function renderDeltaHeatmap(result) {
+  const { cols, rows } = result.grid;
+  const lines = [];
+  for (let row = 0; row < rows; row += 1) {
+    let line = '';
+    for (let col = 0; col < cols; col += 1) {
+      const delta = result.zoneDeltas[row * cols + col];
+      line += String(Math.min(9, Math.round((delta?.total ?? 0) * 18)));
+    }
+    lines.push(line);
+  }
+  return lines.join('\n');
+}
+
+export function formatTriageReport(result) {
+  const lines = [
+    '=== VISUAL DELTA TRIAGE (ref vs cur) ===',
+    `verdict=${result.verdict}  score=${result.score}  meanDelta=${result.totalDelta}`,
+    `focal: ref=${result.summary.reference.focalZone} cur=${result.summary.current.focalZone} shift=${result.summary.focalShiftCells} cells`,
+    '',
+    'delta heatmap (0 identical → 9 far off):',
+    renderDeltaHeatmap(result)
+  ];
+
+  if (result.issues.length) {
+    lines.push('', 'ordered corrections (perceptual priority):');
+    result.issues.forEach((item, index) => {
+      lines.push(`${index + 1}. [${item.stage}] ${item.code}: ${item.message}`, `   fix: ${item.fix}`);
+    });
+    lines.push('', `NEXT SINGLE CHANGE → ${result.nextAction.change}`, `rule: ${result.nextAction.rule}`);
+  } else {
+    lines.push('', 'No differences above tolerance. The current render matches the reference.');
+  }
+  return `${lines.join('\n')}\n`;
+}
+
+export async function measureFrameFromPng(filePath, options = {}) {
+  const fs = await import('node:fs/promises');
+  const { PNG } = await import('pngjs');
+  const png = PNG.sync.read(await fs.readFile(filePath));
+  return measureScene({ width: png.width, height: png.height, data: png.data }, options);
+}
+
+<!-- END SOURCE: lib/visual-diff-triage-engine.mjs -->
+
+---
+
+## Source: `scripts/vision-triage.mjs`
+
+<!-- BEGIN SOURCE: scripts/vision-triage.mjs -->
+
+#!/usr/bin/env node
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { fail, parseLooseArgs, printHelp } from '../lib/cli.mjs';
+import { writeJsonAtomic } from '../lib/io.mjs';
+import {
+  evaluateLoopProgress,
+  formatTriageReport,
+  measureFrameFromPng,
+  triageVisualDelta
+} from '../lib/visual-diff-triage-engine.mjs';
+
+const HELP = `Usage:
+  node scripts/vision-triage.mjs --ref reference.png --cur current.png [options]
+
+Ranks every difference between the reference the user wants and the render the model
+produced, in perceptual order (structure → proportion → value → colour → density → polish),
+and returns exactly one next change so each round stays attributable.
+
+Options:
+  --ref <path>          Reference frame (what the user wants)
+  --cur <path>          Current frame (what was produced)
+  --regions <path>      JSON of named rects: { "photo": [x,y,w,h] } or { "photo": { "ref": [...], "cur": [...] } }
+  --grid <CxR>          Zone grid (default 6x4)
+  --history <path>      Round ledger JSON; the run is appended and stall detection runs
+  --round <n>           Round number recorded in the ledger
+  --write <path>        Write the JSON result
+  --json                Emit JSON instead of the text report
+  -h, --help
+
+Exit 1 while the frames still differ, so an agent loop keeps iterating until it matches.
+
+Example:
+  npm run vision:triage -- --ref design/ref.png --cur artifacts/cur.png --history .fx/triage-history.json
+`;
+
+async function readJsonIfPresent(filePath, fallback) {
+  try {
+    return JSON.parse(await fs.readFile(filePath, 'utf8'));
+  } catch (error) {
+    if (error.code === 'ENOENT') return fallback;
+    throw error;
+  }
+}
+
+try {
+  const args = parseLooseArgs();
+  if (args.help || args.h) printHelp(HELP);
+  else if (!args.ref || !args.cur) {
+    printHelp(HELP);
+    process.exitCode = 1;
+  } else {
+    const options = { grid: args.grid };
+    const reference = await measureFrameFromPng(path.resolve(String(args.ref)), options);
+    const current = await measureFrameFromPng(path.resolve(String(args.cur)), options);
+    const regions = args.regions
+      ? JSON.parse(await fs.readFile(path.resolve(String(args.regions)), 'utf8'))
+      : null;
+
+    const result = triageVisualDelta({ reference, current, regions }, options);
+
+    let progress = null;
+    if (args.history) {
+      const historyPath = path.resolve(String(args.history));
+      const history = await readJsonIfPresent(historyPath, []);
+      const rounds = Array.isArray(history) ? history : (history.rounds ?? []);
+      rounds.push({
+        round: Number(args.round ?? rounds.length + 1),
+        at: new Date().toISOString(),
+        ref: String(args.ref),
+        cur: String(args.cur),
+        totalDelta: result.totalDelta,
+        score: result.score,
+        verdict: result.verdict,
+        change: result.nextAction?.change ?? null
+      });
+      progress = evaluateLoopProgress(rounds);
+      await writeJsonAtomic(historyPath, rounds);
+      result.progress = progress;
+    }
+
+    if (args.write) await writeJsonAtomic(path.resolve(String(args.write)), result);
+    if (args.json) process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
+    else {
+      process.stdout.write(formatTriageReport(result));
+      if (progress?.stalled) process.stdout.write(`\nSTALLED after ${progress.rounds} rounds: ${progress.recommendation}\n`);
+    }
+    if (!result.matched) process.exitCode = 1;
+  }
+} catch (error) { fail(error); }
+
+<!-- END SOURCE: scripts/vision-triage.mjs -->
+
+---
+
 ## Source: `lib/direction-gallery-engine.mjs`
 
 <!-- BEGIN SOURCE: lib/direction-gallery-engine.mjs -->
@@ -5395,6 +7962,12 @@ Shared base (both packs inherit rules from):
 
 End-to-end filled artifacts: `examples/direction-camera/`.
 
+Before presenting options, gate distinctness:
+
+```bash
+npm run direction:distinctness -- --options examples/direction-camera/direction-options/options.json
+```
+
 Cursor install templates (rule + hook): `templates/cursor/` · `npm run direction:cursor-install`.
 
 <!-- END SOURCE: prompts/visual-direction-prompt-pack.md -->
@@ -5419,10 +7992,11 @@ Explore visible direction **before** profile, contract, plan, or code. Prefer pi
 
 1. `npm run direction:runtime -- --image-gen true` (and `--host cursor` or `codex` if known).
 2. Inspect the reference screenshot(s). List observed / inferred / constraints.
-3. Draft **2–3 theses** that differ on ≥2 personality axes. Reject near-duplicates.
-4. **Generate one image per thesis** with the host tool (`GenerateImage` in Cursor; Codex `imagegen` when present). Pass `reference_image_paths` when supported. Save as `design/direction-options/direction-option-N.png`.
-5. Show **1 / 2 / 3** inline. Also run `npm run direction:gallery` if comparison side-by-side helps or chat is unreliable.
-6. **Stop.** Ask for a number. No spec, profile, plan, or code in this turn.
+3. Draft **2–3 theses** that differ on ≥2 personality axes. Each needs a **clear novelty concept**. Reject near-duplicates.
+4. **Gate before present:** write `design/direction-options/options.json` and run `npm run direction:distinctness -- --options design/direction-options/options.json`. If it fails, rewrite theses — do not show a weak set.
+5. **Generate one image per thesis** with the host tool (`GenerateImage` in Cursor; Codex `imagegen` when present). Pass `reference_image_paths` when supported. Save as `design/direction-options/direction-option-N.png`.
+6. Show **1 / 2 / 3** inline. Also run `npm run direction:gallery` if comparison side-by-side helps or chat is unreliable.
+7. **Stop.** Ask for a number. No spec, profile, plan, or code in this turn.
 
 ## Turn B — after a number
 
@@ -5480,8 +8054,9 @@ npm run direction:init -- --product "<name>" --audience "<who>"
 ## Turn A — options (prose-with-gap)
 
 1. Inspect any on-disk reference under `design/` (or record that none was attached).
-2. Draft **2–3 theses** that differ on ≥2 personality axes.
-3. Present as numbered prose:
+2. Draft **2–3 theses** that differ on ≥2 personality axes. Each needs a clear novelty concept.
+3. Gate with `npm run direction:distinctness -- --options design/direction-options/options.json`. If fail, rewrite — do not present near-duplicates.
+4. Present as numbered prose:
 
 ```text
 1 — <thesis> · axes moved: …
@@ -5769,9 +8344,25 @@ Produce **two or three** theses. Each must differ on at least two of:
 Trivial variants (same layout, only accent hue changed) do not count as separate options. Each thesis gets:
 
 - a one-line visual thesis
+- a **clear novelty concept** (one new idea that is checkable — not “modern/clean/premium”)
 - the personality deltas vs the reference
 - what stays from the reference (structure, task, critical controls)
 - what changes (surface, type, chrome, motion character)
+
+### Distinctness gate (required before presenting)
+
+Before showing options 1/2/3, write `design/direction-options/options.json` and run:
+
+```bash
+npm run direction:distinctness -- --options design/direction-options/options.json
+```
+
+If the gate fails (`ok=false` / `fail-similar-or-weak-novelty`), **do not present** that set. Redesign theses until they:
+
+1. differ on ≥2 personality axes with meaningful separation, and
+2. each carry a distinct novelty concept.
+
+A result that still looks like near-duplicates **does not meet this skill’s visual-direction standard**, even if three images were generated.
 
 ### 3. Generate Images
 
@@ -7582,6 +10173,140 @@ The brief is the implementer’s source of truth. Do not append unrelated conver
 
 ---
 
+## Source: `templates/scene-brief.md`
+
+<!-- BEGIN SOURCE: templates/scene-brief.md -->
+
+# Scene Brief — <scene name>
+
+> Authored intent for one rendered scene. Measurement proves detail exists; this brief proves
+> it was designed. Audit with `npm run audit:scene -- --image <frame.png> --brief <brief.json>`.
+
+## Fantasy
+
+One concrete sentence about what the player is doing and feeling here. Not "epic", not
+"beautiful" — the moment.
+
+## Depth layers
+
+| Layer | What occupies it |
+| --- | --- |
+| Foreground | |
+| Midground | |
+| Background | |
+
+Every layer must be named. An unnamed layer is the layer that ships empty.
+
+## Focal point
+
+What the eye lands on, and the mechanism that leads it there: light, contrast, leading
+lines, colour role, or motion.
+
+## Lighting
+
+Key direction, fill, rim, mood, and where the shadow anchors and highlight accents live.
+A frame with no real darks and no real lights fails the value structure check.
+
+## Palette and style
+
+- **palette:** which palette roles appear and what each one means
+- **styleBinding:** the graphics pack or aesthetic profile this scene obeys
+
+## Camera
+
+Which camera approves this scene: distance, FOV, framing. Beauty shots do not approve.
+
+## Story details
+
+At least three traces that prove the space is used:
+
+1.
+2.
+3.
+
+## Negative space
+
+Where quiet is intentional, so the gate reads it as a decision rather than neglect.
+
+## Gate results
+
+- `npm run audit:scene` verdict:
+- Empty corners:
+- Focal ratio:
+- Repetition findings:
+
+<!-- END SOURCE: templates/scene-brief.md -->
+
+---
+
+## Source: `templates/game-asset-spec.md`
+
+<!-- BEGIN SOURCE: templates/game-asset-spec.md -->
+
+# Game Asset Spec — <asset name>
+
+> One asset, specified so it can be built, budgeted, and checked in context.
+> Audit with `npm run audit:game-assets -- --assets design/game-assets.json`.
+
+## Identity
+
+- **id:** `class.family.variant` (stable, lowercase, dot-separated)
+- **name:**
+- **class:** character | creature | prop | weapon | vehicle | environment | architecture | terrain | vfx | ui | audio | animation
+- **styleBinding:** which graphics pack and aesthetic profile this obeys
+
+## Intent
+
+- **purpose:** what it does for the player, in one sentence
+- **fiction:** who made it, who uses it, why it is here
+
+## Form
+
+- **silhouette:** the dominant shape and the one feature that survives at 64px
+- **scale:** number + unit + reference (for example `5.6 studs tall, about 1.1x avatar height`)
+- **materials:** surface treatment, not only base colour
+- **palette:** which palette roles it uses and which it must never use
+
+## Story details
+
+At least two concrete traces tied to the fiction:
+
+1.
+2.
+3.
+
+## Engine
+
+- **budget:** triangles / parts / texture size / draw calls
+- **lod:** what drops at which distance
+- **variants:** states, damage levels, seasonal or event skins
+- **attachments / sockets:**
+- **collision:**
+
+## Acceptance
+
+How this asset is proven, with distance and lighting:
+
+- Silhouette legible at 64px thumbnail
+- Reads as <its role> from <N> units in <lighting>
+- Does not clip or fight <adjacent asset / animation>
+
+## In-context evidence
+
+- **inContextEvidence:** which capture proves it — gameplay camera, real lighting, play
+  distance, avatar in frame. A turntable render does not count.
+
+## Sign-off
+
+- Direction approved by:
+- In-context capture:
+- Scene gate result:
+- Set audit result:
+
+<!-- END SOURCE: templates/game-asset-spec.md -->
+
+---
+
 ## Source: `templates/aesthetic-profile.md`
 
 <!-- BEGIN SOURCE: templates/aesthetic-profile.md -->
@@ -8219,14 +10944,15 @@ The user supplied UI screenshot(s) and/or asked to redesign or restyle the look.
 
 0. **Resolve the runtime** with `npm run direction:runtime` (or `resolveDirectionRuntime`). If `GenerateImage` / `imagegen` is in your tool list, re-run with `--image-gen true`. If not, use `--image-gen false` and follow `prose-with-gap` — never invent images.
 1. **Inspect the reference.** List observed structure, critical controls, density, and constraints. Do not drop the primary task.
-2. **Draft 2–3 theses** that differ on at least two personality axes from `references/brand-personality-and-tone.md`. Reject near-duplicates.
-3. **Follow the runtime plan:**
+2. **Draft 2–3 theses** that differ on at least two personality axes from `references/brand-personality-and-tone.md`. Each needs a clear novelty concept. Reject near-duplicates.
+3. **Run `npm run direction:distinctness`** on the option set. If it fails (`fail-similar-or-weak-novelty`), rewrite — do not present similar options that lack a new idea.
+4. **Follow the runtime plan:**
    - `inline-and-gallery` — generate with the host image tool (`GenerateImage` in Cursor); show 1/2/3 in chat; optionally open the gallery.
    - `gallery-only` — generate files, then `npm run direction:gallery`; paste the `file://` link; do not drop to prose-only.
    - `prose-with-gap` — numbered theses only; state `IMAGEGEN_UNAVAILABLE`; optional placeholder gallery.
    - `ci-gate-only` — do not explore; require a confirmed spec via `direction:gate`.
-4. **Present options as 1 / 2 / 3** with a one-sentence difference each.
-5. **Stop.** Ask which number to use. Do not write the direction spec, profile, plan, or code in this turn.
+5. **Present options as 1 / 2 / 3** with a one-sentence difference each.
+6. **Stop.** Ask which number to use. Do not write the direction spec, profile, plan, or code in this turn.
 
 ### Turn B — after the user picks a number
 

@@ -12,14 +12,15 @@ The user supplied UI screenshot(s) and/or asked to redesign or restyle the look.
 
 0. **Resolve the runtime** with `npm run direction:runtime` (or `resolveDirectionRuntime`). If `GenerateImage` / `imagegen` is in your tool list, re-run with `--image-gen true`. If not, use `--image-gen false` and follow `prose-with-gap` — never invent images.
 1. **Inspect the reference.** List observed structure, critical controls, density, and constraints. Do not drop the primary task.
-2. **Draft 2–3 theses** that differ on at least two personality axes from `references/brand-personality-and-tone.md`. Reject near-duplicates.
-3. **Follow the runtime plan:**
+2. **Draft 2–3 theses** that differ on at least two personality axes from `references/brand-personality-and-tone.md`. Each needs a clear novelty concept. Reject near-duplicates.
+3. **Run `npm run direction:distinctness`** on the option set. If it fails (`fail-similar-or-weak-novelty`), rewrite — do not present similar options that lack a new idea.
+4. **Follow the runtime plan:**
    - `inline-and-gallery` — generate with the host image tool (`GenerateImage` in Cursor); show 1/2/3 in chat; optionally open the gallery.
    - `gallery-only` — generate files, then `npm run direction:gallery`; paste the `file://` link; do not drop to prose-only.
    - `prose-with-gap` — numbered theses only; state `IMAGEGEN_UNAVAILABLE`; optional placeholder gallery.
    - `ci-gate-only` — do not explore; require a confirmed spec via `direction:gate`.
-4. **Present options as 1 / 2 / 3** with a one-sentence difference each.
-5. **Stop.** Ask which number to use. Do not write the direction spec, profile, plan, or code in this turn.
+5. **Present options as 1 / 2 / 3** with a one-sentence difference each.
+6. **Stop.** Ask which number to use. Do not write the direction spec, profile, plan, or code in this turn.
 
 ### Turn B — after the user picks a number
 

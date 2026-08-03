@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "name": "Harbour dock at first night",
+  "fantasy": "The player arrives at a working harbour after dark and has to find the one lit checkpoint among the cranes",
+  "layers": {
+    "foreground": "Coiled rope, a tipped crate, and the leaning edge of the dock framing the lower left",
+    "midground": "Lantern posts along the walkway with the checkpoint post lit brightest",
+    "background": "Crane silhouettes and moored hulls fading into harbour haze"
+  },
+  "focalPoint": "The lit checkpoint lantern, highest local contrast, sitting on the third of the frame the path leads to",
+  "lighting": "Low warm key from the lanterns, cold moon rim on the crane steel, deep shadow pockets under the dock edge",
+  "palette": "design/aesthetic-profile.json — wet slate, bleached timber, lacquer red interactive accent",
+  "styleBinding": "domains/GAME/graphics/stylized-cartoon.md",
+  "camera": "Default third-person gameplay camera, 14 studs behind the avatar, 60 degree FOV",
+  "storyDetails": [
+    "Paint worn off the lantern posts at hand height",
+    "Rope repair knot on the nearest bollard",
+    "Salt bloom creeping up the first stud of every post",
+    "A tarp half pulled over the crate someone left open"
+  ],
+  "negativeSpace": "The upper right sky stays quiet so the crane silhouettes read",
+  "motion": "Slow lantern sway and water shimmer; nothing moves near the checkpoint so it reads as safe"
+}

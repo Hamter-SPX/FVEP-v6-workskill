@@ -1,5 +1,18 @@
 # Changelog
 
+## Unreleased — vision-in-the-loop, scenes, and game assets
+
+### Added
+
+- Visual delta triage (`npm run vision:triage`): ranks every reference↔current difference in perceptual order — structure, proportion, value, colour, density, polish — returns exactly one next change per round, writes a round ledger, and detects a stalled loop after three rounds without measurable convergence
+- Scene completeness gate (`npm run audit:scene`): measures a frame zone by zone and blocks on empty corners, dead regions, missing focal hierarchy, flat value structure, and copy-paste tiling; audits the scene brief for fantasy, all three depth layers, focal point, lighting, and story details
+- Game asset direction gate (`npm run audit:game-assets`): per-asset silhouette read, in-engine scale with a comparison reference, style binding, materials, palette, budget, acceptance distance, and in-context evidence, plus set-level checks for duplicate ids, mixed units, split styles, palette sprawl, silhouette repetition, and the frame triangle budget
+- References: `visual-delta-triage.md`, `scene-completeness.md`, `game-vision-loop.md`, `game-asset-direction.md`, `world-building-and-level-blockout.md`, with Thai summaries for the triage loop and the game loop
+- Role packs in `domains/ROLES/` for frontend, backend, security, data, platform/SRE, QA, product design, visual design, game design, gameplay, and technical art — each with what it owns, the gates it must pass, and its red flags
+- `PLAYBOOKS.md` with copy-paste flows for screenshot redesign, reference matching, scene and map design, asset sets, Roblox maps, feature delivery, and skill health
+- Schemas, templates, and examples for scene briefs and game asset sets; `prompts/vision-triage-loop.md` and `agents/scene-and-asset-critic.md`
+- Eight additional pressure scenarios covering batched fixes, stall handling, tolerance tampering, abandoned frames, turntable approvals, scale without a reference, demo-seed generators, and match claimed from memory
+
 ## 5.0.0 — 2026-08-02
 
 ### Added

@@ -28,7 +28,32 @@ const required = [
   'MIGRATION_V3_TO_V4.md', 'MIGRATION_V4_TO_V5.md',
   'CHANGELOG.md', 'UPGRADE_REPORT_V4_TH.md', 'UPGRADE_REPORT_V5_TH.md',
   'FULLSTACK_VISION_ENGINEERING_PRO_V5_ALL_IN_ONE.md', 'package.json', 'vision-loop.config.example.json',
-  'fullstack.config.example.json', 'setup.sh', 'setup.ps1', 'AESTHETIC_WALKTHROUGH.md',
+  'fullstack.config.example.json', 'setup.sh', 'setup.ps1',   'AESTHETIC_WALKTHROUGH.md',
+  'domains/README.md',
+  'domains/GAME/README.md',
+  'domains/APPLICATION/README.md',
+  'domains/DESIGN/README.md',
+  'domains/GENERAL/README.md',
+  'domains/ROLES/README.md',
+  'domains/ROLES/frontend-engineer.md', 'domains/ROLES/backend-engineer.md',
+  'domains/ROLES/security-engineer.md', 'domains/ROLES/data-engineer.md',
+  'domains/ROLES/platform-sre.md', 'domains/ROLES/qa-engineer.md',
+  'domains/ROLES/product-designer.md', 'domains/ROLES/visual-designer.md',
+  'domains/ROLES/game-designer.md', 'domains/ROLES/gameplay-engineer.md',
+  'domains/ROLES/technical-artist.md',
+
+  // v5.1 scene, asset, and triage evidence layer.
+  'lib/scene-completeness-engine.mjs', 'lib/game-asset-engine.mjs', 'lib/visual-diff-triage-engine.mjs',
+  'scripts/audit-scene.mjs', 'scripts/audit-game-assets.mjs', 'scripts/vision-triage.mjs',
+  'references/scene-completeness.md', 'references/game-asset-direction.md',
+  'references/game-vision-loop.md', 'references/world-building-and-level-blockout.md',
+  'references/visual-delta-triage.md',
+  'schemas/game-asset-spec.schema.json', 'schemas/scene-brief.schema.json',
+  'examples/game-assets.example.json', 'examples/scene-brief.example.json',
+  'templates/game-asset-spec.md', 'templates/scene-brief.md',
+  'references/visual-delta-triage_TH.md', 'references/game-vision-loop_TH.md',
+  'prompts/vision-triage-loop.md', 'agents/scene-and-asset-critic.md',
+  'PLAYBOOKS.md',
 
   // Retained frontend vision and evidence engines.
   'lib/config.mjs', 'lib/browser-runner.mjs', 'lib/compare-engine.mjs', 'lib/perceptual-diff.mjs',
@@ -61,10 +86,11 @@ const required = [
   'lib/craft-precision-engine.mjs', 'lib/motion-quality-engine.mjs', 'lib/style-signature-engine.mjs',
   'scripts/audit-aesthetics.mjs', 'scripts/validate-aesthetic-review.mjs', 'scripts/open-direction-gallery.mjs',
   'scripts/init-direction.mjs', 'scripts/sync-direction-spec.mjs',
-  'scripts/iterate-direction.mjs', 'scripts/direction-gate.mjs', 'scripts/detect-direction-runtime.mjs',
+  'scripts/iterate-direction.mjs', 'scripts/direction-gate.mjs', 'scripts/direction-distinctness.mjs', 'scripts/detect-direction-runtime.mjs',
   'scripts/install-direction-cursor.mjs',
   'lib/direction-gallery-engine.mjs', 'lib/direction-init-engine.mjs', 'lib/direction-spec-sync-engine.mjs',
   'lib/direction-iterate-engine.mjs', 'lib/direction-gate-engine.mjs', 'lib/direction-runtime-engine.mjs',
+  'lib/direction-distinctness-engine.mjs',
   'prompts/visual-direction-prompt-pack.md',
   'prompts/visual-direction-exploration-ide.md',
   'prompts/visual-direction-exploration-cli.md',
@@ -72,6 +98,7 @@ const required = [
   'examples/direction-camera/visual-direction-spec.md',
   'examples/direction-camera/aesthetic-profile.json',
   'examples/direction-camera/design-contract.json',
+  'examples/direction-camera/direction-options/options.json',
   'templates/cursor/README.md',
   'templates/cursor/hooks.json',
   'templates/cursor/rules/visual-direction-redesign.mdc',
@@ -341,7 +368,8 @@ const requiredScripts = [
   'audit:observability', 'audit:dependencies', 'audit:risks', 'debug:triage', 'fullstack:quality-gate',
   'process:audit', 'process:route', 'process:workspace', 'process:plan', 'process:tdd',
   'process:review', 'process:integration', 'skill:conformance', 'release:build', 'docs:all-in-one',
-  'audit:aesthetics', 'aesthetics:review'
+  'audit:aesthetics', 'aesthetics:review',
+  'vision:triage', 'audit:scene', 'audit:game-assets'
 ];
 for (const script of requiredScripts) if (!packageJson.scripts?.[script]) errors.push(`Missing package script: ${script}`);
 checks.package = {

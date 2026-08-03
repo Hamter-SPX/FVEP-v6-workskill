@@ -12,6 +12,8 @@ If the user **attached a UI screenshot/image** OR the message asks to **redesign
    - ImageGen available → `prompts/visual-direction-exploration-ide.md`
    - No ImageGen → `prompts/visual-direction-exploration-cli.md`
 3. Show options **1 / 2 / 3**, then **stop** for a numbered choice.
+   - Before showing: run `npm run direction:distinctness` on the option theses.
+   - If options are still similar or lack a clear new concept, **fail the set and redesign** — do not present it.
 4. Write `design/visual-direction-spec.md`, then **stop** for **เริ่มเขียน** | **ปรับต่อ** | **เลือกใหม่**.
 5. On **ปรับต่อ**, use `npm run direction:iterate`. Only after **เริ่มเขียน** run `direction:sync` and implement.
 

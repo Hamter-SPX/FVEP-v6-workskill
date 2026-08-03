@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://frontend-vision-loop.local/schemas/game-asset-spec-v1.json",
+  "title": "Game Asset Set",
+  "description": "A set of game assets specified so each one is buildable, budgeted, on-style, and checkable inside the scene rather than on a turntable.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["assets"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "frameTriangleBudget": { "type": "number", "minimum": 0 },
+        "maxStyleBindings": { "type": "integer", "minimum": 1 },
+        "maxPalettes": { "type": "integer", "minimum": 1 },
+        "minStoryDetails": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "assets": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/asset" }
+    }
+  },
+  "$defs": {
+    "asset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id", "name", "class", "styleBinding", "purpose", "silhouette",
+        "scale", "budget", "acceptance", "inContextEvidence"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "description": "Stable dot-separated id such as prop.lantern-post.rusted." },
+        "name": { "type": "string", "minLength": 1 },
+        "class": {
+          "enum": [
+            "character", "creature", "prop", "weapon", "vehicle", "environment",
+            "architecture", "terrain", "vfx", "ui", "audio", "animation"
+          ]
+        },
+        "styleBinding": { "type": "string", "minLength": 1, "description": "Graphics pack and/or aesthetic profile this asset obeys." },
+        "purpose": { "type": "string", "minLength": 12, "description": "What it does for the player, not what it looks like." },
+        "fiction": { "type": "string" },
+        "silhouette": { "type": "string", "minLength": 1, "description": "Dominant shape and the feature that survives at 64px." },
+        "scale": { "type": "string", "minLength": 1, "description": "Number, unit, and a comparison reference such as avatar height." },
+        "materials": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "palette": { "type": "string" },
+        "storyDetails": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "budget": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": false,
+          "properties": {
+            "triangles": { "type": "number", "minimum": 0 },
+            "parts": { "type": "number", "minimum": 0 },
+            "textureSize": { "type": "string" },
+            "drawCalls": { "type": "number", "minimum": 0 },
+            "memoryMb": { "type": "number", "minimum": 0 },
+            "bones": { "type": "number", "minimum": 0 }
+          }
+        },
+        "lod": { "type": "string" },
+        "variants": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "attachments": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "collision": { "type": "string" },
+        "acceptance": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 },
+          "description": "Checkable statements with distance and lighting."
+        },
+        "inContextEvidence": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The capture that proves it: gameplay camera, real lighting, play distance."
+        }
+      }
+    }
+  }
+}

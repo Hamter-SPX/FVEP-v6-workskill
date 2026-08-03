@@ -18,8 +18,9 @@ npm run direction:init -- --product "<name>" --audience "<who>"
 ## Turn A — options (prose-with-gap)
 
 1. Inspect any on-disk reference under `design/` (or record that none was attached).
-2. Draft **2–3 theses** that differ on ≥2 personality axes.
-3. Present as numbered prose:
+2. Draft **2–3 theses** that differ on ≥2 personality axes. Each needs a clear novelty concept.
+3. Gate with `npm run direction:distinctness -- --options design/direction-options/options.json`. If fail, rewrite — do not present near-duplicates.
+4. Present as numbered prose:
 
 ```text
 1 — <thesis> · axes moved: …

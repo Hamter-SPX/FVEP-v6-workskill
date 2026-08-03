@@ -1,0 +1,55 @@
+{
+  "policy": {
+    "frameTriangleBudget": 260000,
+    "maxStyleBindings": 1,
+    "minStoryDetails": 2
+  },
+  "assets": [
+    {
+      "id": "prop.lantern-post.rusted",
+      "name": "Rusted harbour lantern post",
+      "class": "prop",
+      "styleBinding": "domains/GAME/graphics/stylized-cartoon.md + design/aesthetic-profile.json",
+      "purpose": "Marks safe checkpoints along the dock path and gives the player a light source to navigate by at night",
+      "silhouette": "Tall thin post with an asymmetric hook head and a wide flared base; the hook stays readable as a black shape at 48px",
+      "scale": "5.6 studs tall, about 1.1x avatar height, base 1.2 studs wide",
+      "materials": ["pitted cast iron with flaking paint", "warped glass panes", "braided rope wrap at the grip height"],
+      "palette": "lacquer red accent, wet slate body, warm lantern emissive",
+      "storyDetails": [
+        "Paint worn away exactly at hand height where dockers grab it",
+        "One glass pane replaced with a mismatched clearer pane",
+        "Salt bloom creeping up the first stud of the base"
+      ],
+      "budget": { "triangles": 1800, "textureSize": "512x512", "drawCalls": 1 },
+      "lod": "LOD1 at 40 studs drops the rope wrap and glass interior; billboard past 120 studs",
+      "variants": ["lit", "broken-dark", "festival-banner"],
+      "acceptance": [
+        "Silhouette legible at 64px thumbnail",
+        "Reads as a checkpoint from 30 studs away in night lighting",
+        "Emissive does not blow out the tone mapper next to the water shader"
+      ],
+      "inContextEvidence": "Gameplay camera screenshot on the dock at night with the avatar standing beside it, plus a day pass"
+    },
+    {
+      "id": "weapon.dock-hook.starter",
+      "name": "Starter dock hook",
+      "class": "weapon",
+      "styleBinding": "domains/GAME/graphics/stylized-cartoon.md + design/aesthetic-profile.json",
+      "purpose": "First-hour melee weapon that also grapples crates, teaching the pull mechanic before combat",
+      "silhouette": "Short haft with an oversized crescent hook whose curve is visible even when held against the body",
+      "scale": "2.4 studs long, roughly 0.5x avatar height, fits the one-hand grip attachment",
+      "materials": ["forged iron hook", "oiled hardwood haft", "leather strap wrap"],
+      "palette": "wet slate body, lacquer red strap accent",
+      "storyDetails": [
+        "Hook tip filed shinier than the rest from repeated use",
+        "Owner initials burned into the haft end"
+      ],
+      "budget": { "triangles": 900, "textureSize": "256x256", "drawCalls": 1 },
+      "acceptance": [
+        "Hook curve readable in first-person and third-person idle",
+        "Does not clip the avatar torso during the pull animation"
+      ],
+      "inContextEvidence": "Third-person gameplay capture during idle, swing, and grapple pull, at the default camera distance"
+    }
+  ]
+}

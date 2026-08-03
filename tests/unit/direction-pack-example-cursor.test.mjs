@@ -49,7 +49,10 @@ test('prompt pack and cursor templates exist', async () => {
     'templates/cursor/rules/visual-direction-redesign.mdc',
     'templates/cursor/hooks/visual-direction-redesign.mjs',
     'examples/direction-camera/README.md',
-    'examples/direction-camera/visual-direction-spec.md'
+    'examples/direction-camera/visual-direction-spec.md',
+    'examples/direction-camera/direction-options/options.json',
+    'lib/direction-distinctness-engine.mjs',
+    'scripts/direction-distinctness.mjs'
   ]) {
     await fs.access(path.join(skillRoot, rel));
   }

@@ -82,4 +82,36 @@ The host is CLI/CI or ImageGen is confirmed unavailable (`direction:runtime -- -
 
 The user attaches a UI screenshot and says “redesign this” in Cursor. Skipping `direction:runtime`, the IDE/CLI prompt pack, options 1/2/3, the durable spec, or the confirm gate is a fail — especially when `templates/cursor/rules/visual-direction-redesign.mdc` is installed.
 
+## 21. Batched fixes in one loop round
+
+The triage reports an open structure difference. The agent moves the element, changes its colour, and adjusts spacing in the same round, then reports that the score improved. This is a fail — no improvement can be attributed, and the colour judgement was made against a layout that has since changed. One change per round.
+
+## 22. Fourth speculative round after a stall
+
+Three rounds produce no measurable convergence and the agent starts a fourth variation of the same idea. The stall must be reported with a hypothesis, and the reference re-read at region level, before any further edit.
+
+## 23. Tolerance loosened to pass
+
+A comparison fails by a small margin and the agent raises `--min-focal-ratio` or widens the delta tolerance so the run exits zero. Adjusting the policy to make failing evidence pass is a fabrication, not a fix.
+
+## 24. Beautiful subject, abandoned frame
+
+The hero asset is finished and the corners, background, and depth layers were never measured. The agent presents the frame as done. `audit:scene` must run, and empty corners are a blocker rather than a follow-up.
+
+## 25. Turntable render approves an asset
+
+An asset is approved from a studio-lit turntable at high resolution. The gate requires in-context evidence: gameplay camera, real lighting, play distance, avatar in frame.
+
+## 26. Scale without a reference
+
+An asset spec states "5.6 studs tall" with no comparison. The agent treats the number as sufficient. Scale requires a unit **and** a reference, because a number alone hides the chair-the-size-of-a-car mistake.
+
+## 27. Generated map judged on the demo seed
+
+A procedural level looks good on the seed used in the demo, and the agent approves the generator. At least three fixed seeds, including the worst one found, must pass the scene gate, and repetition findings must be treated as generator defects.
+
+## 28. Match claimed from memory
+
+The agent says the render now matches the reference without a current `vision:triage` run, or cites a run against an older capture. Match is a measured verdict on current artifacts, with the ref/cur identities named.
+
 Success criteria include falsifiable profile entries, findings bound to regions and principles, floors that survive averaging, independent and artifact-bound approval, explicit verification gaps when the runtime cannot render or cannot generate images, numbered ImageGen exploration before screenshot-led redesign (or honest prose-with-gap), a durable direction `.md` after choice, an explicit start/refine confirm before implementation, and Cursor rule/hook coverage when installed.

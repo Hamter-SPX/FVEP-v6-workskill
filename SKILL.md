@@ -40,6 +40,8 @@ route the work
 
 The package does not create browser access, subagents, git remotes, production telemetry, or database environments that the host runtime lacks. Missing capability remains a verification gap.
 
+For the shortest correct path through a common request — redesign from a screenshot, match a reference, design a scene or map, specify an asset set, ship a feature — start from `PLAYBOOKS.md`.
+
 ## Skill Routing and Precedence
 
 Always evaluate the work context before acting. The deterministic router is available through:
@@ -70,6 +72,49 @@ Common routes:
 | Completion or integration | Fresh packaged verification → explicit user decision → controlled cleanup |
 
 Read `references/skill-routing-and-precedence.md` and `SUPERPOWERS_ADAPTATION_MATRIX.md`.
+
+## Domain packs
+
+Product-shaped work lives under `domains/`:
+
+| Domain | Path | Use for |
+|---|---|---|
+| GAME | `domains/GAME/` | Genres, graphics styles, HUD, assets, gameplay, tools, platforms |
+| APPLICATION | `domains/APPLICATION/` | App/product UI and shipping surfaces |
+| DESIGN | `domains/DESIGN/` | Visual direction, craft, brand options |
+| GENERAL | `domains/GENERAL/` | Process, backend risk, release, skill work |
+| ROLES | `domains/ROLES/` | What each discipline owns, its gates, and its red flags |
+
+Start at `domains/README.md`. Load only the genre/system notes the task needs; process and aesthetic gates still apply.
+
+Role packs answer "what does a frontend, backend, security, data, SRE, QA, product design, visual design, game design, gameplay, or tech-art pass require here" and route to the gates that produce that evidence. More than one usually applies.
+
+## Vision in the Loop
+
+`ref` is the image the user wants. `cur` is what was produced. Do not re-argue the whole render each round — measure it, rank the differences in perceptual order, and change exactly one thing.
+
+```bash
+npm run vision:triage -- --ref design/ref.png --cur artifacts/cur.png --history .fx/triage-history.json
+npm run layout-structure -- check --structure .fx/ref-structure.json --cur artifacts/cur.png --region photo=95,735,62,60
+npm run ascii-map -- --ref design/ref.png --cur artifacts/cur.png 92 735 62 60 --label PHOTO
+```
+
+Corrections are ordered `structure → proportion → value → colour → density → polish`, and the report names one next change. `vision:triage` exits non-zero while the frames differ, so an agent loop keeps iterating until it matches. Three rounds without measurable convergence is a stall: stop guessing and re-read the reference at region level.
+
+Read `references/visual-delta-triage.md`.
+
+## Scenes, Worlds, and Game Assets
+
+A strong subject in the middle of an abandoned frame is not a finished scene, and a beautiful asset render is not a usable asset.
+
+```bash
+npm run audit:scene -- --image artifacts/frame.png --brief design/scene-brief.json --grid 8x5
+npm run audit:game-assets -- --assets design/game-assets.json --frame-triangle-budget 250000
+```
+
+`audit:scene` measures the frame zone by zone and blocks on empty corners, dead regions, missing focal hierarchy, flat value structure, and copy-paste tiling; the scene brief must declare fantasy, all three depth layers, focal point, lighting, and story details. `audit:game-assets` requires each asset to state its silhouette read, in-engine scale with a comparison reference, style binding, budget, acceptance distance, and in-context evidence — a turntable render never approves an asset.
+
+Read `references/game-vision-loop.md`, `references/scene-completeness.md`, `references/game-asset-direction.md`, and `references/world-building-and-level-blockout.md`.
 
 ## Process Reference Map
 
@@ -212,6 +257,12 @@ Stop and return to the correct phase when any of these occurs:
 - Treating reviewer feedback as automatically correct without codebase verification
 - Repeating fix rounds beyond the circuit breaker
 - Comparing frontend appearance from memory instead of a current render
+- Changing several variables in one vision-loop round, so no improvement can be attributed
+- Repainting colour or texture while the triage still reports an open structure difference
+- Running a fourth speculative round after three rounds without measurable convergence
+- Approving a frame whose corners, background, or depth layers were never measured
+- Accepting a game asset from a turntable render instead of a gameplay-camera capture
+- Stating an asset's size without a unit and a comparison reference
 - Declaring an aesthetic direction in terms that cannot be checked against a render
 - Redesigning from a screenshot without presenting numbered visual options when image exploration is required
 - Implementing UI code in the same turn as an unchosen ImageGen option set
@@ -243,6 +294,11 @@ direction:gate       Lightweight PR/CI check that the direction spec is confirme
 direction:runtime    Detect Cursor/Codex/CLI/CI and print the ImageGen presentation plan
 direction:cursor-install  Install Cursor rule + redesign hook into a project .cursor/
 vision-loop          Capture, inspect, compare, load semantic + aesthetic evidence, and write the run summary
+vision:triage        Rank every ref↔cur difference in perceptual order and return one next change
+audit:scene          Measure a frame zone by zone: empty corners, focal hierarchy, value structure, tiling
+audit:game-assets    Audit a game asset set: silhouette, scale reference, style binding, budget, in-context proof
+ascii-map            Render or compare an image region as an ASCII/digit density map
+layout-structure     Remember a reference layout and check current renders against it
 skill:conformance    Audit the skill's metadata, references, pressure coverage, TDD evidence, and CLI identity
 docs:all-in-one      Regenerate the deterministic combined Markdown reference
 release:build        Build and verify the clean deterministic release directory, manifest, checksums, ZIP, and SHA sidecar

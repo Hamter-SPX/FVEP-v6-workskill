@@ -12,10 +12,11 @@ Explore visible direction **before** profile, contract, plan, or code. Prefer pi
 
 1. `npm run direction:runtime -- --image-gen true` (and `--host cursor` or `codex` if known).
 2. Inspect the reference screenshot(s). List observed / inferred / constraints.
-3. Draft **2–3 theses** that differ on ≥2 personality axes. Reject near-duplicates.
-4. **Generate one image per thesis** with the host tool (`GenerateImage` in Cursor; Codex `imagegen` when present). Pass `reference_image_paths` when supported. Save as `design/direction-options/direction-option-N.png`.
-5. Show **1 / 2 / 3** inline. Also run `npm run direction:gallery` if comparison side-by-side helps or chat is unreliable.
-6. **Stop.** Ask for a number. No spec, profile, plan, or code in this turn.
+3. Draft **2–3 theses** that differ on ≥2 personality axes. Each needs a **clear novelty concept**. Reject near-duplicates.
+4. **Gate before present:** write `design/direction-options/options.json` and run `npm run direction:distinctness -- --options design/direction-options/options.json`. If it fails, rewrite theses — do not show a weak set.
+5. **Generate one image per thesis** with the host tool (`GenerateImage` in Cursor; Codex `imagegen` when present). Pass `reference_image_paths` when supported. Save as `design/direction-options/direction-option-N.png`.
+6. Show **1 / 2 / 3** inline. Also run `npm run direction:gallery` if comparison side-by-side helps or chat is unreliable.
+7. **Stop.** Ask for a number. No spec, profile, plan, or code in this turn.
 
 ## Turn B — after a number
 

@@ -17,4 +17,10 @@ Shared base (both packs inherit rules from):
 
 End-to-end filled artifacts: `examples/direction-camera/`.
 
+Before presenting options, gate distinctness:
+
+```bash
+npm run direction:distinctness -- --options examples/direction-camera/direction-options/options.json
+```
+
 Cursor install templates (rule + hook): `templates/cursor/` · `npm run direction:cursor-install`.

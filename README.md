@@ -173,6 +173,26 @@ The mechanical audit runs first and produces facts. The judgment review follows 
 
 Until it is enabled the `aesthetic` gate reports not-applicable and does not affect the quality score, so a v4 pipeline upgraded to v5 produces unchanged gate results.
 
+## Vision-in-the-loop commands
+
+| Command | Purpose |
+|---|---|
+| `npm run vision:triage` | Rank every difference between the reference and the current render in perceptual order, and return exactly one next change |
+| `npm run layout-structure` | Remember a reference layout and check named regions in the current render against it |
+| `npm run ascii-map` | Render or compare an image region as an ASCII/digit density map an agent can reason over |
+| `npm run audit:scene` | Measure a frame zone by zone: empty corners, focal hierarchy, value structure, copy-paste tiling |
+| `npm run audit:game-assets` | Audit a game asset set: silhouette read, in-engine scale with a reference, style binding, budget, in-context proof |
+
+```bash
+npm run vision:triage -- --ref design/ref.png --cur artifacts/cur.png --history .fx/triage-history.json
+npm run audit:scene -- --image artifacts/frame.png --brief examples/scene-brief.example.json --grid 8x5
+npm run audit:game-assets -- --assets examples/game-assets.example.json --frame-triangle-budget 250000
+```
+
+`vision:triage` fixes differences in the order `structure → proportion → value → colour → density → polish`, exits non-zero while the frames still differ, and flags a stall when three rounds produce no measurable convergence. Read `references/visual-delta-triage.md`, `references/scene-completeness.md`, `references/game-vision-loop.md`, `references/game-asset-direction.md`, and `references/world-building-and-level-blockout.md`.
+
+Discipline packs — what each role owns, its gates, and its red flags — live in `domains/ROLES/`.
+
 ## Domain commands
 
 The v3 surface is preserved:
@@ -245,6 +265,8 @@ The release builder skips symlinks and development state, rejects unsafe member 
 ## Documentation map
 
 - `SKILL.md` — main agent workflow
+- `PLAYBOOKS.md` — copy-paste flows for redesign, reference matching, scenes, maps, asset sets, and delivery
+- `domains/` — product-shaped packs (GAME, APPLICATION, DESIGN, GENERAL) and discipline packs (ROLES)
 - `SUPERPOWERS_ADAPTATION_MATRIX.md` — mapping from every installed Superpowers skill to the process implementation
 - `MIGRATION_V3_TO_V4.md` and `MIGRATION_V4_TO_V5.md` — upgrade guides
 - `ARCHITECTURE.md` — engine and evidence architecture

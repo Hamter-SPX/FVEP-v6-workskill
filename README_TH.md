@@ -172,6 +172,26 @@ npm run vision-loop -- --config vision-loop.config.json
 
 ตราบใดที่ยังไม่เปิด Gate `aesthetic` จะรายงานเป็น not-applicable และไม่กระทบคะแนนคุณภาพ ดังนั้น Pipeline v4 ที่อัปเป็น v5 จะได้ผล Gate เท่าเดิม
 
+## คำสั่ง Vision-in-the-loop
+
+| คำสั่ง | หน้าที่ |
+|---|---|
+| `npm run vision:triage` | เทียบ ref กับ cur แล้วจัดลำดับความต่างตามลำดับการรับรู้ พร้อมบอก “สิ่งที่ต้องแก้ต่อไปหนึ่งอย่าง” |
+| `npm run layout-structure` | จำโครงเลย์เอาต์ของภาพต้นฉบับ แล้วตรวจตำแหน่ง/ขนาดของ region ในภาพปัจจุบัน |
+| `npm run ascii-map` | แปลงพื้นที่ของภาพเป็นแผนที่ ASCII/ตัวเลข ให้ Agent ใช้คิดต่อได้ |
+| `npm run audit:scene` | วัดเฟรมทีละโซน: มุมภาพว่าง โซนตาย ไม่มีจุดนำสายตา ค่าน้ำหนักแบน และการก็อปวาง |
+| `npm run audit:game-assets` | ตรวจชุด Asset เกม: เงา (silhouette) สเกลจริงพร้อมตัวเทียบ สไตล์ที่ผูกไว้ งบโพลี และหลักฐานในฉากจริง |
+
+```bash
+npm run vision:triage -- --ref design/ref.png --cur artifacts/cur.png --history .fx/triage-history.json
+npm run audit:scene -- --image artifacts/frame.png --brief examples/scene-brief.example.json --grid 8x5
+npm run audit:game-assets -- --assets examples/game-assets.example.json --frame-triangle-budget 250000
+```
+
+ลำดับการแก้คือ `structure → proportion → value → colour → density → polish` แก้ครั้งละหนึ่งอย่างแล้ว capture ใหม่ทุกรอบ คำสั่งจะ exit ไม่เป็นศูนย์ตราบใดที่ยังไม่ตรง และถ้าสามรอบติดกันไม่ขยับเข้าใกล้เลย จะรายงานว่า stall — ให้หยุดเดา แล้วกลับไปอ่าน ref ทีละส่วน
+
+เอกสาร: `references/visual-delta-triage.md`, `references/scene-completeness.md`, `references/game-vision-loop.md`, `references/game-asset-direction.md`, `references/world-building-and-level-blockout.md` · แพ็กตามบทบาท (frontend/backend/security/design/game/tech-art) อยู่ใน `domains/ROLES/`
+
 ## วงจรการทำงาน
 
 ```text

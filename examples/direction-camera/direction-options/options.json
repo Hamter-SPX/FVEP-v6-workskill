@@ -1,0 +1,46 @@
+{
+  "options": [
+    {
+      "number": 1,
+      "thesis": "Dense utilitarian field chrome with monospace telemetry strips",
+      "noveltyConcept": "Instrument densemap as the primary surface language",
+      "stays": "Shutter CTA and mode rail",
+      "changes": "Compress vertical rhythm; mono readouts; flat tool chrome",
+      "personality": {
+        "seriousPlayful": 2,
+        "warmClinical": 4,
+        "understatedExpressive": 2,
+        "denseSpacious": 1,
+        "establishedNovel": 3
+      }
+    },
+    {
+      "number": 2,
+      "thesis": "Spacious editorial capture stage with quiet serif hierarchy",
+      "noveltyConcept": "Magazine masthead hierarchy for a camera still task",
+      "stays": "Shutter CTA and mode rail",
+      "changes": "Open margins; editorial type roles; softer chrome",
+      "personality": {
+        "seriousPlayful": 3,
+        "warmClinical": 2,
+        "understatedExpressive": 4,
+        "denseSpacious": 5,
+        "establishedNovel": 4
+      }
+    },
+    {
+      "number": 3,
+      "thesis": "Playful high-chroma control dock with chunky tactile targets",
+      "noveltyConcept": "Toy-instrument accent dock as the novelty spend",
+      "stays": "Shutter CTA position",
+      "changes": "Larger hit areas; saturated accent only on controls",
+      "personality": {
+        "seriousPlayful": 5,
+        "warmClinical": 2,
+        "understatedExpressive": 5,
+        "denseSpacious": 3,
+        "establishedNovel": 5
+      }
+    }
+  ]
+}
