@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Incident Evidence",
+  "type": "object",
+  "required": [
+    "incident",
+    "evidence",
+    "hypotheses"
+  ],
+  "properties": {
+    "incident": {
+      "type": "object",
+      "required": [
+        "id"
+      ]
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "observation",
+          "confidence"
+        ]
+      }
+    },
+    "hypotheses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "statement",
+          "falsificationTest"
+        ]
+      }
+    }
+  }
+}

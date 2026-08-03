@@ -1,0 +1,83 @@
+{
+  "id": "debug-example",
+  "reproduction": {
+    "stable": true,
+    "steps": [
+      "submit the same delivery twice"
+    ],
+    "expected": "one mutation",
+    "observed": "two mutations",
+    "environmentHash": "environment-sha256",
+    "buildId": "build-example"
+  },
+  "evidence": [
+    {
+      "id": "e1",
+      "boundary": "api",
+      "observation": "one message emitted",
+      "confidence": 1
+    },
+    {
+      "id": "e2",
+      "boundary": "worker",
+      "observation": "message processed twice",
+      "confidence": 1
+    }
+  ],
+  "boundaries": [
+    {
+      "id": "api",
+      "order": 1,
+      "status": "pass",
+      "evidence": [
+        "e1"
+      ]
+    },
+    {
+      "id": "worker",
+      "order": 2,
+      "status": "fail",
+      "evidence": [
+        "e2"
+      ]
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "h1",
+      "status": "confirmed",
+      "statement": "Worker lacks an idempotency guard.",
+      "boundary": "worker",
+      "supportingEvidence": [
+        "e2"
+      ],
+      "contradictingEvidence": [],
+      "predictedObservation": "same delivery id produces two writes",
+      "falsificationTest": "replay one delivery id against an isolated worker"
+    }
+  ],
+  "experiments": [
+    {
+      "id": "x1",
+      "hypothesisId": "h1",
+      "variablesChanged": 1,
+      "result": "prediction-observed",
+      "evidence": [
+        "e2"
+      ]
+    }
+  ],
+  "fixAttempts": [
+    {
+      "number": 1,
+      "hypothesisId": "h1",
+      "rootCauseBoundary": "worker",
+      "regressionRedVerified": true,
+      "changeId": "commit-idempotency",
+      "targetedGreenVerified": true,
+      "originalReproductionPasses": true,
+      "affectedRegressionsPass": true,
+      "telemetryDistinguishesRecurrence": true
+    }
+  ]
+}

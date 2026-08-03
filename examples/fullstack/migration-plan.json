@@ -1,0 +1,27 @@
+{
+  "migrations": [
+    {
+      "id": "add-order-source",
+      "type": "add-column",
+      "table": "orders",
+      "owner": "Commerce",
+      "estimatedRows": 1200000,
+      "maxLockMs": 250,
+      "rollback": "Leave nullable column unused",
+      "verification": "Verify null/default distribution and write/read compatibility"
+    },
+    {
+      "id": "backfill-order-source",
+      "type": "backfill",
+      "table": "orders",
+      "owner": "Commerce",
+      "estimatedRows": 1200000,
+      "batchSize": 5000,
+      "checkpointing": true,
+      "idempotent": true,
+      "maxLockMs": 100,
+      "rollback": "Reset backfilled values from audit snapshot",
+      "verification": "Count remaining null values and compare sampled records"
+    }
+  ]
+}

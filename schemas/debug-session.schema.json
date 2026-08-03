@@ -1,0 +1,264 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/scientific-debug-session.json",
+  "title": "Scientific Debug Session",
+  "description": "Evidence-led debugging session with boundary localization, falsifiable hypotheses, minimal experiments, and verified fixes.",
+  "type": "object",
+  "required": [
+    "id",
+    "reproduction",
+    "evidence",
+    "boundaries",
+    "hypotheses",
+    "experiments",
+    "fixAttempts"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reproduction": {
+      "type": "object",
+      "required": [
+        "stable",
+        "expected",
+        "observed",
+        "environmentHash",
+        "buildId"
+      ],
+      "properties": {
+        "stable": {
+          "type": "boolean"
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "expected": {
+          "type": "string",
+          "minLength": 1
+        },
+        "observed": {
+          "type": "string",
+          "minLength": 1
+        },
+        "environmentHash": {
+          "type": "string",
+          "minLength": 1
+        },
+        "buildId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sampleCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "monitoringEvidence": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": true
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "boundaries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "order",
+          "status",
+          "evidence"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "order": {
+            "type": "number"
+          },
+          "status": {
+            "enum": [
+              "pass",
+              "fail",
+              "unknown"
+            ]
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "hypotheses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "status",
+          "statement",
+          "predictedObservation",
+          "falsificationTest"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "open",
+              "active",
+              "confirmed",
+              "rejected"
+            ]
+          },
+          "statement": {
+            "type": "string",
+            "minLength": 1
+          },
+          "predictedObservation": {
+            "type": "string",
+            "minLength": 1
+          },
+          "falsificationTest": {
+            "type": "string",
+            "minLength": 1
+          },
+          "supportingEvidence": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "contradictingEvidence": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "experiments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "hypothesisId",
+          "variablesChanged",
+          "result"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "hypothesisId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "variablesChanged": {
+            "const": 1
+          },
+          "result": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "fixAttempts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "number",
+          "hypothesisId",
+          "rootCauseBoundary",
+          "regressionRedVerified",
+          "changeId",
+          "targetedGreenVerified",
+          "originalReproductionPasses",
+          "affectedRegressionsPass",
+          "telemetryDistinguishesRecurrence"
+        ],
+        "properties": {
+          "number": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "hypothesisId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "rootCauseBoundary": {
+            "type": "string",
+            "minLength": 1
+          },
+          "regressionRedVerified": {
+            "type": "boolean"
+          },
+          "changeId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "targetedGreenVerified": {
+            "type": "boolean"
+          },
+          "originalReproductionPasses": {
+            "type": "boolean"
+          },
+          "affectedRegressionsPass": {
+            "type": "boolean"
+          },
+          "telemetryDistinguishesRecurrence": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "architectureEscalation": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false
+}

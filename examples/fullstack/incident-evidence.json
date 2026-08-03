@@ -1,0 +1,44 @@
+{
+  "incident": {
+    "id": "INC-example",
+    "symptoms": [
+      "Intermittent checkout timeout"
+    ],
+    "affectedFlows": [
+      "checkout"
+    ]
+  },
+  "evidence": [
+    {
+      "id": "E1",
+      "component": "api-gateway",
+      "boundary": "gateway->orders",
+      "state": "pass",
+      "observation": "Gateway emitted request with correlation id",
+      "confidence": 0.9,
+      "correlationId": "example-1"
+    },
+    {
+      "id": "E2",
+      "component": "orders",
+      "boundary": "orders->database",
+      "state": "fail",
+      "observation": "Database pool wait exceeded operation budget",
+      "confidence": 0.95,
+      "correlationId": "example-1"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "H1",
+      "statement": "Orders database connection pool saturated",
+      "boundary": "orders->database",
+      "supportingEvidence": [
+        "E2"
+      ],
+      "contradictingEvidence": [],
+      "falsificationTest": "Compare pool wait, active connections, and database saturation for correlation example-1",
+      "status": "open"
+    }
+  ]
+}

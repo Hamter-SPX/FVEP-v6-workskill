@@ -1,0 +1,34 @@
+{
+  "risks": [
+    {
+      "id": "R-001",
+      "title": "Payment provider degradation",
+      "likelihood": 3,
+      "impact": 4,
+      "detectability": 2,
+      "status": "mitigated",
+      "owner": "Commerce",
+      "mitigations": [
+        "Circuit breaker and cart-preserving fallback"
+      ],
+      "evidence": [
+        "game-days/payment-provider.json"
+      ]
+    },
+    {
+      "id": "R-002",
+      "title": "Cross-tenant object access",
+      "likelihood": 2,
+      "impact": 5,
+      "detectability": 3,
+      "status": "mitigated",
+      "owner": "Security",
+      "mitigations": [
+        "Central authorization and negative tenancy tests"
+      ],
+      "evidence": [
+        "tests/security/object-authorization.spec.ts"
+      ]
+    }
+  ]
+}

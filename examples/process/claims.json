@@ -1,0 +1,12 @@
+{
+  "claims": [
+    {
+      "id": "claim-tests",
+      "type": "tests-pass",
+      "artifactHash": "artifact-v4-example",
+      "evidenceIds": [
+        "evidence-tests"
+      ]
+    }
+  ]
+}

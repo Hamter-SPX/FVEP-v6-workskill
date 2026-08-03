@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Observability Contract",
+  "type": "object",
+  "required": [
+    "flows"
+  ],
+  "properties": {
+    "flows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "owner",
+          "logs",
+          "metrics",
+          "traces",
+          "correlation",
+          "slo",
+          "alerts",
+          "runbook",
+          "dashboard"
+        ]
+      }
+    }
+  }
+}

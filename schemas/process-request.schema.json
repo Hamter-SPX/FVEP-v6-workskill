@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/process-request-context.json",
+  "title": "Process Request Context",
+  "description": "Task context used to select required engineering disciplines and blockers.",
+  "type": "object",
+  "required": [
+    "kind",
+    "stage"
+  ],
+  "properties": {
+    "kind": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stage": {
+      "type": "string",
+      "minLength": 1
+    },
+    "creative": {
+      "type": "boolean"
+    },
+    "multiStep": {
+      "type": "boolean"
+    },
+    "hasApprovedDesign": {
+      "type": "boolean"
+    },
+    "hasImplementationPlan": {
+      "type": "boolean"
+    },
+    "subagentsAvailable": {
+      "type": "boolean"
+    },
+    "needsIsolation": {
+      "type": "boolean"
+    },
+    "hasUnexpectedBehavior": {
+      "type": "boolean"
+    },
+    "receivingReviewFeedback": {
+      "type": "boolean"
+    },
+    "requestingReview": {
+      "type": "boolean"
+    },
+    "independentDomains": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "parallelImplementationHasSharedFiles": {
+      "type": "boolean"
+    },
+    "sharedMutableState": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false
+}

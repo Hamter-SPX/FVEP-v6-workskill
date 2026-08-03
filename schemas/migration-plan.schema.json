@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Migration Plan",
+  "type": "object",
+  "required": [
+    "migrations"
+  ],
+  "properties": {
+    "migrations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "owner",
+          "verification"
+        ]
+      }
+    }
+  }
+}

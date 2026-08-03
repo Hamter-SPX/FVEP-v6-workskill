@@ -1,0 +1,21 @@
+{
+  "workspace": {
+    "mode": "linked-worktree",
+    "branch": "feature/process-example",
+    "topLevel": "/repo/.worktrees/process-example",
+    "cleanupOwned": true
+  },
+  "baseBranch": "main",
+  "verification": {
+    "fullSuitePass": true,
+    "mergedResultPass": null,
+    "fresh": true,
+    "artifactHash": "artifact-v4-example"
+  },
+  "commitInventory": [
+    "abc123 feat: example"
+  ],
+  "remote": {
+    "configured": true
+  }
+}

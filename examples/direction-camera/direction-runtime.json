@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "host": "cursor",
+  "hostConfidence": "high",
+  "capabilities": {
+    "imageGeneration": true,
+    "inlineImages": true,
+    "browserGallery": true,
+    "imageTool": "GenerateImage"
+  },
+  "presentation": {
+    "mode": "inline-and-gallery",
+    "title": "Inline images (+ optional browser gallery)",
+    "allowProseFallback": false
+  },
+  "note": "Example snapshot for docs. Recompute with: npm run direction:runtime -- --image-gen true --host cursor"
+}

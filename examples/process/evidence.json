@@ -1,0 +1,14 @@
+{
+  "evidence": [
+    {
+      "id": "evidence-tests",
+      "type": "test-run",
+      "generatedAt": "2026-07-27T11:50:00.000Z",
+      "artifactHash": "artifact-v4-example",
+      "status": "pass",
+      "exitStatus": 0,
+      "failures": 0,
+      "scope": "full-suite"
+    }
+  ]
+}

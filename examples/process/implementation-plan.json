@@ -1,0 +1,65 @@
+{
+  "id": "plan-process-example",
+  "goal": "Add one governed process audit command.",
+  "architecture": "Pure audit engine with a thin non-mutating CLI.",
+  "techStack": [
+    "Node.js 20",
+    "ES modules",
+    "node:test"
+  ],
+  "globalConstraints": [
+    "Observe RED before production code",
+    "No shell execution"
+  ],
+  "tasks": [
+    {
+      "id": "task-1",
+      "dependsOn": [],
+      "files": {
+        "create": [
+          "lib/example-engine.mjs"
+        ],
+        "modify": [],
+        "test": [
+          "tests/unit/example-engine.test.mjs"
+        ]
+      },
+      "interfaces": {
+        "produces": [
+          {
+            "name": "auditExample",
+            "signature": "auditExample(input) -> report"
+          }
+        ],
+        "consumes": []
+      },
+      "resources": [],
+      "sharedState": [],
+      "steps": [
+        {
+          "kind": "write-failing-test",
+          "detail": "Define the missing behavior in a unit test."
+        },
+        {
+          "kind": "verify-red",
+          "command": "node --test tests/unit/example-engine.test.mjs",
+          "expected": "FAIL because the module or behavior is missing"
+        },
+        {
+          "kind": "implement",
+          "detail": "Implement the minimum deterministic engine."
+        },
+        {
+          "kind": "verify-green",
+          "command": "node --test tests/unit/example-engine.test.mjs",
+          "expected": "PASS with zero failures"
+        },
+        {
+          "kind": "commit",
+          "command": "git commit -m \"feat: add example audit\"",
+          "expected": "A focused commit is created"
+        }
+      ]
+    }
+  ]
+}

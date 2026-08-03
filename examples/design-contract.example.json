@@ -1,0 +1,94 @@
+{
+  "objective": "Give settlement analysts a same-day break queue they can scan, prioritise, and clear without guessing consequence.",
+  "fidelityMode": "brand-consistent",
+  "primaryTask": "Understand account health and act on the highest-risk unmatched transaction.",
+  "audience": "Operations analysts resolving payment breaks under a same-day deadline",
+  "visualThesis": "Numeric urgency and unmatched state outrank chrome: dense tabular scanning, cool restrained surfaces, and one accent reserved for the next decisive action.",
+  "aestheticProfile": "examples/aesthetic-profile.example.json",
+  "priorityOrder": [
+    "task clarity",
+    "responsive composition",
+    "accessibility",
+    "brand fidelity",
+    "surface polish"
+  ],
+  "observed": [
+    "Existing product uses cool neutrals and a single blue accent",
+    "Primary work surface is a filterable transaction table"
+  ],
+  "inferred": [
+    "Analysts compare many rows before acting, so density beats marketing whitespace"
+  ],
+  "constraints": [
+    "Must reuse the shared design-system token set",
+    "Dark theme required for overnight ops shifts"
+  ],
+  "composition": {
+    "regions": [
+      "global navigation",
+      "reconciliation summary",
+      "risk queue",
+      "supporting trends"
+    ],
+    "readingOrder": ["summary", "filters", "risk queue", "detail"],
+    "maxWidthPx": 1440,
+    "density": "information-dense with clear grouping"
+  },
+  "typography": [
+    { "role": "display", "family": "Inter", "sizePx": 30, "weight": 700, "lineHeight": 1.25, "notes": "Matched / unmatched / at-risk totals only" },
+    { "role": "heading", "family": "Inter", "sizePx": 20, "weight": 600, "lineHeight": 1.35 },
+    { "role": "body", "family": "Inter", "sizePx": 14, "weight": 400, "lineHeight": 1.55, "maxMeasureCharacters": 72 },
+    { "role": "label", "family": "Inter", "sizePx": 12, "weight": 500, "lineHeight": 1.4 },
+    { "role": "numeric", "family": "IBM Plex Mono", "sizePx": 14, "weight": 500, "lineHeight": 1.4, "tabularFigures": true }
+  ],
+  "surfaces": {
+    "canvas": "cool neutral",
+    "surface": "semantic layers without decorative gradients",
+    "radius": "2 / 4 / 8 px family",
+    "elevation": "two levels; overlays and raised controls only"
+  },
+  "components": [
+    { "name": "BreakAgeBar", "responsibility": "Encode time remaining to cut-off inside each row", "variants": ["safe", "warning", "critical"], "stateOwner": "queue row", "reuseBoundary": "transaction table only" },
+    { "name": "RiskQueueTable", "responsibility": "Scan, filter, and open unmatched breaks", "variants": ["default", "empty", "loading", "error"], "stateOwner": "breaks route", "reuseBoundary": "shared data-table primitives" }
+  ],
+  "states": [
+    { "surface": "risk queue", "default": "sorted by urgency", "loading": "skeleton rows retaining column geometry", "empty": "single explanatory line plus reset-filters action", "error": "retry with preserved filters", "focus": "visible ring on row actions" }
+  ],
+  "responsiveRules": [
+    { "region": "risk queue", "wide": "summary and table side by side", "compact": "summary above table", "mobile": "priority columns only; secondary metrics behind row expand", "rationale": "Preserve risk priority on narrow widths" },
+    { "region": "supporting trends", "wide": "right rail", "compact": "below action queue", "mobile": "collapsed", "rationale": "Secondary trends must not displace the action queue" }
+  ],
+  "motion": {
+    "durationFamilies": { "feedback": 80, "transition": 160, "emphasis": 240 },
+    "easings": { "standard": "cubic-bezier(0.2, 0, 0, 1)", "exit": "cubic-bezier(0.4, 0, 1, 1)" },
+    "choreography": [
+      { "event": "row open", "sequence": ["dim siblings", "expand detail"], "staggerMs": 0 }
+    ],
+    "interruption": "cancel in-flight transitions immediately on new navigation",
+    "reducedMotion": "instant state changes with equivalent focus and status cues"
+  },
+  "emotionalTone": {
+    "firstRun": "calm orientation without celebration",
+    "empty": "neutral instruction",
+    "error": "precise and recoverable",
+    "destructive": "serious confirmation",
+    "success": "quiet acknowledgement"
+  },
+  "copyVoice": {
+    "person": "third",
+    "register": "domain-precise",
+    "density": "label-first",
+    "certainty": "qualified for pending amounts",
+    "humour": "none"
+  },
+  "acceptanceCases": [
+    { "key": "breaks__desktop__default", "route": "/breaks", "viewport": "desktop", "state": "default", "evidence": ["capture", "aesthetic-review", "keyboard"] },
+    { "key": "breaks__mobile__default", "route": "/breaks", "viewport": "mobile", "state": "default", "evidence": ["capture", "overflow", "aesthetic-review"] },
+    { "key": "breaks__desktop__empty", "route": "/breaks", "viewport": "desktop", "state": "empty", "evidence": ["capture", "copy-voice"] }
+  ],
+  "nonGoals": [
+    "A dashboard-first marketing landing surface",
+    "Illustrated empty states",
+    "A second accent for secondary actions"
+  ]
+}

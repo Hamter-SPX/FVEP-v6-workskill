@@ -1,0 +1,117 @@
+name: Full-Stack Evidence Gate
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "src/**"
+      - "app/**"
+      - "pages/**"
+      - "components/**"
+      - "server/**"
+      - "api/**"
+      - "db/**"
+      - "migrations/**"
+      - "package.json"
+      - "package-lock.json"
+      - "fullstack.config.json"
+      - "vision-loop.config.json"
+      - "fullstack-vision-engineering-pro-v3/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fullstack-evidence-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  SUITE_DIR: fullstack-vision-engineering-pro-v3
+
+jobs:
+  validate-suite:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install suite dependencies
+        working-directory: ${{ env.SUITE_DIR }}
+        run: npm install --ignore-scripts --no-audit --no-fund
+      - name: Verify suite source and unit tests
+        working-directory: ${{ env.SUITE_DIR }}
+        run: npm run validate
+
+  fullstack-contract-gate:
+    needs: validate-suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install suite dependencies
+        working-directory: ${{ env.SUITE_DIR }}
+        run: npm install --ignore-scripts --no-audit --no-fund
+      - name: Run evidence-driven full-stack audit
+        working-directory: ${{ env.SUITE_DIR }}
+        run: npm run audit:fullstack -- --config ../fullstack.config.json
+      - name: Enforce full-stack release policy
+        working-directory: ${{ env.SUITE_DIR }}
+        run: npm run fullstack:quality-gate -- --config ../fullstack.config.json
+      - name: Upload full-stack evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fullstack-evidence
+          path: artifacts/fullstack-audit
+          if-no-files-found: warn
+          retention-days: 14
+
+  frontend-browser-evidence:
+    if: ${{ vars.RUN_FRONTEND_VISION == 'true' }}
+    needs: validate-suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install application dependencies
+        run: npm ci
+      - name: Install suite and Chromium
+        working-directory: ${{ env.SUITE_DIR }}
+        run: |
+          npm install --ignore-scripts --no-audit --no-fund
+          npx playwright install --with-deps chromium
+      - name: Start target application
+        run: |
+          npm run dev -- --host 127.0.0.1 > /tmp/fullstack-target.log 2>&1 &
+          echo $! > /tmp/fullstack-target.pid
+          for attempt in $(seq 1 60); do
+            if curl --silent --fail http://127.0.0.1:3000/ > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/fullstack-target.log
+          exit 1
+      - name: Verify approved visual baseline
+        working-directory: ${{ env.SUITE_DIR }}
+        run: npm run baseline:verify -- --config ../vision-loop.config.json
+      - name: Run frontend vision evidence matrix
+        working-directory: ${{ env.SUITE_DIR }}
+        run: npm run vision-loop -- --config ../vision-loop.config.json
+      - name: Enforce frontend automated gate
+        working-directory: ${{ env.SUITE_DIR }}
+        run: npm run quality-gate -- --config ../vision-loop.config.json --automated-only
+      - name: Upload frontend evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-vision-evidence
+          path: artifacts/vision-loop
+          if-no-files-found: warn
+          retention-days: 14

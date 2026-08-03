@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Visual Delta Ledger",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id", "case", "region", "category", "severity", "expected", "observed", "causeHypothesis", "fix", "status"],
+    "properties": {
+      "id": { "type": "string" },
+      "case": { "type": "string" },
+      "region": { "type": "string" },
+      "category": { "enum": ["content", "asset", "structure", "geometry", "responsive", "typography", "surface", "state", "motion", "accessibility", "runtime"] },
+      "severity": { "enum": ["blocker", "major", "minor"] },
+      "expected": { "type": "string" },
+      "observed": { "type": "string" },
+      "causeHypothesis": { "type": "string" },
+      "fix": { "type": "string" },
+      "regressionSurface": { "type": "array", "items": { "type": "string" } },
+      "evidence": { "type": "array", "items": { "type": "string" } },
+      "status": { "enum": ["open", "improved", "accepted", "deferred"] },
+      "deferredReason": { "type": "string" }
+    }
+  }
+}

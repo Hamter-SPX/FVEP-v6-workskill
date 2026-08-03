@@ -1,0 +1,103 @@
+{
+  "objective": "Deliver Field Camera with the confirmed spacious one-handed capture direction.",
+  "fidelityMode": "original-direction",
+  "primaryTask": "Capture a still photo one-handed without hunting for the shutter.",
+  "audience": "Field photographers capturing one-handed stills outdoors",
+  "visualThesis": "Calm one-handed capture with spacious chrome and a single amber shutter accent.",
+  "aestheticProfile": "aesthetic-profile.json",
+  "directionSpec": "visual-direction-spec.md",
+  "priorityOrder": [
+    "task clarity",
+    "accessibility",
+    "responsive composition",
+    "brand fidelity",
+    "surface polish"
+  ],
+  "observed": [
+    "Stock reference used a dense top tool strip over the finder",
+    "Shutter was visually competing with secondary tools"
+  ],
+  "inferred": [
+    "One-handed outdoor use needs thumb-zone primary actions"
+  ],
+  "constraints": [
+    "iOS safe areas",
+    "System camera permission copy",
+    "Do not invent capture modes absent from the reference"
+  ],
+  "composition": {
+    "regions": ["viewfinder", "mode switch", "shutter cluster", "status chrome"],
+    "density": "spacious chrome around an uninterrupted finder"
+  },
+  "typography": [
+    { "role": "label", "family": "SF Pro", "sizePx": 13, "weight": 500, "lineHeight": 1.3 },
+    { "role": "body", "family": "SF Pro", "sizePx": 15, "weight": 400, "lineHeight": 1.4 }
+  ],
+  "surfaces": {
+    "canvas": "cool neutral finder",
+    "surface": "flat glass chrome",
+    "radius": "8 / 12 / pill for shutter",
+    "elevation": "one level max"
+  },
+  "components": [
+    {
+      "name": "ShutterButton",
+      "responsibility": "Primary capture control with amber accent",
+      "variants": ["default", "pressed", "disabled"],
+      "stateOwner": "camera session",
+      "reuseBoundary": "camera chrome only"
+    }
+  ],
+  "states": [
+    {
+      "surface": "camera",
+      "default": "finder live; shutter enabled",
+      "loading": "permission or session spin without covering shutter",
+      "empty": "n/a",
+      "error": "permission denied with one retry action",
+      "focus": "visible focus ring on shutter and mode switch"
+    }
+  ],
+  "responsiveRules": [
+    {
+      "region": "shutter cluster",
+      "wide": "lower third centered",
+      "compact": "lower third centered",
+      "mobile": "thumb zone lower third",
+      "rationale": "Primary task stays reachable one-handed"
+    }
+  ],
+  "motion": {
+    "durationFamilies": { "feedback": 120, "transition": 200 },
+    "easings": { "standard": "ease-out" },
+    "interruption": "cancel in-flight on navigation",
+    "reducedMotion": "instant equivalent cues"
+  },
+  "emotionalTone": {
+    "firstRun": "calm permission ask",
+    "empty": "n/a",
+    "error": "specific permission or hardware failure",
+    "success": "brief shutter feedback only"
+  },
+  "copyVoice": {
+    "person": "system",
+    "register": "short imperative",
+    "density": "sparse",
+    "certainty": "high",
+    "humour": "none"
+  },
+  "acceptanceCases": [
+    {
+      "key": "camera__mobile__default",
+      "route": "/camera",
+      "viewport": "mobile",
+      "state": "default",
+      "evidence": ["capture", "direction-spec"]
+    }
+  ],
+  "nonGoals": [
+    "Neon gradients",
+    "Dense top tool strips",
+    "Decorative mode-change motion"
+  ]
+}

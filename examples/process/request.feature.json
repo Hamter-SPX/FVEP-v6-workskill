@@ -1,0 +1,14 @@
+{
+  "kind": "feature",
+  "stage": "implementation",
+  "creative": true,
+  "multiStep": true,
+  "hasApprovedDesign": true,
+  "hasImplementationPlan": true,
+  "subagentsAvailable": false,
+  "needsIsolation": true,
+  "hasUnexpectedBehavior": false,
+  "independentDomains": 1,
+  "parallelImplementationHasSharedFiles": false,
+  "sharedMutableState": false
+}

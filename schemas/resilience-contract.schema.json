@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Resilience Contract",
+  "type": "object",
+  "required": [
+    "operations"
+  ],
+  "properties": {
+    "operations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "method",
+          "timeoutMs"
+        ]
+      }
+    }
+  }
+}

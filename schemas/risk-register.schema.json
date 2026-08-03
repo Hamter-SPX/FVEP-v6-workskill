@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Risk Register",
+  "type": "object",
+  "required": [
+    "risks"
+  ],
+  "properties": {
+    "risks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "likelihood",
+          "impact",
+          "detectability",
+          "status"
+        ]
+      }
+    }
+  }
+}

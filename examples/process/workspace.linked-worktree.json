@@ -1,0 +1,10 @@
+{
+  "isGitRepo": true,
+  "gitDir": "/repo/.git/worktrees/process-example",
+  "gitCommonDir": "/repo/.git",
+  "branch": "feature/process-example",
+  "detached": false,
+  "topLevel": "/repo/.worktrees/process-example",
+  "superprojectWorkingTree": null,
+  "worktreeContainerIgnored": true
+}

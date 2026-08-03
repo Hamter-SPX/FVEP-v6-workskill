@@ -1,0 +1,204 @@
+{
+  "policy": {
+    "requireReview": true,
+    "color": { "expectedHarmony": "monochromatic", "maxAccents": 1 },
+    "typography": { "minStepRatio": 1.12, "maxSizes": 7, "maxFamilies": 2 },
+    "spacing": { "maxScaleSize": 12, "minGroupRatio": 1.5 },
+    "craft": { "maxRadiusVocabulary": 5, "maxElevationLevels": 3 },
+    "motion": { "maxEasingVocabulary": 4 },
+    "style": { "minDeclaredMatch": 70 },
+    "review": { "maxAgeHours": 0, "minScore": 80, "dimensionFloor": 3, "requireTestEvidence": true }
+  },
+  "profile": {
+    "schemaVersion": 1,
+    "product": "Settlement reconciliation console",
+    "audience": "Operations analysts resolving payment breaks under a same-day deadline",
+    "rationale": "Analysts scan hundreds of unmatched transactions per session and act on the ones that will breach cut-off.",
+    "personality": {
+      "seriousPlayful": { "value": 1, "reason": "Mistakes move money and are audited.", "consequences": ["No illustration or celebratory motion", "Single restrained accent"] },
+      "warmClinical": { "value": 4, "reason": "Trained analysts working at speed value precision over friendliness.", "consequences": ["Cool-tinted neutrals", "Tight line height in data regions"] },
+      "understatedExpressive": { "value": 2, "reason": "The data is the interest.", "consequences": ["Flat surfaces", "Contrast carried by weight and position"] },
+      "denseSpacious": { "value": 1, "reason": "Analysts compare many rows at once.", "consequences": ["Dense row heights", "Rules rather than whitespace for separation"] },
+      "establishedNovel": { "value": 2, "reason": "The category is audited and the audience is trained on existing tools.", "consequences": ["Conventional table and filter patterns", "Standard status hues"] }
+    },
+    "styleDirection": {
+      "archetype": "utilitarian",
+      "adopted": ["High information density", "Rules rather than whitespace for separation", "Colour reserved for status"],
+      "rejected": ["Type below the sustained-reading legibility floor"]
+    },
+    "noveltyBudget": [
+      { "position": "Break-age indicator", "decision": "Inline horizontal bar encoding time to cut-off inside each row", "reason": "Urgency is the judgment made on every row." },
+      { "position": "Summary header", "decision": "Matched, unmatched, and at-risk totals carry the display type role", "reason": "The session begins and ends with these three numbers." }
+    ],
+    "systems": {
+      "color": { "neutralTemperature": "cool", "neutralSteps": 10, "accentCount": 1, "harmony": "monochromatic", "themes": ["light", "dark"] },
+      "typography": { "scaleRatio": 1.2, "roleCount": 6, "families": ["Inter", "IBM Plex Mono"], "maxMeasureCharacters": 72 },
+      "spacing": { "baseUnitPx": 4, "scale": [4, 8, 12, 16, 24, 32, 48], "density": "dense" },
+      "shape": { "radiiPx": [2, 4, 8], "elevationLevels": 2 },
+      "motion": { "durationsMs": [80, 160, 240], "easings": ["cubic-bezier(0.2, 0, 0, 1)", "cubic-bezier(0.4, 0, 1, 1)"], "overshoot": "none", "reducedMotionSupported": true }
+    },
+    "voice": {
+      "person": { "value": 4, "reason": "Records are read by auditors." },
+      "register": { "value": 5, "reason": "Settlement terminology is precise." },
+      "density": { "value": 2, "reason": "Labels rather than sentences keep rows scannable." },
+      "certainty": { "value": 4, "reason": "Pending amounts must be qualified." },
+      "humour": { "value": 1, "reason": "No moment in this product is a safe place for levity." }
+    },
+    "nonGoals": ["A dashboard-first landing surface", "Illustrated empty states", "A second accent for secondary actions"],
+    "references": ["docs/design-system/tokens.md"]
+  },
+  "color": {
+    "neutrals": ["#f4f9ff", "#d7dbe5", "#b9bfc7", "#9da3ab", "#828890", "#686e75", "#4f555c", "#383d44", "#21272d", "#0d1218"],
+    "accents": ["#1d4ed8"],
+    "statuses": { "success": "#15803d", "warning": "#b45309", "danger": "#b91c1c", "info": "#1d4ed8" },
+    "statusReliesOnColorAlone": false,
+    "themes": ["light", "dark"],
+    "darkThemeDerivation": "tuned",
+    "pairs": [
+      { "name": "body text on canvas", "usage": "body", "foreground": "#21272d", "background": "#f4f9ff", "region": "table" },
+      { "name": "muted text on canvas", "usage": "body", "foreground": "#4f555c", "background": "#f4f9ff", "region": "table" },
+      { "name": "primary action label", "usage": "body", "foreground": "#ffffff", "background": "#1d4ed8", "region": "toolbar" },
+      { "name": "focus ring against canvas", "usage": "ui", "foreground": "#1d4ed8", "background": "#f4f9ff", "region": "table" },
+      { "name": "input border against canvas", "usage": "ui", "foreground": "#686e75", "background": "#f4f9ff", "region": "filters" }
+    ]
+  },
+  "typography": {
+    "families": ["Inter", "IBM Plex Mono"],
+    "comparesNumbers": true,
+    "tabularFigures": true,
+    "syntheticWeights": false,
+    "fallbackMetricsMatched": true,
+    "roles": [
+      { "name": "caption", "sizePx": 12, "weight": 400, "lineHeight": 1.45, "family": "Inter" },
+      { "name": "body", "sizePx": 14, "weight": 400, "lineHeight": 1.55, "family": "Inter" },
+      { "name": "body-emphasis", "sizePx": 17, "weight": 500, "lineHeight": 1.5, "family": "Inter" },
+      { "name": "section-heading", "sizePx": 20, "weight": 600, "lineHeight": 1.35, "family": "Inter" },
+      { "name": "page-title", "sizePx": 24, "weight": 600, "lineHeight": 1.3, "family": "Inter" },
+      { "name": "summary-display", "sizePx": 30, "weight": 700, "lineHeight": 1.25, "family": "Inter" }
+    ],
+    "measures": [
+      { "region": "break detail description", "characters": 68 },
+      { "region": "resolution note", "characters": 61 }
+    ]
+  },
+  "spacing": {
+    "baseUnitPx": 4,
+    "scale": [4, 8, 12, 16, 24, 32, 48],
+    "density": "dense",
+    "alignmentEdgeCount": 4,
+    "observed": [
+      { "region": "table row padding", "valuePx": 8 },
+      { "region": "toolbar gap", "valuePx": 12 },
+      { "region": "summary header gap", "valuePx": 24 },
+      { "region": "page margin", "valuePx": 32 },
+      { "region": "filter group gap", "valuePx": 16 }
+    ],
+    "groups": [
+      { "name": "filter field and label", "withinPx": 4, "betweenPx": 16 },
+      { "name": "summary metric block", "withinPx": 8, "betweenPx": 24 },
+      { "name": "table row cluster", "withinPx": 8, "betweenPx": 16 }
+    ],
+    "nesting": [
+      { "name": "detail panel", "outerPx": 24, "innerPx": 12 },
+      { "name": "summary card", "outerPx": 16, "innerPx": 8 }
+    ],
+    "responsive": { "desktopMacroPx": 48, "mobileMacroPx": 24, "desktopMicroPx": 8, "mobileMicroPx": 8 }
+  },
+  "craft": {
+    "radiiPx": [2, 4, 8],
+    "elevationLevels": 2,
+    "borderWidthsPx": [1],
+    "typographicCharacters": true,
+    "opticalAlignmentApplied": true,
+    "imagesHaveIntrinsicDimensions": true,
+    "nestedRadii": [
+      { "name": "detail panel input", "outerRadiusPx": 8, "paddingPx": 4, "innerRadiusPx": 4 },
+      { "name": "summary card badge", "outerRadiusPx": 4, "paddingPx": 2, "innerRadiusPx": 2 }
+    ],
+    "shadows": [
+      { "name": "raised", "value": "0 1px 2px rgba(13, 18, 24, 0.10), 0 2px 6px rgba(13, 18, 24, 0.06)" },
+      { "name": "overlay", "value": "0 2px 4px rgba(13, 18, 24, 0.12), 0 8px 24px rgba(13, 18, 24, 0.10)" }
+    ],
+    "icons": { "families": ["lucide"], "strokeWidthsPx": [1.5], "opticalRatios": [0.78, 0.8, 0.82] }
+  },
+  "motion": {
+    "animations": [
+      { "name": "row-select-feedback", "purpose": "feedback", "durationMs": 80, "easing": "cubic-bezier(0.2, 0, 0, 1)", "properties": ["opacity"], "interruptible": true, "reversesFromCurrentState": true },
+      { "name": "detail-panel-open", "purpose": "continuity", "durationMs": 240, "easing": "cubic-bezier(0.2, 0, 0, 1)", "properties": ["transform", "opacity"], "interruptible": true, "reversesFromCurrentState": true },
+      { "name": "detail-panel-close", "purpose": "continuity", "durationMs": 160, "easing": "cubic-bezier(0.4, 0, 1, 1)", "properties": ["transform", "opacity"], "interruptible": true, "reversesFromCurrentState": true },
+      { "name": "sync-progress", "purpose": "status", "durationMs": 1000, "easing": "linear", "properties": ["transform"], "continuous": true, "interruptible": true, "reversesFromCurrentState": true }
+    ],
+    "reducedMotion": { "implemented": true, "removesAllTransitions": false, "preservesMeaning": true, "rendered": true },
+    "hidesRequiredState": false
+  },
+  "style": {
+    "declaredArchetype": "utilitarian",
+    "measurements": {
+      "medianRadiusPx": 4,
+      "elevationLevels": 2,
+      "meanChroma": 0.04,
+      "typeScaleRatio": 1.2,
+      "informationDensity": 0.9,
+      "borderReliance": 0.8,
+      "monospaceRatio": 0.3,
+      "imageAreaRatio": 0.05
+    }
+  },
+  "review": {
+    "schemaVersion": 1,
+    "reviewer": "aesthetic-critic",
+    "implementer": "implementation-engineer",
+    "reviewedAt": "2026-08-02T09:15:00.000Z",
+    "decision": "approved",
+    "configHash": "9f2c41ab",
+    "cases": [
+      {
+        "key": "breaks__desktop__default",
+        "decision": "accepted",
+        "testsPerformed": ["blur", "five-second", "greyscale", "alignment-audit", "inventory", "interval", "content-pressure"],
+        "ratings": {
+          "compositionalBalance": 5,
+          "craftPrecision": 4,
+          "colorSystem": 5,
+          "typographicSystem": 4,
+          "spatialRhythm": 5,
+          "motionQuality": 4,
+          "brandExpression": 5,
+          "copyVoice": 4
+        },
+        "blockers": [],
+        "findings": [],
+        "residualDeviations": [
+          {
+            "severity": "minor",
+            "region": "transaction table header",
+            "description": "The sort chevron sits one pixel above the optical centre of its button.",
+            "userImpact": "None observed at any tested viewport.",
+            "systemWide": false,
+            "acceptedReason": "Does not alter hierarchy, comprehension, or task completion."
+          }
+        ],
+        "notes": ["Blur test: the three summary totals and the primary action remain the only readable elements."]
+      },
+      {
+        "key": "breaks__mobile__default",
+        "decision": "accepted",
+        "testsPerformed": ["blur", "five-second", "alignment-audit", "interval", "content-pressure"],
+        "ratings": {
+          "compositionalBalance": 4,
+          "craftPrecision": 4,
+          "colorSystem": 5,
+          "typographicSystem": 4,
+          "spatialRhythm": 4,
+          "motionQuality": null,
+          "brandExpression": 4,
+          "copyVoice": 4
+        },
+        "blockers": [],
+        "findings": [],
+        "residualDeviations": [],
+        "notes": ["Motion is not rated because this surface has no animated transitions by design."]
+      }
+    ]
+  }
+}

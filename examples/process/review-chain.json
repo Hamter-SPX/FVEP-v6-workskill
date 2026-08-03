@@ -1,0 +1,49 @@
+{
+  "taskId": "task-1",
+  "brief": {
+    "id": "brief-task-1",
+    "hash": "brief-sha256",
+    "requirements": [
+      "implement deterministic example audit"
+    ]
+  },
+  "changePackage": {
+    "baseId": "base-commit",
+    "headId": "head-commit",
+    "diffHash": "diff-sha256",
+    "bounded": true,
+    "files": [
+      "lib/example-engine.mjs",
+      "tests/unit/example-engine.test.mjs"
+    ]
+  },
+  "implementer": {
+    "id": "implementer-agent",
+    "reportHash": "report-sha256",
+    "testEvidenceIds": [
+      "cycle-1"
+    ]
+  },
+  "reviews": [
+    {
+      "id": "task-review-1",
+      "kind": "task-review",
+      "round": 0,
+      "reviewerId": "task-reviewer-agent",
+      "briefHash": "brief-sha256",
+      "diffHash": "diff-sha256",
+      "specVerdict": "pass",
+      "qualityVerdict": "pass",
+      "findings": []
+    }
+  ],
+  "findings": [],
+  "fixRounds": [],
+  "finalReview": {
+    "id": "final-review-1",
+    "reviewerId": "final-reviewer-agent",
+    "diffHash": "diff-sha256",
+    "verdict": "pass",
+    "residualFindingIds": []
+  }
+}

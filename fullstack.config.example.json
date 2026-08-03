@@ -1,0 +1,131 @@
+{
+  "version": 4,
+  "project": {
+    "name": "Example Commerce Platform",
+    "rootDir": "examples/fullstack",
+    "criticalFlows": [
+      {
+        "id": "checkout",
+        "owner": "Commerce",
+        "criticality": "critical"
+      },
+      {
+        "id": "account-profile",
+        "owner": "Identity",
+        "criticality": "high"
+      }
+    ]
+  },
+  "outputDir": "artifacts/fullstack-audit",
+  "contracts": {
+    "frontendSummary": "examples/fullstack/frontend-summary.json",
+    "experience": "examples/fullstack/experience-contract.json",
+    "apiCurrent": "examples/fullstack/openapi.current.json",
+    "apiBaseline": "examples/fullstack/openapi.baseline.json",
+    "architecture": "examples/fullstack/architecture-contract.json",
+    "migrations": "examples/fullstack/migration-plan.json",
+    "security": "examples/fullstack/security-contract.json",
+    "resilience": "examples/fullstack/resilience-contract.json",
+    "observability": "examples/fullstack/observability-contract.json",
+    "risks": "examples/fullstack/risk-register.json",
+    "incident": "examples/fullstack/incident-evidence.json",
+    "dependencyManifest": "examples/fullstack/dependency-manifest.json",
+    "processReport": "artifacts/process/process-report.json"
+  },
+  "sourceScan": {
+    "enabled": false,
+    "roots": [
+      "src"
+    ],
+    "exclude": [
+      "node_modules",
+      ".git",
+      "dist",
+      "build",
+      "coverage",
+      "artifacts"
+    ],
+    "maxFileBytes": 1000000
+  },
+  "quality": {
+    "minScore": 90,
+    "minConfidence": 90,
+    "failOnAnyGateFailure": true,
+    "weights": {
+      "frontend": 15,
+      "experience": 10,
+      "api": 10,
+      "architecture": 10,
+      "data": 10,
+      "security": 15,
+      "resilience": 10,
+      "observability": 10,
+      "dependencies": 5,
+      "risks": 5,
+      "process": 15
+    }
+  },
+  "gates": {
+    "frontend": {
+      "required": true,
+      "hard": false
+    },
+    "experience": {
+      "required": true,
+      "hard": false
+    },
+    "api": {
+      "required": true,
+      "hard": true
+    },
+    "architecture": {
+      "required": true,
+      "hard": false
+    },
+    "data": {
+      "required": true,
+      "hard": true
+    },
+    "security": {
+      "required": true,
+      "hard": true
+    },
+    "resilience": {
+      "required": true,
+      "hard": false
+    },
+    "observability": {
+      "required": true,
+      "hard": false
+    },
+    "dependencies": {
+      "required": true,
+      "hard": true
+    },
+    "risks": {
+      "required": true,
+      "hard": true
+    },
+    "process": {
+      "required": true,
+      "hard": true
+    }
+  },
+  "policies": {
+    "api": {
+      "requireSecurity": true,
+      "requireMutationIdempotency": true
+    },
+    "data": {
+      "largeTableRows": 100000,
+      "maxSafeLockMs": 1000
+    },
+    "resilience": {
+      "maxAmplifiedAttempts": 10
+    },
+    "risks": {
+      "blockerRpn": 80,
+      "highRpn": 45
+    }
+  }
+}

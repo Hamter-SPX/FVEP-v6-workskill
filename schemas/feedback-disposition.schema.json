@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/review-feedback-disposition.json",
+  "title": "Review Feedback Disposition",
+  "description": "Technical, evidence-backed acceptance, rejection, or deferral of review feedback.",
+  "type": "object",
+  "required": [
+    "findingId",
+    "source",
+    "requirementRestatement",
+    "verification",
+    "disposition",
+    "rationale"
+  ],
+  "properties": {
+    "findingId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "requirementRestatement": {
+      "type": "string",
+      "minLength": 1
+    },
+    "verification": {
+      "type": "object",
+      "required": [
+        "status",
+        "checkedFiles",
+        "commands",
+        "evidenceIds"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "supported",
+            "unsupported",
+            "unclear",
+            "not-checked"
+          ]
+        },
+        "checkedFiles": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "commands": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "evidenceIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "disposition": {
+      "enum": [
+        "accept",
+        "reject",
+        "defer"
+      ]
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1
+    },
+    "implementation": {
+      "type": "object"
+    },
+    "deferral": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false
+}

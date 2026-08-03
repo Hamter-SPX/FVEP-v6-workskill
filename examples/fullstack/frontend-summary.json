@@ -1,0 +1,10 @@
+{
+  "quality": {
+    "passed": true,
+    "score": 94,
+    "confidence": 100,
+    "grade": "A",
+    "hardFailures": [],
+    "evidenceCount": 8
+  }
+}

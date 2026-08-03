@@ -1,0 +1,158 @@
+{
+  "mode": "brand-consistent",
+  "baseUrl": "http://127.0.0.1:3000",
+  "outputDir": "../artifacts/advanced-vision-loop",
+  "runtime": {
+    "browser": "chromium",
+    "freezeTime": "2026-01-15T12:00:00.000Z",
+    "randomSeed": 1337,
+    "allowedConsolePatterns": [
+      "ResizeObserver loop"
+    ]
+  },
+  "engineeringChecks": [
+    {
+      "name": "typecheck",
+      "command": "npm run typecheck",
+      "required": true
+    },
+    {
+      "name": "lint",
+      "command": "npm run lint",
+      "required": true
+    },
+    {
+      "name": "tests",
+      "command": "npm test",
+      "required": true
+    },
+    {
+      "name": "build",
+      "command": "npm run build",
+      "required": true
+    }
+  ],
+  "routes": [
+    {
+      "name": "dashboard",
+      "path": "/dashboard",
+      "readySelector": "[data-page-ready]",
+      "maskSelectors": [
+        "[data-live-clock]"
+      ],
+      "masks": [
+        {
+          "x": 1180,
+          "y": 20,
+          "width": 220,
+          "height": 60
+        }
+      ],
+      "viewports": [
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844
+        },
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 900
+        }
+      ],
+      "states": [
+        {
+          "name": "default",
+          "localStorage": {
+            "demo-user": "designer"
+          },
+          "actions": []
+        },
+        {
+          "name": "navigation-open",
+          "actions": [
+            {
+              "type": "click",
+              "selector": "[aria-label='Open navigation']"
+            },
+            {
+              "type": "waitFor",
+              "selector": "[data-navigation-panel]",
+              "state": "visible"
+            }
+          ],
+          "readySelector": "[data-navigation-panel]"
+        },
+        {
+          "name": "error",
+          "query": {
+            "demo": "error"
+          },
+          "actions": []
+        }
+      ],
+      "regions": [
+        {
+          "name": "navigation",
+          "selector": "nav",
+          "weight": 1,
+          "required": true
+        },
+        {
+          "name": "main-content",
+          "selector": "main",
+          "weight": 2,
+          "required": true
+        }
+      ]
+    }
+  ],
+  "version": 2,
+  "interaction": {
+    "enabled": true,
+    "minTargetWidth": 24,
+    "minTargetHeight": 24,
+    "maxTargetSizeViolations": 0
+  },
+  "stateCrawler": {
+    "enabled": true,
+    "maxElements": 25,
+    "captureElementScreenshots": false
+  },
+  "performance": {
+    "enabled": true,
+    "failOnWarnings": false
+  },
+  "tokens": {
+    "enabled": true,
+    "maxDriftScore": 20
+  },
+  "breakpoints": {
+    "enabled": true,
+    "minWidth": 320,
+    "maxWidth": 1440,
+    "step": 80,
+    "height": 900
+  },
+  "quality": {
+    "minScore": 85,
+    "minConfidence": 85,
+    "failOnAnyGateFailure": true
+  },
+  "baseline": {
+    "enabled": false,
+    "requireApprovalMetadata": true
+  },
+  "manualReview": {
+    "path": "semantic-visual-review.json",
+    "minScore": 85,
+    "maxAgeHours": 24,
+    "requireMatchingConfigHash": true
+  },
+  "history": {
+    "enabled": true,
+    "maxRecords": 100,
+    "stagnationWindow": 3,
+    "minMeaningfulDelta": 0.5
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "flows": [
+    {
+      "id": "checkout",
+      "critical": true,
+      "owner": "Commerce",
+      "logs": [
+        "order.create.started",
+        "order.create.completed",
+        "order.create.failed"
+      ],
+      "metrics": [
+        "order_create_latency",
+        "order_create_errors"
+      ],
+      "traces": [
+        "checkout",
+        "gateway",
+        "orders",
+        "database"
+      ],
+      "correlation": true,
+      "slo": {
+        "objective": 99.9,
+        "windowDays": 30
+      },
+      "alerts": [
+        "availability-burn-rate",
+        "latency-burn-rate"
+      ],
+      "runbook": "runbooks/checkout.md",
+      "dashboard": "dashboards/checkout"
+    },
+    {
+      "id": "account-profile",
+      "critical": true,
+      "owner": "Identity",
+      "logs": [
+        "profile.update.started",
+        "profile.update.completed",
+        "profile.update.failed"
+      ],
+      "metrics": [
+        "profile_update_latency",
+        "profile_update_errors"
+      ],
+      "traces": [
+        "profile-update",
+        "gateway",
+        "identity"
+      ],
+      "correlation": true,
+      "slo": {
+        "objective": 99.9,
+        "windowDays": 30
+      },
+      "alerts": [
+        "profile-error-burn-rate"
+      ],
+      "runbook": "runbooks/profile.md",
+      "dashboard": "dashboards/profile"
+    }
+  ]
+}

@@ -1,0 +1,189 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/governed-process-design.json",
+  "title": "Governed Process Design",
+  "description": "Approved design with context evidence, alternatives, recommendation, implementation boundaries, and self-review.",
+  "type": "object",
+  "required": [
+    "id",
+    "context",
+    "clarification",
+    "approaches",
+    "recommendation",
+    "design",
+    "approval",
+    "selfReview"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "context": {
+      "type": "object",
+      "required": [
+        "explored",
+        "artifacts",
+        "scope"
+      ],
+      "properties": {
+        "explored": {
+          "const": true
+        },
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "clarification": {
+      "type": "object",
+      "required": [
+        "questions",
+        "assumptions"
+      ],
+      "properties": {
+        "questions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "approaches": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "summary",
+          "tradeoffs"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 1
+          },
+          "tradeoffs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "recommendation": {
+      "type": "object",
+      "required": [
+        "approachId",
+        "rationale"
+      ],
+      "properties": {
+        "approachId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "design": {
+      "type": "object",
+      "required": [
+        "architecture",
+        "components",
+        "dataFlow",
+        "errorHandling",
+        "testing"
+      ],
+      "properties": {
+        "architecture": {},
+        "components": {},
+        "dataFlow": {},
+        "errorHandling": {},
+        "testing": {}
+      },
+      "additionalProperties": true
+    },
+    "approval": {
+      "type": "object",
+      "required": [
+        "status",
+        "actor",
+        "at"
+      ],
+      "properties": {
+        "status": {
+          "const": "approved"
+        },
+        "actor": {
+          "type": "string",
+          "minLength": 1
+        },
+        "at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false
+    },
+    "selfReview": {
+      "type": "object",
+      "required": [
+        "placeholderScan",
+        "consistency",
+        "scope",
+        "ambiguity"
+      ],
+      "properties": {
+        "placeholderScan": {
+          "const": "pass"
+        },
+        "consistency": {
+          "const": "pass"
+        },
+        "scope": {
+          "const": "pass"
+        },
+        "ambiguity": {
+          "const": "pass"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

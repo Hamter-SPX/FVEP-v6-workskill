@@ -1,0 +1,64 @@
+name: Frontend Vision Loop
+
+env:
+  SUITE_DIR: fullstack-vision-engineering-pro-v3
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "src/**"
+      - "app/**"
+      - "pages/**"
+      - "components/**"
+      - "public/**"
+      - "styles/**"
+      - "fullstack-vision-engineering-pro-v3/**"
+      - "vision-loop.config.json"
+
+jobs:
+  automated-evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install application dependencies
+        run: npm ci
+      - name: Install vision-loop dependencies
+        working-directory: ${{ env.SUITE_DIR }}
+        run: |
+          npm install --ignore-scripts --no-audit --no-fund
+          npx playwright install --with-deps chromium
+      - name: Start application
+        run: |
+          npm run dev -- --host 127.0.0.1 > /tmp/frontend-app.log 2>&1 &
+          echo $! > /tmp/frontend-app.pid
+          for attempt in $(seq 1 60); do
+            if curl --silent --fail http://127.0.0.1:3000/ > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/frontend-app.log
+          exit 1
+      - name: Verify approved baseline
+        working-directory: ${{ env.SUITE_DIR }}
+        run: npm run baseline:verify -- --config ../vision-loop.config.json
+      - name: Run frontend evidence matrix
+        working-directory: ${{ env.SUITE_DIR }}
+        run: npm run vision-loop -- --config ../vision-loop.config.json
+      - name: Enforce automated branch gate
+        working-directory: ${{ env.SUITE_DIR }}
+        run: npm run quality-gate -- --config ../vision-loop.config.json --automated-only
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-vision-loop-evidence
+          path: artifacts/vision-loop
+          if-no-files-found: warn
+          retention-days: 14

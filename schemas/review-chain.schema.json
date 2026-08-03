@@ -1,0 +1,231 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/independent-review-chain.json",
+  "title": "Independent Review Chain",
+  "description": "Review chain that binds requirements, exact change, independent identities, dual verdicts, findings, fix rounds, and final review.",
+  "type": "object",
+  "required": [
+    "taskId",
+    "brief",
+    "changePackage",
+    "implementer",
+    "reviews",
+    "findings",
+    "fixRounds",
+    "finalReview"
+  ],
+  "properties": {
+    "taskId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "brief": {
+      "type": "object",
+      "required": [
+        "hash"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "hash": {
+          "type": "string",
+          "minLength": 1
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "changePackage": {
+      "type": "object",
+      "required": [
+        "baseId",
+        "headId",
+        "diffHash",
+        "bounded",
+        "files"
+      ],
+      "properties": {
+        "baseId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "headId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "diffHash": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bounded": {
+          "const": true
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "implementer": {
+      "type": "object",
+      "required": [
+        "id",
+        "reportHash",
+        "testEvidenceIds"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reportHash": {
+          "type": "string",
+          "minLength": 1
+        },
+        "testEvidenceIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "reviews": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "round",
+          "reviewerId",
+          "briefHash",
+          "diffHash",
+          "specVerdict",
+          "qualityVerdict",
+          "findings"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "enum": [
+              "task-review",
+              "re-review"
+            ]
+          },
+          "round": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "reviewerId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "briefHash": {
+            "type": "string",
+            "minLength": 1
+          },
+          "diffHash": {
+            "type": "string",
+            "minLength": 1
+          },
+          "specVerdict": {
+            "enum": [
+              "pass",
+              "fail"
+            ]
+          },
+          "qualityVerdict": {
+            "enum": [
+              "pass",
+              "fail"
+            ]
+          },
+          "findings": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "fixRounds": {
+      "type": "array",
+      "maxItems": 5,
+      "items": {
+        "type": "object"
+      }
+    },
+    "finalReview": {
+      "type": "object",
+      "required": [
+        "id",
+        "reviewerId",
+        "diffHash",
+        "verdict",
+        "residualFindingIds"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reviewerId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "diffHash": {
+          "type": "string",
+          "minLength": 1
+        },
+        "verdict": {
+          "enum": [
+            "pass",
+            "fail"
+          ]
+        },
+        "residualFindingIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

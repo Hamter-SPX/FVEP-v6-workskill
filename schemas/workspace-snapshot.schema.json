@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/workspace-snapshot.json",
+  "title": "Workspace Snapshot",
+  "description": "Read-only repository/worktree state used to decide whether implementation and cleanup are safe.",
+  "type": "object",
+  "required": [
+    "isGitRepo",
+    "topLevel"
+  ],
+  "properties": {
+    "isGitRepo": {
+      "type": "boolean"
+    },
+    "isolatedCopy": {
+      "type": "boolean"
+    },
+    "gitDir": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "gitCommonDir": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "branch": {
+      "type": "string"
+    },
+    "detached": {
+      "type": "boolean"
+    },
+    "topLevel": {
+      "type": "string",
+      "minLength": 1
+    },
+    "superprojectWorkingTree": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "requestedWorktreePath": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "worktreeContainerIgnored": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false
+}

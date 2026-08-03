@@ -1,0 +1,50 @@
+{
+  "features": [
+    "multi-tenant",
+    "browser-session"
+  ],
+  "controls": {
+    "authentication": {
+      "status": "implemented",
+      "evidence": [
+        "tests/e2e/authentication.spec.ts"
+      ]
+    },
+    "authorization": {
+      "status": "implemented",
+      "evidence": [
+        "tests/security/object-authorization.spec.ts"
+      ]
+    },
+    "inputValidation": {
+      "status": "implemented",
+      "evidence": [
+        "tests/contracts/request-validation.spec.ts"
+      ]
+    },
+    "secrets": {
+      "status": "implemented",
+      "evidence": [
+        "security/secret-rotation-evidence.json"
+      ]
+    },
+    "auditLogging": {
+      "status": "implemented",
+      "evidence": [
+        "tests/security/audit-log.spec.ts"
+      ]
+    },
+    "encryptionInTransit": {
+      "status": "implemented",
+      "evidence": [
+        "security/tls-scan.json"
+      ]
+    },
+    "csrf": {
+      "status": "implemented",
+      "evidence": [
+        "tests/security/csrf.spec.ts"
+      ]
+    }
+  }
+}

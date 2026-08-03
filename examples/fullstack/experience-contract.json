@@ -1,0 +1,92 @@
+{
+  "flows": [
+    {
+      "id": "checkout",
+      "critical": true,
+      "userGoal": "Place an order",
+      "frontend": {
+        "route": "/checkout",
+        "states": [
+          "default",
+          "loading",
+          "error",
+          "success",
+          "disabled"
+        ]
+      },
+      "backend": {
+        "operations": [
+          "POST /orders"
+        ],
+        "errors": [
+          "VALIDATION_FAILED",
+          "OUT_OF_STOCK",
+          "PAYMENT_DECLINED",
+          "DEPENDENCY_UNAVAILABLE"
+        ]
+      },
+      "errorMappings": {
+        "VALIDATION_FAILED": "field-errors",
+        "OUT_OF_STOCK": "inventory-recovery",
+        "PAYMENT_DECLINED": "payment-recovery",
+        "DEPENDENCY_UNAVAILABLE": "retry-later"
+      },
+      "authentication": "required",
+      "authorization": "customer-can-create-own-order",
+      "mutation": {
+        "optimistic": false,
+        "retries": 1,
+        "idempotencyKey": true,
+        "conflictStrategy": "server-authoritative"
+      },
+      "latencyBudgetMs": 1800,
+      "degradedBehavior": "Preserve cart and allow safe retry",
+      "analytics": [
+        "checkout_success",
+        "checkout_failure"
+      ]
+    },
+    {
+      "id": "account-profile",
+      "critical": true,
+      "userGoal": "Update account profile",
+      "frontend": {
+        "route": "/profile",
+        "states": [
+          "default",
+          "loading",
+          "error",
+          "success",
+          "disabled"
+        ]
+      },
+      "backend": {
+        "operations": [
+          "PATCH /profile"
+        ],
+        "errors": [
+          "VALIDATION_FAILED",
+          "VERSION_CONFLICT"
+        ]
+      },
+      "errorMappings": {
+        "VALIDATION_FAILED": "field-errors",
+        "VERSION_CONFLICT": "conflict-dialog"
+      },
+      "authentication": "required",
+      "authorization": "self-or-support-admin",
+      "mutation": {
+        "optimistic": false,
+        "retries": 0,
+        "idempotencyKey": true,
+        "conflictStrategy": "etag"
+      },
+      "latencyBudgetMs": 1000,
+      "degradedBehavior": "Preserve unsaved edits and retry",
+      "analytics": [
+        "profile_update_success",
+        "profile_update_failure"
+      ]
+    }
+  ]
+}

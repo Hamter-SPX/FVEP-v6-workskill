@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "fullstack-config.schema.json",
+  "title": "Full-Stack Vision Engineering Pro v3 Configuration",
+  "type": "object",
+  "required": [
+    "project"
+  ],
+  "properties": {
+    "version": {
+      "const": 3
+    },
+    "project": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rootDir": {
+          "type": "string"
+        },
+        "criticalFlows": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "owner": {
+                "type": "string"
+              },
+              "criticality": {
+                "enum": [
+                  "low",
+                  "medium",
+                  "high",
+                  "critical"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "contracts": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "sourceScan": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "roots": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "exclude": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "maxFileBytes": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "quality": {
+      "type": "object",
+      "properties": {
+        "minScore": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "minConfidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "failOnAnyGateFailure": {
+          "type": "boolean"
+        },
+        "weights": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "gates": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "required",
+          "hard"
+        ],
+        "properties": {
+          "required": {
+            "type": "boolean"
+          },
+          "hard": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

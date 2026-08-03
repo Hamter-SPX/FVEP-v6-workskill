@@ -1,0 +1,20 @@
+---
+description: When the user attaches UI screenshots or asks to redesign/restyle a surface, run visual direction exploration before any implementation.
+alwaysApply: true
+---
+
+# Visual direction on screenshot redesign
+
+If the user **attached a UI screenshot/image** OR the message asks to **redesign / restyle / ปรับ UI / เปลี่ยนดีไซน์ / make it look…**, do this **before** writing Flutter/React/UI code, an aesthetic profile final draft, or an implementation plan:
+
+1. Run `npm run direction:runtime` and set `--image-gen true|false` from your actual tool list.
+2. Follow the matching prompt:
+   - ImageGen available → `prompts/visual-direction-exploration-ide.md`
+   - No ImageGen → `prompts/visual-direction-exploration-cli.md`
+3. Show options **1 / 2 / 3**, then **stop** for a numbered choice.
+4. Write `design/visual-direction-spec.md`, then **stop** for **เริ่มเขียน** | **ปรับต่อ** | **เลือกใหม่**.
+5. On **ปรับต่อ**, use `npm run direction:iterate`. Only after **เริ่มเขียน** run `direction:sync` and implement.
+
+Never invent screenshots when ImageGen is unavailable. If images exist but chat cannot show them, open `npm run direction:gallery`.
+
+Reference example: `examples/direction-camera/`.

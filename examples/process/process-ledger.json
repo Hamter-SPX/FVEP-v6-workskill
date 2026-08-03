@@ -1,0 +1,17 @@
+{
+  "events": [
+    {
+      "schemaVersion": 1,
+      "sequence": 1,
+      "type": "initialize",
+      "actor": "process-controller",
+      "at": "2026-07-27T09:30:00.000Z",
+      "previousHash": null,
+      "data": {
+        "planId": "plan-process-example",
+        "state": "requested"
+      },
+      "hash": "4f38155d8f79fb3405be386deb44ea1768f7ac1a56e88b5b85392e6a6fa33be6"
+    }
+  ]
+}

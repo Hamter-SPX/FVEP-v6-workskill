@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/process-recovery-ledger.json",
+  "title": "Process Recovery Ledger",
+  "description": "Append-only hash-linked lifecycle events used to recover process and task state.",
+  "type": "object",
+  "required": [
+    "events"
+  ],
+  "properties": {
+    "events": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "schemaVersion",
+          "sequence",
+          "type",
+          "actor",
+          "at",
+          "previousHash",
+          "data",
+          "hash"
+        ],
+        "properties": {
+          "schemaVersion": {
+            "const": 1
+          },
+          "sequence": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "type": {
+            "enum": [
+              "initialize",
+              "transition",
+              "task-started",
+              "task-state",
+              "finding",
+              "fix-round",
+              "note",
+              "supersede"
+            ]
+          },
+          "actor": {
+            "type": "string",
+            "minLength": 1
+          },
+          "at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "previousHash": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "data": {
+            "type": "object"
+          },
+          "hash": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

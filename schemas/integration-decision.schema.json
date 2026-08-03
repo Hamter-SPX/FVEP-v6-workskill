@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/integration-decision.json",
+  "title": "Integration Decision",
+  "description": "Human-owned integration choice with current verification, workspace ownership, and destructive confirmation.",
+  "type": "object",
+  "required": [
+    "workspace",
+    "verification"
+  ],
+  "properties": {
+    "workspace": {
+      "type": "object",
+      "required": [
+        "mode",
+        "topLevel",
+        "cleanupOwned"
+      ],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "minLength": 1
+        },
+        "branch": {
+          "type": "string"
+        },
+        "topLevel": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cleanupOwned": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "baseBranch": {
+      "type": "string",
+      "minLength": 1
+    },
+    "verification": {
+      "type": "object",
+      "required": [
+        "fullSuitePass",
+        "fresh",
+        "artifactHash"
+      ],
+      "properties": {
+        "fullSuitePass": {
+          "type": "boolean"
+        },
+        "mergedResultPass": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "fresh": {
+          "type": "boolean"
+        },
+        "artifactHash": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "commitInventory": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "remote": {
+      "type": "object"
+    },
+    "decision": {
+      "type": "object",
+      "required": [
+        "option",
+        "actor",
+        "at"
+      ],
+      "properties": {
+        "option": {
+          "enum": [
+            "merge-local",
+            "push-pr",
+            "keep-as-is",
+            "discard"
+          ]
+        },
+        "actor": {
+          "type": "string",
+          "minLength": 1
+        },
+        "at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "cleanupRequested": {
+          "type": "boolean"
+        },
+        "confirmation": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

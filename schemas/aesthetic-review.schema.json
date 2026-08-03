@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://frontend-vision-loop.local/schemas/aesthetic-review-v1.json",
+  "title": "Aesthetic Review",
+  "description": "Judgment-based review of craft and expressive quality, complementing the semantic visual review. Ratings use the anchors in references/aesthetic-scoring-anchors.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["reviewer", "reviewedAt", "decision", "configHash", "cases"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "reviewer": { "type": "string", "minLength": 1 },
+    "implementer": { "type": "string" },
+    "reviewedAt": { "type": "string", "format": "date-time" },
+    "decision": { "enum": ["approved", "changes-requested", "rejected"] },
+    "configHash": { "type": "string", "minLength": 1 },
+    "profilePath": { "type": "string" },
+    "instructions": { "type": "string" },
+    "cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["key", "ratings"],
+        "properties": {
+          "key": { "type": "string", "minLength": 1 },
+          "route": { "type": "string" },
+          "viewport": { "type": "string" },
+          "state": { "type": "string" },
+          "decision": { "enum": ["accepted", "changes-required", "rejected"] },
+          "ratings": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["compositionalBalance", "craftPrecision", "colorSystem", "typographicSystem", "spatialRhythm", "brandExpression", "copyVoice"],
+            "properties": {
+              "compositionalBalance": { "$ref": "#/$defs/rating" },
+              "craftPrecision": { "$ref": "#/$defs/rating" },
+              "colorSystem": { "$ref": "#/$defs/rating" },
+              "typographicSystem": { "$ref": "#/$defs/rating" },
+              "spatialRhythm": { "$ref": "#/$defs/rating" },
+              "motionQuality": { "$ref": "#/$defs/ratingOptional" },
+              "brandExpression": { "$ref": "#/$defs/rating" },
+              "copyVoice": { "$ref": "#/$defs/rating" }
+            }
+          },
+          "testsPerformed": {
+            "type": "array",
+            "description": "Tests from references/aesthetic-principles.md actually performed for this case.",
+            "items": {
+              "enum": ["blur", "five-second", "greyscale", "alignment-audit", "removal", "inventory", "interval", "substitution", "content-pressure"]
+            }
+          },
+          "blockers": { "type": "array", "items": { "type": "string" } },
+          "findings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["dimension", "region", "expected", "observed"],
+              "properties": {
+                "dimension": {
+                  "enum": ["compositionalBalance", "craftPrecision", "colorSystem", "typographicSystem", "spatialRhythm", "motionQuality", "brandExpression", "copyVoice"]
+                },
+                "severity": { "enum": ["minor", "major", "blocker"] },
+                "region": { "type": "string", "minLength": 1 },
+                "expected": { "type": "string", "minLength": 1 },
+                "observed": { "type": "string", "minLength": 1 },
+                "principle": { "type": "string" },
+                "systemWide": { "type": "boolean" },
+                "recommendation": { "type": "string" }
+              }
+            }
+          },
+          "residualDeviations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["severity", "region", "description"],
+              "properties": {
+                "severity": { "enum": ["minor", "major", "blocker"] },
+                "region": { "type": "string" },
+                "description": { "type": "string" },
+                "userImpact": { "type": "string" },
+                "systemWide": { "type": "boolean" },
+                "acceptedReason": { "type": ["string", "null"] }
+              }
+            }
+          },
+          "notes": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "rating": { "type": "number", "minimum": 0, "maximum": 5 },
+    "ratingOptional": { "type": ["number", "null"], "minimum": 0, "maximum": 5 }
+  }
+}

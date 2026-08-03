@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Frontend Design Contract",
+  "type": "object",
+  "required": ["objective", "fidelityMode", "primaryTask", "visualThesis", "composition", "typography", "components", "states", "responsiveRules", "acceptanceCases"],
+  "properties": {
+    "objective": { "type": "string", "minLength": 1 },
+    "fidelityMode": { "enum": ["exact-reference", "brand-consistent", "original-direction"] },
+    "primaryTask": { "type": "string", "minLength": 1 },
+    "audience": { "type": "string" },
+    "visualThesis": { "type": "string", "minLength": 1 },
+    "aestheticProfile": {
+      "description": "Path to a document validating against schemas/aesthetic-profile.schema.json, or the profile inline.",
+      "type": ["string", "object"]
+    },
+    "priorityOrder": { "type": "array", "items": { "type": "string" } },
+    "observed": { "type": "array", "items": { "type": "string" } },
+    "inferred": { "type": "array", "items": { "type": "string" } },
+    "constraints": { "type": "array", "items": { "type": "string" } },
+    "composition": { "type": "object" },
+    "typography": { "type": "array", "items": { "type": "object" } },
+    "surfaces": { "type": "object" },
+    "components": { "type": "array", "items": { "type": "object" } },
+    "states": { "type": "array", "items": { "type": "object" } },
+    "responsiveRules": { "type": "array", "items": { "type": "object" } },
+    "motion": {
+      "type": "object",
+      "properties": {
+        "durationFamilies": { "type": "object" },
+        "easings": { "type": "object" },
+        "choreography": { "type": "array", "items": { "type": "object" } },
+        "interruption": { "type": "string" },
+        "reducedMotion": { "type": "string" }
+      }
+    },
+    "emotionalTone": {
+      "description": "Required tone per product moment. Keys are moments such as firstRun, empty, error, destructive, success.",
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+    "copyVoice": {
+      "type": "object",
+      "properties": {
+        "person": { "type": "string" },
+        "register": { "type": "string" },
+        "density": { "type": "string" },
+        "certainty": { "type": "string" },
+        "humour": { "type": "string" }
+      }
+    },
+    "acceptanceCases": { "type": "array", "minItems": 1, "items": { "type": "object" } },
+    "nonGoals": { "type": "array", "items": { "type": "string" } }
+  }
+}

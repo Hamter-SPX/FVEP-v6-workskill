@@ -1,0 +1,73 @@
+{
+  "id": "design-process-example",
+  "context": {
+    "explored": true,
+    "artifacts": [
+      "artifacts/repository-map.json"
+    ],
+    "scope": "single-system"
+  },
+  "clarification": {
+    "questions": [
+      "How is rollback verified?"
+    ],
+    "assumptions": [
+      "Node.js 20 is available"
+    ]
+  },
+  "approaches": [
+    {
+      "id": "extend",
+      "summary": "Extend the existing evidence engines with a governed process layer.",
+      "tradeoffs": [
+        "Preserves compatibility",
+        "Adds explicit contracts"
+      ]
+    },
+    {
+      "id": "replace",
+      "summary": "Replace the existing suite with a new orchestration runtime.",
+      "tradeoffs": [
+        "Higher migration cost",
+        "Greater host coupling"
+      ]
+    }
+  ],
+  "recommendation": {
+    "approachId": "extend",
+    "rationale": "Keeps proven domain gates while adding deterministic process evidence."
+  },
+  "design": {
+    "architecture": "Pure process engines plus thin CLI adapters and a hard full-stack process gate.",
+    "components": [
+      "router",
+      "plan validator",
+      "ledger",
+      "TDD verifier",
+      "review verifier",
+      "claim verifier"
+    ],
+    "dataFlow": [
+      "contracts -> engines -> process report -> full-stack gate"
+    ],
+    "errorHandling": [
+      "Missing evidence fails closed",
+      "Host capabilities remain explicit gaps"
+    ],
+    "testing": [
+      "Unit tests observe RED before implementation",
+      "Clean-extraction verification"
+    ]
+  },
+  "approval": {
+    "status": "approved",
+    "actor": "project-owner",
+    "at": "2026-07-27T09:00:00.000Z"
+  },
+  "selfReview": {
+    "placeholderScan": "pass",
+    "consistency": "pass",
+    "scope": "pass",
+    "ambiguity": "pass"
+  }
+}

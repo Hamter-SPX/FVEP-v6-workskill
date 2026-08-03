@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "aesthetic-critic",
+  "implementer": "implementation-engineer",
+  "reviewedAt": "2026-08-02T09:15:00.000Z",
+  "decision": "approved",
+  "configHash": "9f2c41ab",
+  "profilePath": "examples/aesthetic-profile.example.json",
+  "instructions": "Review craft and expression only; fidelity and content correctness are covered by the semantic visual review. This bundled example carries a fixed reviewedAt, so validating it after its freshness window will correctly report the review as stale.",
+  "cases": [
+    {
+      "key": "breaks__desktop__default",
+      "route": "/breaks",
+      "viewport": "desktop",
+      "state": "default",
+      "decision": "accepted",
+      "testsPerformed": ["blur", "five-second", "greyscale", "alignment-audit", "inventory", "interval", "content-pressure"],
+      "ratings": {
+        "compositionalBalance": 5,
+        "craftPrecision": 4,
+        "colorSystem": 5,
+        "typographicSystem": 4,
+        "spatialRhythm": 5,
+        "motionQuality": 4,
+        "brandExpression": 5,
+        "copyVoice": 4
+      },
+      "blockers": [],
+      "findings": [],
+      "residualDeviations": [
+        {
+          "severity": "minor",
+          "region": "transaction table header",
+          "description": "The sort chevron sits one pixel above the optical centre of its 24px button.",
+          "userImpact": "None observed at any tested viewport.",
+          "systemWide": false,
+          "acceptedReason": "Does not alter hierarchy, comprehension, or task completion, and the button is not repeated outside this header."
+        }
+      ],
+      "notes": [
+        "Blur test: the three summary totals and the primary action remain the only readable elements, which matches the declared numeric-first novelty position.",
+        "Greyscale test: at-risk rows remain distinguishable by the age bar and the row rule weight, so status does not depend on hue."
+      ]
+    },
+    {
+      "key": "breaks__mobile__default",
+      "route": "/breaks",
+      "viewport": "mobile",
+      "state": "default",
+      "decision": "accepted",
+      "testsPerformed": ["blur", "five-second", "alignment-audit", "interval", "content-pressure"],
+      "ratings": {
+        "compositionalBalance": 4,
+        "craftPrecision": 4,
+        "colorSystem": 5,
+        "typographicSystem": 4,
+        "spatialRhythm": 4,
+        "motionQuality": null,
+        "brandExpression": 4,
+        "copyVoice": 4
+      },
+      "blockers": [],
+      "findings": [],
+      "residualDeviations": [],
+      "notes": [
+        "Motion is not rated because this surface has no animated transitions by design.",
+        "Content-pressure test: the longest counterparty name truncates at the identifying segment and remains retrievable, so grouping survives."
+      ]
+    }
+  ]
+}

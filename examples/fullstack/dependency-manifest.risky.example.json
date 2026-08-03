@@ -1,0 +1,11 @@
+{
+  "name": "unsafe-dependency-example",
+  "private": true,
+  "dependencies": {
+    "floating-range": "^1.2.3",
+    "remote-tarball": "https://example.invalid/archive.tgz"
+  },
+  "scripts": {
+    "postinstall": "node scripts/download.js"
+  }
+}

@@ -1,0 +1,176 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://frontend-vision-loop.local/schemas/semantic-visual-review-v2.json",
+  "title": "Semantic Visual Review",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "reviewer",
+    "reviewedAt",
+    "decision",
+    "configHash",
+    "cases"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 2
+    },
+    "reviewer": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reviewedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "decision": {
+      "enum": [
+        "approved",
+        "changes-requested",
+        "rejected"
+      ]
+    },
+    "configHash": {
+      "type": "string",
+      "minLength": 1
+    },
+    "instructions": {
+      "type": "string"
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "key",
+          "ratings"
+        ],
+        "properties": {
+          "key": {
+            "type": "string",
+            "minLength": 1
+          },
+          "route": {
+            "type": "string"
+          },
+          "viewport": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "decision": {
+            "enum": [
+              "accepted",
+              "changes-required",
+              "rejected"
+            ]
+          },
+          "ratings": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "hierarchy",
+              "composition",
+              "typography",
+              "colorSurface",
+              "contentFidelity",
+              "assetFidelity",
+              "responsiveComposition",
+              "interactionClarity"
+            ],
+            "properties": {
+              "hierarchy": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 5
+              },
+              "composition": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 5
+              },
+              "typography": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 5
+              },
+              "colorSurface": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 5
+              },
+              "contentFidelity": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 5
+              },
+              "assetFidelity": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 5
+              },
+              "responsiveComposition": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 5
+              },
+              "interactionClarity": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 5
+              }
+            }
+          },
+          "blockers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "residualDeviations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "severity",
+                "region",
+                "description"
+              ],
+              "properties": {
+                "severity": {
+                  "enum": [
+                    "minor",
+                    "major",
+                    "blocker"
+                  ]
+                },
+                "region": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "acceptedReason": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            }
+          },
+          "notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

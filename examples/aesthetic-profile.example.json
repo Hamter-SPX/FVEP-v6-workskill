@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "product": "Settlement reconciliation console",
+  "audience": "Operations analysts resolving payment breaks under a same-day deadline",
+  "rationale": "Analysts scan hundreds of unmatched transactions per session and act on the ones that will breach cut-off. Errors are expensive and hard to reverse, so the surface must make state and consequence unambiguous and must never suggest that a routine action is more significant than it is.",
+  "personality": {
+    "seriousPlayful": {
+      "value": 1,
+      "reason": "Mistakes move money and are audited, so any levity would undermine confidence in the record.",
+      "consequences": [
+        "No illustration, no celebratory motion, no exclamation in copy",
+        "Single restrained accent reserved for the primary action",
+        "Motion limited to feedback and continuity with no overshoot"
+      ]
+    },
+    "warmClinical": {
+      "value": 4,
+      "reason": "Users are trained analysts working at speed; precision reads as respect for their time where friendliness reads as padding.",
+      "consequences": [
+        "Cool-tinted neutrals",
+        "Grotesque letterforms with tight line height in data regions",
+        "Domain terminology without contractions outside onboarding"
+      ]
+    },
+    "understatedExpressive": {
+      "value": 2,
+      "reason": "The data is the interest. Surface treatment competing with it slows scanning.",
+      "consequences": [
+        "Flat surfaces with at most two elevation levels",
+        "Contrast carried by weight and position rather than colour",
+        "No gradients outside the status indicator set"
+      ]
+    },
+    "denseSpacious": {
+      "value": 1,
+      "reason": "Analysts compare many rows at once; anything that pushes rows below the fold costs a scroll per comparison.",
+      "consequences": [
+        "Dense row heights with rules rather than whitespace for separation",
+        "Tabular figures throughout",
+        "Marketing-page spacing is never applied inside the work surface"
+      ]
+    },
+    "establishedNovel": {
+      "value": 2,
+      "reason": "The category is audited and the audience is trained on existing tools, so convention lowers the cost of adoption.",
+      "consequences": [
+        "Conventional table, filter, and form patterns",
+        "Standard status hues and iconography",
+        "Novelty confined to the declared budget positions"
+      ]
+    }
+  },
+  "styleDirection": {
+    "archetype": "utilitarian",
+    "adopted": [
+      "High information density with tight row heights",
+      "Rules and borders rather than whitespace for separation",
+      "Colour reserved almost entirely for status",
+      "Keyboard-first interaction"
+    ],
+    "rejected": [
+      "Small type below the legibility floor for sustained reading",
+      "Touch targets sized for pointer-only use"
+    ]
+  },
+  "noveltyBudget": [
+    {
+      "position": "Break-age indicator in the transaction table",
+      "decision": "A single inline horizontal bar encoding time remaining to cut-off, replacing a separate deadline column",
+      "reason": "Urgency is the one judgment analysts make on every row, so it should be readable without a second fixation."
+    },
+    {
+      "position": "Reconciliation summary header",
+      "decision": "Numeric-first composition where matched, unmatched, and at-risk totals are the largest type on the page",
+      "reason": "The session begins and ends with these three numbers, so they carry the display role rather than a page title."
+    }
+  ],
+  "systems": {
+    "color": {
+      "neutralTemperature": "cool",
+      "neutralSteps": 10,
+      "accentCount": 1,
+      "harmony": "monochromatic",
+      "themes": ["light", "dark"]
+    },
+    "typography": {
+      "scaleRatio": 1.2,
+      "roleCount": 6,
+      "families": ["Inter", "IBM Plex Mono"],
+      "maxMeasureCharacters": 72
+    },
+    "spacing": {
+      "baseUnitPx": 4,
+      "scale": [2, 4, 8, 12, 16, 24, 32, 48],
+      "density": "dense"
+    },
+    "shape": {
+      "radiiPx": [2, 4, 8],
+      "elevationLevels": 2
+    },
+    "motion": {
+      "durationsMs": [80, 160, 240],
+      "easings": ["cubic-bezier(0.2, 0, 0, 1)", "cubic-bezier(0.4, 0, 1, 1)"],
+      "overshoot": "none",
+      "reducedMotionSupported": true
+    }
+  },
+  "voice": {
+    "person": { "value": 4, "reason": "Records are read by auditors, so statements describe the system rather than address a reader." },
+    "register": { "value": 5, "reason": "Settlement terminology is precise and the audience is fluent in it." },
+    "density": { "value": 2, "reason": "Labels rather than sentences keep rows scannable." },
+    "certainty": { "value": 4, "reason": "Amounts pending settlement must be qualified rather than stated as final." },
+    "humour": { "value": 1, "reason": "No moment in this product is a safe place for levity." }
+  },
+  "nonGoals": [
+    "A dashboard-first landing surface, because analysts arrive with a specific break to resolve",
+    "Illustrated empty states, which would read as padding in an audited workflow",
+    "A second accent for secondary actions, which would remove the single primary emphasis"
+  ],
+  "references": [
+    "docs/design-system/tokens.md",
+    "artifacts/vision-loop/reports/token-profile.current.json"
+  ]
+}

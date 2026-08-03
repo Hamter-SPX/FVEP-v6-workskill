@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 2,
+  "reviewer": "design-lead",
+  "reviewedAt": "2026-07-27T08:00:00.000Z",
+  "decision": "approved",
+  "configHash": "replace-with-current-config-hash",
+  "cases": [
+    {
+      "key": "home__desktop__default",
+      "route": "home",
+      "viewport": "desktop",
+      "state": "default",
+      "decision": "accepted",
+      "ratings": {
+        "hierarchy": 5,
+        "composition": 5,
+        "typography": 4,
+        "colorSurface": 4,
+        "contentFidelity": 5,
+        "assetFidelity": 5,
+        "responsiveComposition": 4,
+        "interactionClarity": 5
+      },
+      "blockers": [],
+      "residualDeviations": [
+        {
+          "severity": "minor",
+          "region": "footer",
+          "description": "One-pixel optical alignment difference in a decorative divider.",
+          "acceptedReason": "Does not alter hierarchy, comprehension, or interaction."
+        }
+      ],
+      "notes": [
+        "Reviewed beside the approved reference and current capture at identical scale."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "operations": [
+    {
+      "id": "create-order",
+      "critical": true,
+      "method": "POST",
+      "timeoutMs": 1500,
+      "callerBudgetMs": 1800,
+      "retries": 1,
+      "idempotent": true,
+      "idempotencyKey": true,
+      "backoff": "exponential",
+      "jitter": true,
+      "nestedRetryDepth": 1,
+      "circuitBreaker": true,
+      "fallback": "queue request for bounded retry"
+    },
+    {
+      "id": "update-profile",
+      "critical": true,
+      "method": "PATCH",
+      "timeoutMs": 800,
+      "callerBudgetMs": 1000,
+      "retries": 0,
+      "idempotent": true,
+      "idempotencyKey": true,
+      "circuitBreaker": true,
+      "fallback": "preserve edit and retry"
+    }
+  ]
+}

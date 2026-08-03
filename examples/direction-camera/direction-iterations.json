@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "rounds": [
+    {
+      "round": 1,
+      "recordedAt": "2026-08-03T14:10:00.000Z",
+      "from": "2",
+      "to": "2b",
+      "image": "design/direction-options/direction-option-2b.png",
+      "keep": [
+        "Layout structure and spacious chrome from option 2",
+        "Amber shutter accent"
+      ],
+      "change": [
+        "Icons only — replace decorative glyphs with system camera icons"
+      ],
+      "note": "เหลือ layout แก้แค่ icon",
+      "statusAfter": "awaiting-confirm"
+    }
+  ]
+}

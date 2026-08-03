@@ -1,0 +1,41 @@
+{
+  "version": 4,
+  "project": {
+    "name": "Process Example",
+    "rootDir": "../.."
+  },
+  "contracts": {
+    "request": "request.feature.json",
+    "design": "design.approved.json",
+    "plan": "implementation-plan.json",
+    "workspace": "workspace.linked-worktree.json",
+    "ledger": "process-ledger.json",
+    "tdd": "tdd-cycles.json",
+    "review": "review-chain.json",
+    "claims": "claims.json",
+    "evidence": "evidence.json",
+    "integration": "integration.decision-required.json"
+  },
+  "outputDir": "artifacts",
+  "policy": {
+    "claims": {
+      "now": "2026-07-27T12:00:00.000Z",
+      "maxAgeHours": 24
+    },
+    "processGate": {
+      "minScore": 90,
+      "minConfidence": 90,
+      "requiredSections": [
+        "routing",
+        "design",
+        "plan",
+        "workspace",
+        "tdd",
+        "review",
+        "claims",
+        "ledger"
+      ],
+      "weights": {}
+    }
+  }
+}

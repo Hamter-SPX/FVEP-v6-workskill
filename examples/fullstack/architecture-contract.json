@@ -1,0 +1,85 @@
+{
+  "components": [
+    {
+      "id": "web",
+      "type": "frontend",
+      "owner": "Web Platform",
+      "criticality": "high",
+      "trustZone": "public",
+      "dataClassification": "confidential",
+      "replicas": 3,
+      "slo": {
+        "availability": 99.9
+      },
+      "fallback": "cached application shell"
+    },
+    {
+      "id": "api-gateway",
+      "type": "gateway",
+      "owner": "Platform",
+      "criticality": "critical",
+      "trustZone": "private",
+      "dataClassification": "confidential",
+      "replicas": 3,
+      "slo": {
+        "availability": 99.95
+      },
+      "fallback": "rate-limited maintenance response"
+    },
+    {
+      "id": "orders",
+      "type": "service",
+      "owner": "Commerce",
+      "criticality": "critical",
+      "trustZone": "private",
+      "dataClassification": "restricted",
+      "replicas": 3,
+      "slo": {
+        "availability": 99.9
+      },
+      "fallback": "queue accepted order requests"
+    },
+    {
+      "id": "orders-db",
+      "type": "database",
+      "owner": "Data Platform",
+      "criticality": "critical",
+      "trustZone": "restricted",
+      "dataClassification": "restricted",
+      "replicas": 2,
+      "slo": {
+        "availability": 99.95
+      },
+      "fallback": "promote verified replica"
+    }
+  ],
+  "edges": [
+    {
+      "from": "web",
+      "to": "api-gateway",
+      "protocol": "https",
+      "authentication": "OIDC access token",
+      "authorization": "gateway policy",
+      "encryption": true,
+      "timeoutMs": 2000
+    },
+    {
+      "from": "api-gateway",
+      "to": "orders",
+      "protocol": "mtls",
+      "authentication": "workload identity",
+      "authorization": "service allowlist",
+      "encryption": true,
+      "timeoutMs": 1500
+    },
+    {
+      "from": "orders",
+      "to": "orders-db",
+      "protocol": "tls-postgres",
+      "authentication": "short-lived database identity",
+      "authorization": "least-privilege role",
+      "encryption": true,
+      "timeoutMs": 500
+    }
+  ]
+}

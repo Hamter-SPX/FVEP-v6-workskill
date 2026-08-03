@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "product": "Field Camera",
+  "audience": "Field photographers capturing one-handed stills outdoors",
+  "rationale": "Calm one-handed capture with spacious chrome and a single amber shutter accent.",
+  "personality": {
+    "seriousPlayful": {
+      "value": 2,
+      "reason": "Capture stakes stay serious",
+      "consequences": [
+        "No playful stickers or celebratory shutter confetti",
+        "Copy stays imperative and short"
+      ]
+    },
+    "warmClinical": {
+      "value": 3,
+      "reason": "Cool neutrals with one warm amber accent",
+      "consequences": [
+        "Cool-tinted chrome",
+        "Amber reserved for shutter only"
+      ]
+    },
+    "understatedExpressive": {
+      "value": 2,
+      "reason": "Quiet chrome; accent only on shutter",
+      "consequences": [
+        "Flat glass surfaces",
+        "No multi-layer card stacks in the finder"
+      ]
+    },
+    "denseSpacious": {
+      "value": 4,
+      "reason": "Chosen option opened the margins",
+      "consequences": [
+        "Generous chrome margins",
+        "Tool strip stays quiet and sparse"
+      ]
+    },
+    "establishedNovel": {
+      "value": 3,
+      "reason": "Familiar camera grammar; novelty in accent + icons",
+      "consequences": [
+        "Keep shutter/mode grammar recognizable",
+        "Novelty limited to amber accent and system glyphs"
+      ]
+    }
+  },
+  "styleDirection": {
+    "archetype": "neo-minimal",
+    "adopted": [
+      "shutter dominates the lower third",
+      "generous chrome margins",
+      "cool neutrals with a single amber accent",
+      "system camera icons"
+    ],
+    "rejected": [
+      "Neon gradients and sticker chrome from option 3",
+      "Dense utilitarian strip from option 1",
+      "Decorative motion on mode changes"
+    ]
+  },
+  "noveltyBudget": [
+    {
+      "position": "Novelty budget",
+      "decision": "amber shutter accent + spacious chrome + system glyph icons (round 2b)",
+      "reason": "From visual-direction-spec.md"
+    }
+  ],
+  "systems": {
+    "color": {
+      "neutralTemperature": "cool",
+      "accentCount": 1,
+      "harmony": "complementary",
+      "themes": ["light"]
+    },
+    "typography": {
+      "scaleRatio": 1.25,
+      "roleCount": 4,
+      "families": ["SF Pro", "Inter"],
+      "maxMeasureCharacters": 40
+    },
+    "spacing": {
+      "baseUnitPx": 8,
+      "scale": [4, 8, 12, 16, 24, 32, 48],
+      "density": "spacious-chrome"
+    },
+    "shape": {
+      "radiiPx": [8, 12, 999],
+      "elevationLevels": 1
+    },
+    "motion": {
+      "durationsMs": [120, 200],
+      "easings": ["ease-out"],
+      "overshoot": "none",
+      "reducedMotionSupported": true
+    }
+  },
+  "voice": {
+    "person": { "value": 2, "reason": "System voice for camera chrome" },
+    "register": { "value": 2, "reason": "Short imperative labels" },
+    "density": { "value": 2, "reason": "Sparse chrome copy" },
+    "certainty": { "value": 4, "reason": "Capture actions must feel decisive" },
+    "humour": { "value": 1, "reason": "No jokes on the shutter path" }
+  },
+  "nonGoals": [
+    "Neon gradients and sticker chrome from option 3",
+    "Dense utilitarian strip from option 1",
+    "Decorative motion on mode changes"
+  ],
+  "references": [
+    "visual-direction-spec.md",
+    "design/direction-options/direction-option-2b.png"
+  ]
+}

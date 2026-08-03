@@ -1,0 +1,3 @@
+# Full-Stack Architecture Review Prompt
+
+Review the supplied repository and architecture contract. Map critical flows, components, owners, trust zones, data classes, interfaces, dependencies, latency chain, persistence, transaction boundaries, deployment units, SLOs, and fallbacks. Identify dangling dependencies, cycles, single points of failure, shared-write ownership, trust crossings without controls, and rollback incompatibilities. Separate observed evidence from inference. Return blockers, high/medium/low findings, exact evidence paths, and the smallest contract or architecture correction that resolves each root cause.

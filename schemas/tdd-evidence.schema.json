@@ -1,0 +1,215 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/tdd-evidence.json",
+  "title": "TDD Evidence",
+  "description": "Auditable RED-GREEN-REFACTOR cycles bound to behavior, code, test, command, and time identities.",
+  "type": "object",
+  "required": [
+    "cycles"
+  ],
+  "properties": {
+    "cycles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "behaviorId",
+          "requirementRef",
+          "risk",
+          "test",
+          "red",
+          "production",
+          "green",
+          "refactor"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "behaviorId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "requirementRef": {
+            "type": "string",
+            "minLength": 1
+          },
+          "risk": {
+            "enum": [
+              "normal",
+              "high"
+            ]
+          },
+          "test": {
+            "type": "object",
+            "required": [
+              "file",
+              "name"
+            ],
+            "properties": {
+              "file": {
+                "type": "string",
+                "minLength": 1
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": false
+          },
+          "red": {
+            "type": "object",
+            "required": [
+              "command",
+              "exitStatus",
+              "failureKind",
+              "expectedFailureSignature",
+              "observedFailureSignature",
+              "outputHash",
+              "testHash",
+              "productionHash",
+              "at"
+            ],
+            "properties": {
+              "command": {
+                "type": "string",
+                "minLength": 1
+              },
+              "exitStatus": {
+                "type": "integer",
+                "not": {
+                  "const": 0
+                }
+              },
+              "failureKind": {
+                "const": "behavior-missing"
+              },
+              "expectedFailureSignature": {
+                "type": "string",
+                "minLength": 1
+              },
+              "observedFailureSignature": {
+                "type": "string",
+                "minLength": 1
+              },
+              "outputHash": {
+                "type": "string",
+                "minLength": 1
+              },
+              "testHash": {
+                "type": "string",
+                "minLength": 1
+              },
+              "productionHash": {
+                "type": "string",
+                "minLength": 1
+              },
+              "at": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "additionalProperties": false
+          },
+          "production": {
+            "type": "object",
+            "required": [
+              "changeId",
+              "productionHash",
+              "at"
+            ],
+            "properties": {
+              "changeId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "productionHash": {
+                "type": "string",
+                "minLength": 1
+              },
+              "at": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "additionalProperties": false
+          },
+          "green": {
+            "type": "object",
+            "required": [
+              "command",
+              "exitStatus",
+              "passCount",
+              "outputHash",
+              "testHash",
+              "productionHash",
+              "at"
+            ],
+            "properties": {
+              "command": {
+                "type": "string",
+                "minLength": 1
+              },
+              "exitStatus": {
+                "const": 0
+              },
+              "passCount": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "outputHash": {
+                "type": "string",
+                "minLength": 1
+              },
+              "testHash": {
+                "type": "string",
+                "minLength": 1
+              },
+              "productionHash": {
+                "type": "string",
+                "minLength": 1
+              },
+              "at": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "additionalProperties": false
+          },
+          "negativeControl": {
+            "type": "object"
+          },
+          "refactor": {
+            "type": "object",
+            "required": [
+              "changed"
+            ],
+            "properties": {
+              "changed": {
+                "type": "boolean"
+              },
+              "command": {
+                "type": "string",
+                "minLength": 1
+              },
+              "exitStatus": {
+                "type": "integer"
+              },
+              "at": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

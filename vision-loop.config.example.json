@@ -1,0 +1,207 @@
+{
+  "version": 2,
+  "mode": "exact-reference",
+  "baseUrl": "http://127.0.0.1:3000",
+  "referenceBaseUrl": null,
+  "outputDir": "artifacts/vision-loop",
+  "runtime": {
+    "browser": "chromium",
+    "headed": false,
+    "timeoutMs": 30000,
+    "locale": "en-US",
+    "timezoneId": "UTC",
+    "colorScheme": "light",
+    "reducedMotion": "reduce",
+    "deviceScaleFactor": 1,
+    "freezeTime": "2026-07-27T08:00:00.000Z",
+    "randomSeed": 1337,
+    "allowedConsolePatterns": ["ResizeObserver loop"],
+    "allowedRequestPatterns": [],
+    "allowedResponsePatterns": [],
+    "failOnConsoleError": true,
+    "failOnPageError": true,
+    "failOnRequestFailure": false,
+    "failOnHttpError": true
+  },
+  "capture": {
+    "fullPage": true,
+    "animations": "disabled",
+    "caret": "hide",
+    "waitForFonts": true,
+    "waitForImages": true,
+    "waitUntil": "domcontentloaded",
+    "settleMs": 300,
+    "maskColor": "#ff00ff",
+    "hideSelectors": ["[data-capture-hidden]"],
+    "style": ""
+  },
+  "diff": {
+    "threshold": 0.1,
+    "includeAA": false,
+    "alpha": 0.15,
+    "maxMismatchRatio": 0.005,
+    "majorMismatchRatio": 0.02,
+    "failOnMissingReference": true,
+    "regionTolerancePx": 2,
+    "perceptual": {
+      "enabled": true,
+      "gridSize": 16,
+      "minSimilarity": 0.97,
+      "blockerSimilarity": 0.85
+    }
+  },
+  "accessibility": {
+    "enabled": true,
+    "tags": ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"],
+    "disabledRules": [],
+    "failImpacts": ["critical", "serious"],
+    "excludeSelectors": [],
+    "keyboardProbeLimit": 20,
+    "failOnInvisibleFocus": true,
+    "failOnOffscreenFocus": false
+  },
+  "inspection": {
+    "enabled": true,
+    "maxElements": 600,
+    "overlapProbeLimit": 300
+  },
+  "interaction": {
+    "enabled": true,
+    "maxElements": 1000,
+    "minTargetWidth": 24,
+    "minTargetHeight": 24,
+    "maxTargetSizeViolations": 0,
+    "failOnMissingAccessibleName": true,
+    "failOnNestedInteractive": true,
+    "failOnDuplicateIds": true
+  },
+  "stateCrawler": {
+    "enabled": true,
+    "maxElements": 30,
+    "captureElementScreenshots": false
+  },
+  "performance": {
+    "enabled": true,
+    "failOnWarnings": false,
+    "budgets": {
+      "lcpMs": { "max": 2500, "hard": true, "weight": 3 },
+      "inpMs": { "max": 200, "hard": true, "weight": 2 },
+      "cls": { "max": 0.1, "hard": true, "weight": 3 },
+      "longTaskTotalMs": { "max": 500, "hard": false, "weight": 2 },
+      "transferBytes": { "max": 2000000, "hard": false, "weight": 1 },
+      "jsTransferBytes": { "max": 500000, "hard": false, "weight": 2 },
+      "requestCount": { "max": 100, "hard": false, "weight": 1 },
+      "domNodes": { "max": 2500, "hard": false, "weight": 1 },
+      "imageMissingDimensions": { "max": 0, "hard": false, "weight": 1 }
+    }
+  },
+  "tokens": {
+    "enabled": true,
+    "maxElements": 1500,
+    "maxDriftScore": 20
+  },
+  "breakpoints": {
+    "enabled": false,
+    "minWidth": 320,
+    "maxWidth": 1600,
+    "step": 40,
+    "height": 900
+  },
+  "quality": {
+    "minScore": 85,
+    "minConfidence": 85,
+    "failOnAnyGateFailure": true,
+    "weights": {
+      "visual": 30,
+      "responsive": 15,
+      "accessibility": 15,
+      "runtime": 10,
+      "engineering": 15,
+      "performance": 10,
+      "interaction": 5,
+      "aesthetic": 10
+    }
+  },
+  "baseline": {
+    "enabled": true,
+    "requireApprovalMetadata": true,
+    "approvedBy": null,
+    "reason": null
+  },
+  "manualReview": {
+    "path": "semantic-visual-review.json",
+    "minScore": 85,
+    "maxAgeHours": 24,
+    "requireMatchingConfigHash": true,
+    "weights": {
+      "hierarchy": 1.5,
+      "composition": 1.5,
+      "contentFidelity": 1.5,
+      "responsiveComposition": 1.5
+    }
+  },
+  "aesthetics": {
+    "enabled": false,
+    "profilePath": "aesthetic-profile.json",
+    "reviewPath": "aesthetic-review.json",
+    "measurementsPath": "artifacts/vision-loop/reports/aesthetic-measurements.json",
+    "minScore": 80,
+    "minConfidence": 70,
+    "dimensionFloor": 3,
+    "maxAgeHours": 24,
+    "requireReview": true,
+    "requireTestEvidence": false,
+    "requireMatchingConfigHash": true,
+    "weights": {
+      "compositionalBalance": 1.5,
+      "typographicSystem": 1.5,
+      "spatialRhythm": 1.5,
+      "colorSystem": 1.5
+    }
+  },
+  "history": {
+    "enabled": true,
+    "maxRecords": 100,
+    "stagnationWindow": 3,
+    "minMeaningfulDelta": 0.5
+  },
+  "reports": {
+    "html": true,
+    "markdown": true,
+    "remediation": true,
+    "provenance": true
+  },
+  "engineeringChecks": [
+    { "name": "typecheck", "command": "npm run typecheck", "required": true },
+    { "name": "lint", "command": "npm run lint", "required": true },
+    { "name": "tests", "command": "npm test", "required": true },
+    { "name": "build", "command": "npm run build", "required": true }
+  ],
+  "routes": [
+    {
+      "name": "home",
+      "path": "/",
+      "readySelector": "main",
+      "regions": [
+        { "name": "header", "selector": "header", "weight": 1, "required": true },
+        { "name": "hero", "selector": "main > section:first-of-type", "weight": 2, "required": true, "maxMismatchRatio": 0.008, "minPerceptualSimilarity": 0.96 }
+      ],
+      "viewports": [
+        { "name": "mobile", "width": 390, "height": 844 },
+        { "name": "tablet", "width": 768, "height": 1024 },
+        { "name": "desktop", "width": 1440, "height": 900 }
+      ],
+      "states": [
+        { "name": "default", "actions": [] },
+        {
+          "name": "navigation-open",
+          "actions": [
+            { "type": "click", "selector": "[aria-label='Open navigation']" },
+            { "type": "waitFor", "selector": "[data-navigation-panel]", "state": "visible" }
+          ],
+          "readySelector": "[data-navigation-panel]"
+        }
+      ]
+    }
+  ]
+}

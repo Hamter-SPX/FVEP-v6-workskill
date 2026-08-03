@@ -1,0 +1,42 @@
+{
+  "cycles": [
+    {
+      "id": "cycle-1",
+      "behaviorId": "process-example",
+      "requirementRef": "plan-process-example#task-1",
+      "risk": "normal",
+      "test": {
+        "file": "tests/unit/example-engine.test.mjs",
+        "name": "audits input"
+      },
+      "red": {
+        "command": "node --test tests/unit/example-engine.test.mjs",
+        "exitStatus": 1,
+        "failureKind": "behavior-missing",
+        "expectedFailureSignature": "module not found",
+        "observedFailureSignature": "module not found: example-engine.mjs",
+        "outputHash": "red-output-sha256",
+        "testHash": "test-source-sha256",
+        "productionHash": "production-before-sha256",
+        "at": "2026-07-27T10:00:00.000Z"
+      },
+      "production": {
+        "changeId": "commit-example",
+        "productionHash": "production-after-sha256",
+        "at": "2026-07-27T10:05:00.000Z"
+      },
+      "green": {
+        "command": "node --test tests/unit/example-engine.test.mjs",
+        "exitStatus": 0,
+        "passCount": 1,
+        "outputHash": "green-output-sha256",
+        "testHash": "test-source-sha256",
+        "productionHash": "production-after-sha256",
+        "at": "2026-07-27T10:06:00.000Z"
+      },
+      "refactor": {
+        "changed": false
+      }
+    }
+  ]
+}

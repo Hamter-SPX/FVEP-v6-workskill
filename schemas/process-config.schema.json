@@ -1,0 +1,195 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/process-config.json",
+  "title": "Process Config",
+  "description": "Configuration for deterministic process contract loading and gate policy.",
+  "type": "object",
+  "required": [
+    "version",
+    "project",
+    "contracts",
+    "outputDir",
+    "policy"
+  ],
+  "properties": {
+    "version": {
+      "const": 4
+    },
+    "project": {
+      "type": "object",
+      "required": [
+        "name",
+        "rootDir"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rootDir": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "contracts": {
+      "type": "object",
+      "properties": {
+        "request": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "design": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "plan": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "workspace": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "ledger": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "tdd": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "debug": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "review": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "claims": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "evidence": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "integration": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "fullstackReport": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "outputDir": {
+      "type": "string",
+      "minLength": 1
+    },
+    "policy": {
+      "type": "object",
+      "properties": {
+        "routing": {
+          "type": "object"
+        },
+        "design": {
+          "type": "object"
+        },
+        "plan": {
+          "type": "object"
+        },
+        "taskGraph": {
+          "type": "object"
+        },
+        "workspace": {
+          "type": "object"
+        },
+        "ledger": {
+          "type": "object"
+        },
+        "tdd": {
+          "type": "object"
+        },
+        "debugging": {
+          "type": "object"
+        },
+        "review": {
+          "type": "object"
+        },
+        "claims": {
+          "type": "object"
+        },
+        "integration": {
+          "type": "object"
+        },
+        "processGate": {
+          "type": "object",
+          "required": [
+            "minScore",
+            "minConfidence",
+            "requiredSections"
+          ],
+          "properties": {
+            "minScore": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "minConfidence": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "requiredSections": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "uniqueItems": true
+            },
+            "weights": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "number",
+                "minimum": 0
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

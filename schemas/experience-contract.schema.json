@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Experience Contract",
+  "type": "object",
+  "required": [
+    "flows"
+  ],
+  "properties": {
+    "flows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "userGoal",
+          "frontend",
+          "backend",
+          "authentication",
+          "authorization"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "critical": {
+            "type": "boolean"
+          },
+          "userGoal": {
+            "type": "string"
+          },
+          "frontend": {
+            "type": "object",
+            "required": [
+              "route",
+              "states"
+            ]
+          },
+          "backend": {
+            "type": "object",
+            "required": [
+              "operations",
+              "errors"
+            ]
+          },
+          "errorMappings": {
+            "type": "object"
+          },
+          "latencyBudgetMs": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          }
+        }
+      }
+    }
+  }
+}
