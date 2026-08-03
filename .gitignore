@@ -3,3 +3,6 @@
 
 artifacts/
 .DS_Store
+**/.DS_Store
+MANIFEST.json
+CHECKSUMS.sha256

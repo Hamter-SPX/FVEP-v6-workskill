@@ -19,16 +19,14 @@ trace('start');
 const ignoredDirectories = new Set(['node_modules', 'artifacts', '.git', '.superpowers']);
 const generatedFiles = new Set([
   'VALIDATION_REPORT.json', 'MANIFEST.json', 'CHECKSUMS.sha256',
-  'FRONTEND_VISION_LOOP_PRO_ALL_IN_ONE.md', 'FRONTEND_VISION_LOOP_PRO_V2_ALL_IN_ONE.md',
-  'FULLSTACK_VISION_ENGINEERING_PRO_V3_ALL_IN_ONE.md', 'FULLSTACK_VISION_ENGINEERING_PRO_V4_ALL_IN_ONE.md',
   'FULLSTACK_VISION_ENGINEERING_PRO_V5_ALL_IN_ONE.md'
 ]);
 
 const required = [
-  'SKILL.md', 'README.md', 'README_TH.md', 'README_FRONTEND_V2.md', 'README_FRONTEND_V2_TH.md',
+  'SKILL.md', 'README.md', 'README_TH.md',
   'ARCHITECTURE.md', 'SECURITY.md', 'SUPERPOWERS_ADAPTATION_MATRIX.md',
-  'MIGRATION_V1_TO_V2.md', 'MIGRATION_V2_TO_V3.md', 'MIGRATION_V3_TO_V4.md', 'MIGRATION_V4_TO_V5.md',
-  'CHANGELOG.md', 'UPGRADE_REPORT_TH.md', 'UPGRADE_REPORT_V4_TH.md', 'UPGRADE_REPORT_V5_TH.md',
+  'MIGRATION_V3_TO_V4.md', 'MIGRATION_V4_TO_V5.md',
+  'CHANGELOG.md', 'UPGRADE_REPORT_V4_TH.md', 'UPGRADE_REPORT_V5_TH.md',
   'FULLSTACK_VISION_ENGINEERING_PRO_V5_ALL_IN_ONE.md', 'package.json', 'vision-loop.config.example.json',
   'fullstack.config.example.json', 'setup.sh', 'setup.ps1', 'AESTHETIC_WALKTHROUGH.md',
 
@@ -161,8 +159,7 @@ const required = [
 
   // Skill deployment evidence and pressure tests.
   'tests/pressure-scenarios.md', 'tests/fullstack-pressure-scenarios.md',
-  'tests/process-pressure-scenarios-v4.md', 'tests/TDD_EVIDENCE.md',
-  'tests/TDD_EVIDENCE_V3.md', 'tests/TDD_EVIDENCE_V4.md',
+  'tests/process-pressure-scenarios-v4.md', 'tests/TDD_EVIDENCE_V4.md', 'tests/TDD_EVIDENCE_V5.md',
   '.github/workflows/frontend-vision-loop.yml', '.github/workflows/fullstack-evidence-gate.yml',
   'ci/github-actions.md', 'ci/github-actions-fullstack.md'
 ];
