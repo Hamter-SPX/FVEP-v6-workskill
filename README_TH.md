@@ -172,6 +172,25 @@ npm run vision-loop -- --config vision-loop.config.json
 
 ตราบใดที่ยังไม่เปิด Gate `aesthetic` จะรายงานเป็น not-applicable และไม่กระทบคะแนนคุณภาพ ดังนั้น Pipeline v4 ที่อัปเป็น v5 จะได้ผล Gate เท่าเดิม
 
+## โหมดการทำงาน และ Re-check
+
+งานทุกชิ้นอยู่ในหนึ่งใน **สิบโหมด** และไม่มีโหมดไหนปิดได้ถ้ายังไม่ได้ตรวจงานตัวเองแบบไม่เข้าข้าง
+
+```bash
+npm run mode -- resolve "ช่วยรีดีไซน์หน้านี้ให้หน่อย"   # analyze design-ui match-ref design-game implement
+npm run mode -- show design-ui                          # debug review ship author-skill recover
+npm run mode -- check --mode design-ui --state .fx/mode-state.json
+
+npm run recheck -- plan --mode design-ui
+npm run recheck -- audit --record .fx/recheck.json
+```
+
+โหมดบอกว่า “ช่วงนี้ทำอะไรได้ ยังห้ามทำอะไร ต้องรันเกตอะไร และต้องจริงข้อไหนถึงจะปิด” คำสั่ง `resolve` จะ exit ไม่เป็นศูนย์เมื่อโจทย์กำกวม เพื่อให้ **ถามยืนยันโหมด** แทนการเดา
+
+ส่วน re-check บังคับให้ตอบสี่คำถามเป็นลายลักษณ์อักษร: กำลังเคลมอะไร, อะไรพิสูจน์, ถ้าผิดจะรู้ได้ยังไง, และมีอะไรที่ไม่ได้ดูเลย ตัว audit จะปฏิเสธข้อเคลมที่ไม่มีหลักฐาน คำเด็ดขาดบนหลักฐานบาง ๆ ข้อที่ติ๊กว่าตรวจแล้วแต่ไม่มีสิ่งที่เห็น และ verdict ว่า clean ที่ไม่มีความพยายามหักล้างรองรับ
+
+เอกสาร: `references/operating-modes_TH.md`, `references/recheck-protocol_TH.md`
+
 ## คำสั่ง Vision-in-the-loop
 
 | คำสั่ง | หน้าที่ |
@@ -191,6 +210,10 @@ npm run audit:game-assets -- --assets examples/game-assets.example.json --frame-
 ลำดับการแก้คือ `structure → proportion → value → colour → density → polish` แก้ครั้งละหนึ่งอย่างแล้ว capture ใหม่ทุกรอบ คำสั่งจะ exit ไม่เป็นศูนย์ตราบใดที่ยังไม่ตรง และถ้าสามรอบติดกันไม่ขยับเข้าใกล้เลย จะรายงานว่า stall — ให้หยุดเดา แล้วกลับไปอ่าน ref ทีละส่วน
 
 เอกสาร: `references/visual-delta-triage.md`, `references/scene-completeness.md`, `references/game-vision-loop.md`, `references/game-asset-direction.md`, `references/world-building-and-level-blockout.md` · แพ็กตามบทบาท (frontend/backend/security/design/game/tech-art) อยู่ใน `domains/ROLES/`
+
+`audit:game-assets` ครอบคลุม **VFX / SFX / Animation** ด้วย เพราะสามอย่างนี้พังคนละแบบกับ prop: VFX ต้องระบุ timing เป็นมิลลิวินาที, ความอ่านออกตอนซ้อนกันหลายตัว และเป็นเอฟเฟกต์ที่ “ให้ข้อมูลเกมเพลย์” หรือแค่ตกแต่ง · เสียงต้องระบุ layer (attack/body/tail), mix bus พร้อมกฎ ducking, แผนกันเสียงซ้ำจนล้า และ cue ทางภาพที่ให้ข้อมูลเดียวกันสำหรับคนที่ปิดเสียงหรือหูหนวก · แอนิเมชันต้องระบุ timing, ช่วงที่ยกเลิกได้ (cancel window) และท่าที่อ่านออกก่อนโดน (telegraph)
+
+เอกสาร: `references/vfx-and-sfx-direction.md`, `references/game-feel-and-juice.md`
 
 ## วงจรการทำงาน
 
@@ -259,6 +282,9 @@ Release Builder จะข้าม Symlink และ Development State, ปฏ�
 ## เอกสารสำคัญ
 
 - `SKILL.md`
+- `PLAYBOOKS.md` — ขั้นตอนพร้อมใช้สำหรับรีดีไซน์ เทียบต้นฉบับ ฉาก แมพ ชุด asset เอฟเฟกต์และเสียง และการส่งงาน
+- `references/operating-modes_TH.md` — สิบโหมด สัญญาของแต่ละโหมด และวิธีข้ามโหมด
+- `references/recheck-protocol_TH.md` — การตรวจงานตัวเองก่อนเสนอ
 - `SUPERPOWERS_ADAPTATION_MATRIX.md`
 - `MIGRATION_V3_TO_V4.md` และ `MIGRATION_V4_TO_V5.md`
 - `ARCHITECTURE.md`

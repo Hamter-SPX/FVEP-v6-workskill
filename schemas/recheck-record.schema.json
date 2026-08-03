@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://frontend-vision-loop.local/schemas/recheck-record-v1.json",
+  "title": "Re-check Record",
+  "description": "The adversarial pass an author runs against their own work before presenting it: bound claims, performed checks with observations, falsification attempts, blind spots, and a verdict that matches the findings.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["mode", "artifactIdentity", "claims", "checks", "counterExamples", "blindSpots", "verdict"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "mode": {
+      "enum": ["analyze", "design-ui", "match-ref", "design-game", "implement", "debug", "review", "ship", "author-skill", "recover"]
+    },
+    "independentReviewer": {
+      "type": "boolean",
+      "description": "False when the author re-checks their own work, which raises the falsification requirement."
+    },
+    "artifactIdentity": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Files and captures examined, with hash or timestamp so freshness is checkable."
+    },
+    "claims": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["statement", "evidence"],
+        "properties": {
+          "statement": { "type": "string", "minLength": 1 },
+          "evidence": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+        }
+      }
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "performed"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "performed": { "type": "boolean" },
+          "observation": { "type": "string" }
+        }
+      }
+    },
+    "counterExamples": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["claim", "attemptedFalsification", "result"],
+        "properties": {
+          "claim": { "type": "string", "minLength": 1 },
+          "attemptedFalsification": { "type": "string", "minLength": 1 },
+          "result": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "blindSpots": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "issuesFound": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["summary"],
+        "properties": {
+          "summary": { "type": "string", "minLength": 1 },
+          "severity": { "enum": ["blocker", "high", "medium", "low"] },
+          "resolved": { "type": "boolean" }
+        }
+      }
+    },
+    "residualRisk": { "type": "string" },
+    "residualRisks": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "whatWouldChangeMyMind": {
+      "type": "string",
+      "description": "Required for self-review: the observation that would withdraw the main claim."
+    },
+    "verdict": { "enum": ["clean", "issues-found", "issues-fixed", "blocked"] },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "minChecks": { "type": "integer", "minimum": 1 },
+        "minCounterExamples": { "type": "integer", "minimum": 1 },
+        "allowUnresolvedIssues": { "type": "boolean" }
+      }
+    }
+  }
+}

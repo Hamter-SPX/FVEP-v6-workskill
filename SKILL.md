@@ -42,6 +42,35 @@ The package does not create browser access, subagents, git remotes, production t
 
 For the shortest correct path through a common request — redesign from a screenshot, match a reference, design a scene or map, specify an asset set, ship a feature — start from `PLAYBOOKS.md`.
 
+## Operating Modes
+
+Every piece of work runs inside one of ten modes. A mode is a contract: what this phase may do, what it must not do yet, which gates produce its evidence, and what has to be true before it can close.
+
+```bash
+npm run mode -- resolve "ช่วยรีดีไซน์หน้านี้ให้หน่อย"     # pick the mode, in Thai or English
+npm run mode -- show design-ui                            # the full contract
+npm run mode -- check --mode design-ui --state .fx/mode-state.json
+```
+
+`analyze` · `design-ui` · `match-ref` · `design-game` · `implement` · `debug` · `review` · `ship` · `author-skill` · `recover`
+
+`resolve` exits non-zero when no trigger matched or two modes are within a point, because entering the wrong mode is how an agent edits code during a question. `analyze` is the only mode that is always safe to enter unasked. Announce every mode crossing, so the user can stop it.
+
+`check` refuses to close a mode while a required gate is unrun, a forbidden action was performed, a required confirmation such as **เริ่มเขียน** is missing, or the re-check pass has not happened. Read `references/operating-modes.md`.
+
+## The Re-check Pass
+
+Weak output usually comes from stopping one step early: the work gets done, an impression forms that it is fine, and the impression gets reported. No mode closes without replacing that impression with an adversarial pass against your own work.
+
+```bash
+npm run recheck -- plan --mode design-ui        # the ordered checks for this mode
+npm run recheck -- audit --record .fx/recheck.json
+```
+
+Four questions, answered in writing: what exactly am I claiming, what proves each claim, how would I know if I were wrong, and what did I never look at. The audit blocks unbound claims, absolute language on thin evidence, checks ticked off with nothing observed, clean verdicts with no falsification behind them, and empty blind spots. Self-review carries a higher bar than independent review: three falsification attempts and a written answer to "what would change my mind".
+
+If a check finds an issue, fix it before presenting. A footnote transfers your unfinished work to the reader. Read `references/recheck-protocol.md`.
+
 ## Skill Routing and Precedence
 
 Always evaluate the work context before acting. The deterministic router is available through:
@@ -114,7 +143,9 @@ npm run audit:game-assets -- --assets design/game-assets.json --frame-triangle-b
 
 `audit:scene` measures the frame zone by zone and blocks on empty corners, dead regions, missing focal hierarchy, flat value structure, and copy-paste tiling; the scene brief must declare fantasy, all three depth layers, focal point, lighting, and story details. `audit:game-assets` requires each asset to state its silhouette read, in-engine scale with a comparison reference, style binding, budget, acceptance distance, and in-context evidence — a turntable render never approves an asset.
 
-Read `references/game-vision-loop.md`, `references/scene-completeness.md`, `references/game-asset-direction.md`, and `references/world-building-and-level-blockout.md`.
+Effects, sound, and animation carry information and fail differently from props, so they carry extra required fields: VFX declares `timing`, `readability` under overlap, and whether it is gameplay-critical or decorative; sound declares `layers`, `mixBus`, `repetitionPlan`, and the `redundantCue` that carries the same information for muted or deaf players; animation declares `timing`, `cancelWindow`, and `telegraph`. A hero capture of one effect on a black background proves nothing about readability.
+
+Read `references/game-vision-loop.md`, `references/scene-completeness.md`, `references/game-asset-direction.md`, `references/world-building-and-level-blockout.md`, `references/vfx-and-sfx-direction.md`, and `references/game-feel-and-juice.md`.
 
 ## Process Reference Map
 
@@ -273,10 +304,20 @@ Stop and return to the correct phase when any of these occurs:
 - Calling a static source scan a security certification
 - Claiming completion from stale, partial, differently-hashed, or unscoped evidence
 - Selecting merge, push, cleanup, or discard for the user
+- Crossing into another mode without saying so, so the user cannot stop it
+- Closing a mode with a required gate unrun, or with a forbidden action already performed
+- Presenting work without the re-check pass, or reporting a clean verdict with no falsification behind it
+- Stating a claim the re-check could not bind to a command, file, or capture
+- Presenting the work with a re-check finding attached as a footnote instead of fixing it
+- Approving a VFX from one instance on a black background rather than three at play distance
+- Shipping a sound whose information has no visual or haptic partner
+- Tuning game feel from impression instead of the declared timing, buffer, and cancel numbers
 
 ## CLI Surface
 
 ```text
+mode                 Resolve, show, and close the ten operating modes with their contracts
+recheck              Plan and audit the adversarial pass against your own work
 process:route        Select required process disciplines
 process:workspace    Classify repository/worktree safety
 process:plan         Validate plan quality and task graph

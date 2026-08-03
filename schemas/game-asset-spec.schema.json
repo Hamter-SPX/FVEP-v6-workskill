@@ -29,8 +29,8 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "id", "name", "class", "styleBinding", "purpose", "silhouette",
-        "scale", "budget", "acceptance", "inContextEvidence"
+        "id", "name", "class", "styleBinding", "purpose",
+        "budget", "acceptance", "inContextEvidence"
       ],
       "properties": {
         "id": { "type": "string", "minLength": 1, "description": "Stable dot-separated id such as prop.lantern-post.rusted." },
@@ -59,9 +59,35 @@
             "textureSize": { "type": "string" },
             "drawCalls": { "type": "number", "minimum": 0 },
             "memoryMb": { "type": "number", "minimum": 0 },
-            "bones": { "type": "number", "minimum": 0 }
+            "bones": { "type": "number", "minimum": 0 },
+            "particles": { "type": "number", "minimum": 0 },
+            "overdraw": { "type": "string" },
+            "voices": { "type": "number", "minimum": 0 },
+            "lengthSeconds": { "type": "number", "minimum": 0 }
           }
         },
+        "timing": {
+          "type": "string",
+          "description": "VFX: attack, hold, decay in ms. Animation: anticipation, action, recovery."
+        },
+        "readability": {
+          "type": "string",
+          "description": "How it stays legible at play distance and when several instances overlap."
+        },
+        "gameplayRole": {
+          "type": "string",
+          "description": "Whether the effect carries gameplay information or is decorative."
+        },
+        "layers": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "description": "Audio: attack, body, and tail layers."
+        },
+        "mixBus": { "type": "string", "description": "Audio: bus assignment and ducking behaviour." },
+        "repetitionPlan": { "type": "string", "description": "Audio: variation count and randomisation ranges." },
+        "redundantCue": { "type": "string", "description": "Audio: the visual or haptic cue carrying the same information." },
+        "cancelWindow": { "type": "string", "description": "Animation: when the player may interrupt it." },
+        "telegraph": { "type": "string", "description": "Animation: what is readable before the effect lands." },
         "lod": { "type": "string" },
         "variants": { "type": "array", "items": { "type": "string", "minLength": 1 } },
         "attachments": { "type": "array", "items": { "type": "string", "minLength": 1 } },

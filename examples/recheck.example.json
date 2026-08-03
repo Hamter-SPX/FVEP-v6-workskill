@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "mode": "design-game",
+  "artifactIdentity": [
+    "artifacts/harbour-night-wide.png@sha256:4c9a1e",
+    "design/scene-brief.json@sha256:0b77fd",
+    "design/game-assets.json@sha256:a31c02"
+  ],
+  "independentReviewer": false,
+  "claims": [
+    {
+      "statement": "The harbour establishing shot is finished in every corner, with no zone below the detail floor",
+      "evidence": [
+        "npm run audit:scene -- --image artifacts/harbour-night-wide.png --brief design/scene-brief.json --grid 8x5 → verdict=pass-scene-complete",
+        "detail heatmap minimum zone 4 of 9"
+      ]
+    },
+    {
+      "statement": "Both dock assets read as their role from 30 studs in night lighting",
+      "evidence": [
+        "npm run audit:game-assets -- --assets design/game-assets.json → verdict=pass-asset-set",
+        "artifacts/lantern-post-30studs-night.png",
+        "artifacts/dock-hook-thirdperson.png"
+      ]
+    },
+    {
+      "statement": "The lit checkpoint is the highest-contrast point in the frame, so the eye lands where the brief intends",
+      "evidence": ["audit:scene focal zone D5, focal ratio 2.8"]
+    }
+  ],
+  "checks": [
+    {
+      "id": "identity",
+      "performed": true,
+      "observation": "Re-captured the wide shot after the last lighting tweak; the hash moved from 91be44 to 4c9a1e, so the earlier screenshots are stale and were discarded"
+    },
+    {
+      "id": "claim-binding",
+      "performed": true,
+      "observation": "Every claim maps to a gate run from this capture; a fourth claim about water shimmer had no evidence and was deleted"
+    },
+    {
+      "id": "counter-evidence",
+      "performed": true,
+      "observation": "Tried to break the corner claim by re-running with a 10x6 grid, which is stricter than the shipped default; the corners still passed"
+    },
+    {
+      "id": "assumptions",
+      "performed": true,
+      "observation": "Assumed the night lighting rig is final. Checked with the lighting file date: it was last edited before the asset pass, so the assumption holds for now"
+    },
+    {
+      "id": "blind-spots",
+      "performed": true,
+      "observation": "Only the wide shot and two asset shots were captured. The combat camera and the rainy weather state were never rendered"
+    },
+    {
+      "id": "regression",
+      "performed": true,
+      "observation": "The emissive change could have blown out the water shader; re-captured the water-facing shot and the highlight ratio is unchanged"
+    },
+    {
+      "id": "language",
+      "performed": true,
+      "observation": "Removed the phrase \"the scene is done\" and replaced it with the two shots that actually passed"
+    },
+    {
+      "id": "design-game-1",
+      "performed": true,
+      "observation": "Rendered both assets as black fills at 64px: the lantern hook and the dock hook crescent stay distinguishable"
+    }
+  ],
+  "counterExamples": [
+    {
+      "claim": "Every corner of the frame is finished",
+      "attemptedFalsification": "Re-ran the scene gate at 10x6, a finer grid than the one used to approve it",
+      "result": "No empty corner appeared, so the claim survives a stricter test"
+    },
+    {
+      "claim": "The checkpoint reads as the focal point",
+      "attemptedFalsification": "Converted the frame to greyscale to remove the warm lantern colour advantage",
+      "result": "It still leads on value alone, though the margin narrows"
+    },
+    {
+      "claim": "Assets are on-budget",
+      "attemptedFalsification": "Totalled declared triangles against the mobile tier budget rather than the desktop one",
+      "result": "Failed on the mobile tier at 260k against a 180k budget, so the claim is scoped to desktop only"
+    }
+  ],
+  "blindSpots": [
+    "Combat camera distance was never captured",
+    "Rainy weather state exists in the design but was not rendered",
+    "Only one procedural seed of the dock layout was reviewed"
+  ],
+  "issuesFound": [
+    {
+      "summary": "Mobile tier exceeds the triangle budget by 80k",
+      "resolved": false,
+      "severity": "high"
+    },
+    {
+      "summary": "Upper-right sky zone was one point below the detail floor before a haze layer was added",
+      "resolved": true
+    }
+  ],
+  "residualRisk": "Approved for the desktop tier only. The mobile budget failure is open, and the rainy state and combat camera are unverified.",
+  "whatWouldChangeMyMind": "A capture from the combat camera showing the checkpoint losing focal dominance, or a mobile profiling run confirming the frame cost is worse than the declared totals",
+  "verdict": "issues-found",
+  "policy": {
+    "allowUnresolvedIssues": true
+  }
+}

@@ -1,6 +1,19 @@
 # Changelog
 
-## Unreleased — vision-in-the-loop, scenes, and game assets
+## Unreleased — operating modes, the re-check pass, and effects direction
+
+### Added
+
+- Ten operating modes (`npm run mode`): analyze, design-ui, match-ref, design-game, implement, debug, review, ship, author-skill, recover. Each declares what the phase may do, what it must not do yet, the gates that produce its evidence, its exit conditions, and its own re-check steps
+- Thai and English mode routing (`mode resolve`) that exits non-zero on an ambiguous or unmatched request rather than assuming a mode, and a mode exit check that blocks on unrun gates, forbidden actions, missing confirmations such as **เริ่มเขียน**, and a skipped re-check
+- The re-check pass (`npm run recheck`): a plan of ordered adversarial checks per mode, and an audit that rejects unbound claims, absolute language on thin evidence, impressions reported as findings, checks ticked off with no observation, clean verdicts with no falsification behind them, empty blind spots, and verdicts that contradict the findings. Self-review carries a higher bar than independent review
+- Class-specific asset requirements: VFX declares timing, readability under overlap, and gameplay role; audio declares layers, mix bus, repetition plan, and a redundant non-audio cue; animation declares timing, cancel window, and telegraph. Sounds are exempt from silhouette, scale, and materials
+- References: `operating-modes.md`, `recheck-protocol.md`, `vfx-and-sfx-direction.md`, `game-feel-and-juice.md`, with Thai versions of the two process references
+- `templates/recheck-record.md`, `schemas/recheck-record.schema.json`, `examples/recheck.example.json`, and `prompts/recheck-pass.md`
+- Two playbooks — effects and sound direction, and the pre-presentation re-check — plus a mode label on every existing playbook
+- Ten additional pressure scenarios covering silent mode crossings, unrun gates, assumed modes, checkbox re-checks, unsearched clean verdicts, footnoted defects, self-review without a disconfirmer, effects approved on black, audio-only information, and feel tuned by impression
+
+## Earlier unreleased — vision-in-the-loop, scenes, and game assets
 
 ### Added
 

@@ -10,6 +10,8 @@ Domain pack for game work. Games share UI/UX needs with apps, but add worlds, sy
 - Frame finished in every corner: `npm run audit:scene` — [`../../references/scene-completeness.md`](../../references/scene-completeness.md)
 - Assets that survive the engine: `npm run audit:game-assets` — [`../../references/game-asset-direction.md`](../../references/game-asset-direction.md)
 - Maps, blockouts, and generators: [`../../references/world-building-and-level-blockout.md`](../../references/world-building-and-level-blockout.md)
+- Effects, sound, and animation as information: [`../../references/vfx-and-sfx-direction.md`](../../references/vfx-and-sfx-direction.md)
+- Feel as declared numbers, not impressions: [`../../references/game-feel-and-juice.md`](../../references/game-feel-and-juice.md)
 - Ref↔cur correction order: `npm run vision:triage` — [`../../references/visual-delta-triage.md`](../../references/visual-delta-triage.md)
 - Region-level fidelity: `npm run ascii-map`, `npm run layout-structure`
 - Role packs for the people doing the work: [`../ROLES/game-designer.md`](../ROLES/game-designer.md), [`../ROLES/gameplay-engineer.md`](../ROLES/gameplay-engineer.md), [`../ROLES/technical-artist.md`](../ROLES/technical-artist.md)
@@ -84,3 +86,7 @@ npm run audit:scene        # the frame is finished everywhere, not only at the s
 npm run audit:game-assets  # every asset is buildable, budgeted, on-style, and proven in context
 npm run vision:triage      # ref↔cur differences ranked, one change per round, stall detection
 ```
+
+`audit:game-assets` also carries the class-specific requirements for effects, sound, and animation: VFX must declare timing, readability under overlap, and whether it is gameplay-critical; audio must declare its layers, mix bus, repetition plan, and the redundant visual or haptic cue; animation must declare timing, cancel window, and telegraph.
+
+Game work runs inside the `design-game` mode and closes with the re-check pass — see [`../../references/operating-modes.md`](../../references/operating-modes.md) and [`../../references/recheck-protocol.md`](../../references/recheck-protocol.md).

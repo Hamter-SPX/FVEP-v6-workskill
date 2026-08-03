@@ -3,9 +3,23 @@
 Copy-paste flows for the jobs this skill is actually asked to do. Each one is the shortest
 path that still produces evidence. Read the linked reference when a step needs judgment.
 
+**Every playbook starts and ends the same way.** Start by naming the mode; end by re-checking
+your own work before you present it.
+
+```bash
+npm run mode -- resolve "<the user's request, in their words>"
+# ... the playbook ...
+npm run recheck -- plan --mode <that mode>
+npm run recheck -- audit --record .fx/recheck.json
+```
+
+References: `references/operating-modes.md` · `references/recheck-protocol.md`
+
 ---
 
 ## 1. "Here is a screenshot — redesign it"
+
+Mode: `design-ui`
 
 ```bash
 npm run direction:runtime                      # decide the ImageGen presentation plan
@@ -33,6 +47,8 @@ Reference: `references/visual-direction-exploration.md`
 
 ## 2. "This does not look like the reference — fix it"
 
+Mode: `match-ref`
+
 ```bash
 npm run vision:triage -- --ref design/ref.png --cur artifacts/cur.png --history .fx/triage-history.json
 ```
@@ -51,6 +67,8 @@ Reference: `references/visual-delta-triage.md` · Prompt: `prompts/vision-triage
 
 ## 3. "Keep watching until it matches"
 
+Mode: `match-ref`
+
 ```bash
 npm run layout-structure -- remember --ref design/ref.png --region photo=92,738,62,60 --write .fx/ref-structure.json
 npm run layout-structure -- until-match --structure .fx/ref-structure.json --cur .fx/cur.png \
@@ -63,6 +81,8 @@ moment it matches, so you can keep editing while it watches.
 ---
 
 ## 4. "Design a scene / level / map"
+
+Mode: `design-game`
 
 ```bash
 cp templates/scene-brief.md design/scene-brief.md      # then write the JSON form
@@ -79,6 +99,8 @@ References: `references/scene-completeness.md`, `references/world-building-and-l
 ---
 
 ## 5. "Design the assets for this game"
+
+Mode: `design-game`
 
 ```bash
 cp templates/game-asset-spec.md design/assets/<asset>.md
@@ -99,6 +121,8 @@ Reference: `references/game-asset-direction.md` · Example: `examples/game-asset
 
 ## 6. "Build a Roblox map"
 
+Mode: `design-game`
+
 1. Read `domains/GAME/platforms/roblox-maps.md` and `domains/GAME/graphics/ugc-avatar-platform.md`.
 2. Fix the authoring unit as studs and state every asset scale against avatar height.
 3. Blockout with real collision, then run the scene gate on the establishing shots.
@@ -109,6 +133,8 @@ Reference: `references/game-asset-direction.md` · Example: `examples/game-asset
 ---
 
 ## 7. "Ship a feature end to end"
+
+Mode: `implement then ship`
 
 ```bash
 npm run process:route -- --input request.json
@@ -125,6 +151,8 @@ Pick the role packs the change touches from `domains/ROLES/` and satisfy their g
 
 ## 8. "Make sure the skill itself is healthy"
 
+Mode: `author-skill`
+
 ```bash
 npm test
 npm run validate
@@ -134,3 +162,46 @@ npm run docs:all-in-one
 
 `npm run validate` is the one that matters: required files, JSON, syntax, dangerous
 patterns, the full unit suite, CLI help smoke tests, and the bundled example audits.
+
+---
+
+## 9. "Design the effects and the sound"
+
+Mode: `design-game`
+
+Effects and sound carry information, so they are specified and audited like any other asset —
+with extra fields, because they fail differently.
+
+```bash
+# add vfx / audio / animation entries to design/game-assets.json, then:
+npm run audit:game-assets -- --assets design/game-assets.json
+```
+
+- **vfx** needs `timing` in milliseconds, `readability` under overlap, and whether it is
+  gameplay-critical or decorative.
+- **audio** needs `layers` (attack, body, tail), `mixBus` with its ducking rule,
+  `repetitionPlan`, and the `redundantCue` for muted or deaf players.
+- **animation** needs `timing`, `cancelWindow`, and `telegraph`.
+
+Prove it in the worst realistic moment: several actors, full ambience, busiest background.
+One effect on a black background proves nothing.
+
+References: `references/vfx-and-sfx-direction.md`, `references/game-feel-and-juice.md`
+
+---
+
+## 10. "Before you show me anything"
+
+Any mode. This is the last step of every other playbook.
+
+```bash
+npm run recheck -- plan --mode <mode>
+# work the list, write the record from templates/recheck-record.md
+npm run recheck -- audit --record .fx/recheck.json
+```
+
+Answer four questions in writing: what am I claiming, what proves each claim, how would I know
+if I were wrong, and what did I never look at. Fix what the pass finds **before** presenting.
+
+Reference: `references/recheck-protocol.md` · Prompt: `prompts/recheck-pass.md` ·
+Example: `examples/recheck.example.json`

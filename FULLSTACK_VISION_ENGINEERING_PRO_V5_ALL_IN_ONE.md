@@ -180,6 +180,35 @@ The package does not create browser access, subagents, git remotes, production t
 
 For the shortest correct path through a common request — redesign from a screenshot, match a reference, design a scene or map, specify an asset set, ship a feature — start from `PLAYBOOKS.md`.
 
+## Operating Modes
+
+Every piece of work runs inside one of ten modes. A mode is a contract: what this phase may do, what it must not do yet, which gates produce its evidence, and what has to be true before it can close.
+
+```bash
+npm run mode -- resolve "ช่วยรีดีไซน์หน้านี้ให้หน่อย"     # pick the mode, in Thai or English
+npm run mode -- show design-ui                            # the full contract
+npm run mode -- check --mode design-ui --state .fx/mode-state.json
+```
+
+`analyze` · `design-ui` · `match-ref` · `design-game` · `implement` · `debug` · `review` · `ship` · `author-skill` · `recover`
+
+`resolve` exits non-zero when no trigger matched or two modes are within a point, because entering the wrong mode is how an agent edits code during a question. `analyze` is the only mode that is always safe to enter unasked. Announce every mode crossing, so the user can stop it.
+
+`check` refuses to close a mode while a required gate is unrun, a forbidden action was performed, a required confirmation such as **เริ่มเขียน** is missing, or the re-check pass has not happened. Read `references/operating-modes.md`.
+
+## The Re-check Pass
+
+Weak output usually comes from stopping one step early: the work gets done, an impression forms that it is fine, and the impression gets reported. No mode closes without replacing that impression with an adversarial pass against your own work.
+
+```bash
+npm run recheck -- plan --mode design-ui        # the ordered checks for this mode
+npm run recheck -- audit --record .fx/recheck.json
+```
+
+Four questions, answered in writing: what exactly am I claiming, what proves each claim, how would I know if I were wrong, and what did I never look at. The audit blocks unbound claims, absolute language on thin evidence, checks ticked off with nothing observed, clean verdicts with no falsification behind them, and empty blind spots. Self-review carries a higher bar than independent review: three falsification attempts and a written answer to "what would change my mind".
+
+If a check finds an issue, fix it before presenting. A footnote transfers your unfinished work to the reader. Read `references/recheck-protocol.md`.
+
 ## Skill Routing and Precedence
 
 Always evaluate the work context before acting. The deterministic router is available through:
@@ -252,7 +281,9 @@ npm run audit:game-assets -- --assets design/game-assets.json --frame-triangle-b
 
 `audit:scene` measures the frame zone by zone and blocks on empty corners, dead regions, missing focal hierarchy, flat value structure, and copy-paste tiling; the scene brief must declare fantasy, all three depth layers, focal point, lighting, and story details. `audit:game-assets` requires each asset to state its silhouette read, in-engine scale with a comparison reference, style binding, budget, acceptance distance, and in-context evidence — a turntable render never approves an asset.
 
-Read `references/game-vision-loop.md`, `references/scene-completeness.md`, `references/game-asset-direction.md`, and `references/world-building-and-level-blockout.md`.
+Effects, sound, and animation carry information and fail differently from props, so they carry extra required fields: VFX declares `timing`, `readability` under overlap, and whether it is gameplay-critical or decorative; sound declares `layers`, `mixBus`, `repetitionPlan`, and the `redundantCue` that carries the same information for muted or deaf players; animation declares `timing`, `cancelWindow`, and `telegraph`. A hero capture of one effect on a black background proves nothing about readability.
+
+Read `references/game-vision-loop.md`, `references/scene-completeness.md`, `references/game-asset-direction.md`, `references/world-building-and-level-blockout.md`, `references/vfx-and-sfx-direction.md`, and `references/game-feel-and-juice.md`.
 
 ## Process Reference Map
 
@@ -411,10 +442,20 @@ Stop and return to the correct phase when any of these occurs:
 - Calling a static source scan a security certification
 - Claiming completion from stale, partial, differently-hashed, or unscoped evidence
 - Selecting merge, push, cleanup, or discard for the user
+- Crossing into another mode without saying so, so the user cannot stop it
+- Closing a mode with a required gate unrun, or with a forbidden action already performed
+- Presenting work without the re-check pass, or reporting a clean verdict with no falsification behind it
+- Stating a claim the re-check could not bind to a command, file, or capture
+- Presenting the work with a re-check finding attached as a footnote instead of fixing it
+- Approving a VFX from one instance on a black background rather than three at play distance
+- Shipping a sound whose information has no visual or haptic partner
+- Tuning game feel from impression instead of the declared timing, buffer, and cancel numbers
 
 ## CLI Surface
 
 ```text
+mode                 Resolve, show, and close the ten operating modes with their contracts
+recheck              Plan and audit the adversarial pass against your own work
 process:route        Select required process disciplines
 process:workspace    Classify repository/worktree safety
 process:plan         Validate plan quality and task graph
@@ -644,6 +685,30 @@ The mechanical audit runs first and produces facts. The judgment review follows 
 
 Until it is enabled the `aesthetic` gate reports not-applicable and does not affect the quality score, so a v4 pipeline upgraded to v5 produces unchanged gate results.
 
+## Modes and the re-check pass
+
+Work runs inside one of ten modes, and no mode closes without an adversarial pass against your
+own output.
+
+```bash
+npm run mode -- resolve "ช่วยรีดีไซน์หน้านี้ให้หน่อย"   # analyze design-ui match-ref design-game implement
+npm run mode -- show design-ui                          # debug review ship author-skill recover
+npm run mode -- check --mode design-ui --state .fx/mode-state.json
+
+npm run recheck -- plan --mode design-ui
+npm run recheck -- audit --record .fx/recheck.json
+```
+
+A mode declares what the phase may do, what it must not do yet, which gates produce its
+evidence, and what has to be true before it closes. `resolve` exits non-zero when the request
+is ambiguous, so the mode gets confirmed instead of assumed.
+
+The re-check answers four questions in writing — what am I claiming, what proves it, how would
+I know if I were wrong, what did I never look at — and the audit rejects unbound claims,
+absolute language on thin evidence, ticked checks with no observation, and clean verdicts with
+no falsification behind them. Read `references/operating-modes.md` and
+`references/recheck-protocol.md`.
+
 ## Vision-in-the-loop commands
 
 | Command | Purpose |
@@ -661,6 +726,8 @@ npm run audit:game-assets -- --assets examples/game-assets.example.json --frame-
 ```
 
 `vision:triage` fixes differences in the order `structure → proportion → value → colour → density → polish`, exits non-zero while the frames still differ, and flags a stall when three rounds produce no measurable convergence. Read `references/visual-delta-triage.md`, `references/scene-completeness.md`, `references/game-vision-loop.md`, `references/game-asset-direction.md`, and `references/world-building-and-level-blockout.md`.
+
+`audit:game-assets` also covers effects, sound, and animation, which fail differently from props: VFX declares timing, readability under overlap, and whether it is gameplay-critical; sound declares its layers, mix bus, repetition plan, and the redundant visual cue; animation declares timing, cancel window, and telegraph. Read `references/vfx-and-sfx-direction.md` and `references/game-feel-and-juice.md`.
 
 Discipline packs — what each role owns, its gates, and its red flags — live in `domains/ROLES/`.
 
@@ -736,7 +803,9 @@ The release builder skips symlinks and development state, rejects unsafe member 
 ## Documentation map
 
 - `SKILL.md` — main agent workflow
-- `PLAYBOOKS.md` — copy-paste flows for redesign, reference matching, scenes, maps, asset sets, and delivery
+- `PLAYBOOKS.md` — copy-paste flows for redesign, reference matching, scenes, maps, asset sets, effects and sound, and delivery
+- `references/operating-modes.md` — the ten modes, their contracts, and how to cross between them
+- `references/recheck-protocol.md` — the adversarial pass every mode closes with
 - `domains/` — product-shaped packs (GAME, APPLICATION, DESIGN, GENERAL) and discipline packs (ROLES)
 - `SUPERPOWERS_ADAPTATION_MATRIX.md` — mapping from every installed Superpowers skill to the process implementation
 - `MIGRATION_V3_TO_V4.md` and `MIGRATION_V4_TO_V5.md` — upgrade guides
@@ -949,6 +1018,25 @@ npm run vision-loop -- --config vision-loop.config.json
 
 ตราบใดที่ยังไม่เปิด Gate `aesthetic` จะรายงานเป็น not-applicable และไม่กระทบคะแนนคุณภาพ ดังนั้น Pipeline v4 ที่อัปเป็น v5 จะได้ผล Gate เท่าเดิม
 
+## โหมดการทำงาน และ Re-check
+
+งานทุกชิ้นอยู่ในหนึ่งใน **สิบโหมด** และไม่มีโหมดไหนปิดได้ถ้ายังไม่ได้ตรวจงานตัวเองแบบไม่เข้าข้าง
+
+```bash
+npm run mode -- resolve "ช่วยรีดีไซน์หน้านี้ให้หน่อย"   # analyze design-ui match-ref design-game implement
+npm run mode -- show design-ui                          # debug review ship author-skill recover
+npm run mode -- check --mode design-ui --state .fx/mode-state.json
+
+npm run recheck -- plan --mode design-ui
+npm run recheck -- audit --record .fx/recheck.json
+```
+
+โหมดบอกว่า “ช่วงนี้ทำอะไรได้ ยังห้ามทำอะไร ต้องรันเกตอะไร และต้องจริงข้อไหนถึงจะปิด” คำสั่ง `resolve` จะ exit ไม่เป็นศูนย์เมื่อโจทย์กำกวม เพื่อให้ **ถามยืนยันโหมด** แทนการเดา
+
+ส่วน re-check บังคับให้ตอบสี่คำถามเป็นลายลักษณ์อักษร: กำลังเคลมอะไร, อะไรพิสูจน์, ถ้าผิดจะรู้ได้ยังไง, และมีอะไรที่ไม่ได้ดูเลย ตัว audit จะปฏิเสธข้อเคลมที่ไม่มีหลักฐาน คำเด็ดขาดบนหลักฐานบาง ๆ ข้อที่ติ๊กว่าตรวจแล้วแต่ไม่มีสิ่งที่เห็น และ verdict ว่า clean ที่ไม่มีความพยายามหักล้างรองรับ
+
+เอกสาร: `references/operating-modes_TH.md`, `references/recheck-protocol_TH.md`
+
 ## คำสั่ง Vision-in-the-loop
 
 | คำสั่ง | หน้าที่ |
@@ -968,6 +1056,10 @@ npm run audit:game-assets -- --assets examples/game-assets.example.json --frame-
 ลำดับการแก้คือ `structure → proportion → value → colour → density → polish` แก้ครั้งละหนึ่งอย่างแล้ว capture ใหม่ทุกรอบ คำสั่งจะ exit ไม่เป็นศูนย์ตราบใดที่ยังไม่ตรง และถ้าสามรอบติดกันไม่ขยับเข้าใกล้เลย จะรายงานว่า stall — ให้หยุดเดา แล้วกลับไปอ่าน ref ทีละส่วน
 
 เอกสาร: `references/visual-delta-triage.md`, `references/scene-completeness.md`, `references/game-vision-loop.md`, `references/game-asset-direction.md`, `references/world-building-and-level-blockout.md` · แพ็กตามบทบาท (frontend/backend/security/design/game/tech-art) อยู่ใน `domains/ROLES/`
+
+`audit:game-assets` ครอบคลุม **VFX / SFX / Animation** ด้วย เพราะสามอย่างนี้พังคนละแบบกับ prop: VFX ต้องระบุ timing เป็นมิลลิวินาที, ความอ่านออกตอนซ้อนกันหลายตัว และเป็นเอฟเฟกต์ที่ “ให้ข้อมูลเกมเพลย์” หรือแค่ตกแต่ง · เสียงต้องระบุ layer (attack/body/tail), mix bus พร้อมกฎ ducking, แผนกันเสียงซ้ำจนล้า และ cue ทางภาพที่ให้ข้อมูลเดียวกันสำหรับคนที่ปิดเสียงหรือหูหนวก · แอนิเมชันต้องระบุ timing, ช่วงที่ยกเลิกได้ (cancel window) และท่าที่อ่านออกก่อนโดน (telegraph)
+
+เอกสาร: `references/vfx-and-sfx-direction.md`, `references/game-feel-and-juice.md`
 
 ## วงจรการทำงาน
 
@@ -1036,6 +1128,9 @@ Release Builder จะข้าม Symlink และ Development State, ปฏ�
 ## เอกสารสำคัญ
 
 - `SKILL.md`
+- `PLAYBOOKS.md` — ขั้นตอนพร้อมใช้สำหรับรีดีไซน์ เทียบต้นฉบับ ฉาก แมพ ชุด asset เอฟเฟกต์และเสียง และการส่งงาน
+- `references/operating-modes_TH.md` — สิบโหมด สัญญาของแต่ละโหมด และวิธีข้ามโหมด
+- `references/recheck-protocol_TH.md` — การตรวจงานตัวเองก่อนเสนอ
 - `SUPERPOWERS_ADAPTATION_MATRIX.md`
 - `MIGRATION_V3_TO_V4.md` และ `MIGRATION_V4_TO_V5.md`
 - `ARCHITECTURE.md`
@@ -1076,9 +1171,23 @@ Release Builder จะข้าม Symlink และ Development State, ปฏ�
 Copy-paste flows for the jobs this skill is actually asked to do. Each one is the shortest
 path that still produces evidence. Read the linked reference when a step needs judgment.
 
+**Every playbook starts and ends the same way.** Start by naming the mode; end by re-checking
+your own work before you present it.
+
+```bash
+npm run mode -- resolve "<the user's request, in their words>"
+# ... the playbook ...
+npm run recheck -- plan --mode <that mode>
+npm run recheck -- audit --record .fx/recheck.json
+```
+
+References: `references/operating-modes.md` · `references/recheck-protocol.md`
+
 ---
 
 ## 1. "Here is a screenshot — redesign it"
+
+Mode: `design-ui`
 
 ```bash
 npm run direction:runtime                      # decide the ImageGen presentation plan
@@ -1106,6 +1215,8 @@ Reference: `references/visual-direction-exploration.md`
 
 ## 2. "This does not look like the reference — fix it"
 
+Mode: `match-ref`
+
 ```bash
 npm run vision:triage -- --ref design/ref.png --cur artifacts/cur.png --history .fx/triage-history.json
 ```
@@ -1124,6 +1235,8 @@ Reference: `references/visual-delta-triage.md` · Prompt: `prompts/vision-triage
 
 ## 3. "Keep watching until it matches"
 
+Mode: `match-ref`
+
 ```bash
 npm run layout-structure -- remember --ref design/ref.png --region photo=92,738,62,60 --write .fx/ref-structure.json
 npm run layout-structure -- until-match --structure .fx/ref-structure.json --cur .fx/cur.png \
@@ -1136,6 +1249,8 @@ moment it matches, so you can keep editing while it watches.
 ---
 
 ## 4. "Design a scene / level / map"
+
+Mode: `design-game`
 
 ```bash
 cp templates/scene-brief.md design/scene-brief.md      # then write the JSON form
@@ -1152,6 +1267,8 @@ References: `references/scene-completeness.md`, `references/world-building-and-l
 ---
 
 ## 5. "Design the assets for this game"
+
+Mode: `design-game`
 
 ```bash
 cp templates/game-asset-spec.md design/assets/<asset>.md
@@ -1172,6 +1289,8 @@ Reference: `references/game-asset-direction.md` · Example: `examples/game-asset
 
 ## 6. "Build a Roblox map"
 
+Mode: `design-game`
+
 1. Read `domains/GAME/platforms/roblox-maps.md` and `domains/GAME/graphics/ugc-avatar-platform.md`.
 2. Fix the authoring unit as studs and state every asset scale against avatar height.
 3. Blockout with real collision, then run the scene gate on the establishing shots.
@@ -1182,6 +1301,8 @@ Reference: `references/game-asset-direction.md` · Example: `examples/game-asset
 ---
 
 ## 7. "Ship a feature end to end"
+
+Mode: `implement then ship`
 
 ```bash
 npm run process:route -- --input request.json
@@ -1198,6 +1319,8 @@ Pick the role packs the change touches from `domains/ROLES/` and satisfy their g
 
 ## 8. "Make sure the skill itself is healthy"
 
+Mode: `author-skill`
+
 ```bash
 npm test
 npm run validate
@@ -1207,6 +1330,49 @@ npm run docs:all-in-one
 
 `npm run validate` is the one that matters: required files, JSON, syntax, dangerous
 patterns, the full unit suite, CLI help smoke tests, and the bundled example audits.
+
+---
+
+## 9. "Design the effects and the sound"
+
+Mode: `design-game`
+
+Effects and sound carry information, so they are specified and audited like any other asset —
+with extra fields, because they fail differently.
+
+```bash
+# add vfx / audio / animation entries to design/game-assets.json, then:
+npm run audit:game-assets -- --assets design/game-assets.json
+```
+
+- **vfx** needs `timing` in milliseconds, `readability` under overlap, and whether it is
+  gameplay-critical or decorative.
+- **audio** needs `layers` (attack, body, tail), `mixBus` with its ducking rule,
+  `repetitionPlan`, and the `redundantCue` for muted or deaf players.
+- **animation** needs `timing`, `cancelWindow`, and `telegraph`.
+
+Prove it in the worst realistic moment: several actors, full ambience, busiest background.
+One effect on a black background proves nothing.
+
+References: `references/vfx-and-sfx-direction.md`, `references/game-feel-and-juice.md`
+
+---
+
+## 10. "Before you show me anything"
+
+Any mode. This is the last step of every other playbook.
+
+```bash
+npm run recheck -- plan --mode <mode>
+# work the list, write the record from templates/recheck-record.md
+npm run recheck -- audit --record .fx/recheck.json
+```
+
+Answer four questions in writing: what am I claiming, what proves each claim, how would I know
+if I were wrong, and what did I never look at. Fix what the pass finds **before** presenting.
+
+Reference: `references/recheck-protocol.md` · Prompt: `prompts/recheck-pass.md` ·
+Example: `examples/recheck.example.json`
 
 <!-- END SOURCE: PLAYBOOKS.md -->
 
@@ -5089,8 +5255,83 @@ export const ASSET_CLASSES = Object.freeze([
 ]);
 
 const VAGUE_TERMS = /\b(cool|awesome|nice|epic|modern|clean|premium|high[- ]quality|beautiful|stylish|next[- ]gen|realistic looking)\b/i;
+
+/**
+ * Fields a class needs beyond the universal ones. Effects and sound fail differently from
+ * props: a prop that is wrong looks wrong, while an effect that is wrong hides the gameplay
+ * information the player needed, and a sound that is wrong becomes fatigue within an hour.
+ */
+const CLASS_REQUIREMENTS = Object.freeze({
+  vfx: [
+    {
+      field: 'timing', severity: 'blocker',
+      message: 'VFX must declare timing: attack, hold, and decay in milliseconds.',
+      remediation: 'An effect that outlives its gameplay meaning becomes screen clutter. State the numbers.'
+    },
+    {
+      field: 'readability', severity: 'blocker',
+      message: 'VFX must declare how it reads when several instances overlap and at play distance.',
+      remediation: 'Say what stays legible when three of these fire at once in a fight.'
+    },
+    {
+      field: 'gameplayRole', severity: 'high',
+      message: 'VFX must say whether it carries gameplay information or is decorative.',
+      remediation: 'Critical effects get palette roles, silhouette rules, and priority over decorative ones.'
+    }
+  ],
+  audio: [
+    {
+      field: 'layers', severity: 'blocker',
+      message: 'Sound must declare its layers: attack, body, and tail.',
+      remediation: 'A single flat sample is why SFX feel weak and repetitive.'
+    },
+    {
+      field: 'mixBus', severity: 'blocker',
+      message: 'Sound must declare its mix bus and ducking behaviour.',
+      remediation: 'Without a bus and a ducking rule, the important cue loses to ambience at the worst moment.'
+    },
+    {
+      field: 'repetitionPlan', severity: 'high',
+      message: 'Sound must declare how repetition fatigue is avoided.',
+      remediation: 'Variation count, pitch and volume randomisation ranges, or a round-robin rule.'
+    },
+    {
+      field: 'redundantCue', severity: 'high',
+      message: 'Sound must state the visual or haptic cue that carries the same information.',
+      remediation: 'Audio-only information excludes deaf players and anyone playing muted.'
+    }
+  ],
+  animation: [
+    {
+      field: 'timing', severity: 'blocker',
+      message: 'Animation must declare timing: anticipation, action, and recovery.',
+      remediation: 'Feel is built from these numbers, not from the curve editor looking nice.'
+    },
+    {
+      field: 'cancelWindow', severity: 'blocker',
+      message: 'Animation must declare when the player may cancel or interrupt it.',
+      remediation: 'Uncancellable animations are the most common cause of "the controls feel bad".'
+    },
+    {
+      field: 'telegraph', severity: 'high',
+      message: 'Animation must declare what the opponent or player reads before the effect lands.',
+      remediation: 'Name the pose or motion that gives the reaction window.'
+    }
+  ]
+});
 const SCALE_UNIT = /(\d+(?:\.\d+)?)\s*(stud|studs|m|meter|meters|cm|px|pixel|pixels|tile|tiles|block|blocks|voxel|voxels|unit|units)\b/i;
 const SCALE_REFERENCE = /\b(avatar|player|character|door|human|humanoid|hand|torso|camera|tile|block|grid|reference)\b/i;
+
+/** Universal fields that do not apply to a class. A sound has no silhouette. */
+const CLASS_EXEMPTIONS = Object.freeze({
+  audio: ['silhouette', 'scale', 'materials', 'palette'],
+  vfx: ['materials'],
+  animation: ['scale', 'materials'],
+  ui: ['materials']
+});
+
+export const CLASS_FIELD_REQUIREMENTS = CLASS_REQUIREMENTS;
+export const CLASS_FIELD_EXEMPTIONS = CLASS_EXEMPTIONS;
 
 function severityFor(policy, key, fallback) {
   const value = policy?.severity?.[key];
@@ -5135,8 +5376,12 @@ export function auditAssetSpec(spec = {}, policy = {}) {
     findings.push(processFinding('ASSET_PURPOSE_VAGUE', 'high', 'Asset purpose uses unconstraining praise words instead of function.', at('purpose')));
   } else evidenceCount += 1;
 
+  const exempt = new Set(CLASS_EXEMPTIONS[assetClass] ?? []);
+
   const silhouette = text(spec.silhouette);
-  if (!silhouette) {
+  if (exempt.has('silhouette')) {
+    // A sound has no shape; its class requirements carry the equivalent burden.
+  } else if (!silhouette) {
     findings.push(processFinding(
       'ASSET_SILHOUETTE_MISSING', 'blocker',
       'Asset must describe the silhouette read: what shape identifies it as a black shape at thumbnail size.',
@@ -5147,7 +5392,9 @@ export function auditAssetSpec(spec = {}, policy = {}) {
   } else evidenceCount += 1;
 
   const scale = text(spec.scale);
-  if (!scale) {
+  if (exempt.has('scale')) {
+    // Sounds and animation clips are sized in time, not in studs.
+  } else if (!scale) {
     findings.push(processFinding(
       'ASSET_SCALE_MISSING', 'blocker',
       'Asset must state real in-engine size.',
@@ -5168,10 +5415,11 @@ export function auditAssetSpec(spec = {}, policy = {}) {
   }
 
   const materials = Array.isArray(spec.materials) ? spec.materials.filter(nonEmpty) : nonEmpty(spec.materials) ? [text(spec.materials)] : [];
-  if (!materials.length) findings.push(processFinding('ASSET_MATERIALS_MISSING', 'high', 'Asset must name its materials and surface treatment.', at('materials')));
-  else evidenceCount += materials.length;
+  if (!materials.length && !exempt.has('materials')) {
+    findings.push(processFinding('ASSET_MATERIALS_MISSING', 'high', 'Asset must name its materials and surface treatment.', at('materials')));
+  } else evidenceCount += materials.length;
 
-  if (!nonEmpty(spec.palette)) {
+  if (!nonEmpty(spec.palette) && !exempt.has('palette')) {
     findings.push(processFinding('ASSET_PALETTE_MISSING', 'high', 'Asset must bind to the palette so the set stays one world.', at('palette')));
   } else evidenceCount += 1;
 
@@ -5225,6 +5473,19 @@ export function auditAssetSpec(spec = {}, policy = {}) {
       { ...at('inContextEvidence'), remediation: 'Name the capture: gameplay camera, real lighting, next to the avatar, at play distance.' }
     ));
   } else evidenceCount += 1;
+
+  for (const requirement of CLASS_REQUIREMENTS[assetClass] ?? []) {
+    if (nonEmpty(spec[requirement.field])) {
+      evidenceCount += 1;
+      continue;
+    }
+    findings.push(processFinding(
+      `ASSET_${requirement.field.replace(/([A-Z])/g, '_$1').toUpperCase()}_MISSING`,
+      severityFor(policy, requirement.field, requirement.severity),
+      requirement.message,
+      { ...at(requirement.field), remediation: requirement.remediation }
+    ));
+  }
 
   for (const [key, value] of Object.entries(spec)) {
     if (typeof value === 'string' && containsPlaceholder(value)) {

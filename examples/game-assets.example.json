@@ -50,6 +50,54 @@
         "Does not clip the avatar torso during the pull animation"
       ],
       "inContextEvidence": "Third-person gameplay capture during idle, swing, and grapple pull, at the default camera distance"
+    },
+    {
+      "id": "vfx.grapple-pull.line",
+      "name": "Grapple pull line and impact spark",
+      "class": "vfx",
+      "styleBinding": "domains/GAME/graphics/stylized-cartoon.md + design/aesthetic-profile.json",
+      "purpose": "Shows the player that the hook connected and which direction the pull will travel",
+      "silhouette": "A single taut line with one bright node travelling along it, readable as one shape rather than a particle cloud",
+      "scale": "Line thickness 4 px at 1080p, spark burst about 0.6 studs across, roughly one eighth of avatar height",
+      "palette": "lacquer red interactive accent only, never the ambient lantern warm",
+      "timing": "60 ms attack on the line, 180 ms hold during travel, 140 ms decay on the spark",
+      "readability": "At 30 studs the line still reads as one stroke; with three grapples firing at once the nodes stay separated because each line uses a different travel phase",
+      "gameplayRole": "Gameplay-critical — it is the only confirmation that the hook connected, so it owns the interactive accent",
+      "storyDetails": [
+        "Spark colour picks up the rust of the hook rather than a generic white",
+        "Line frays slightly at the anchor point where it bites"
+      ],
+      "budget": { "particles": 40, "overdraw": "under one screen height of additive layers", "drawCalls": 2 },
+      "acceptance": [
+        "Connection is unmistakable within 100 ms on a 30 Hz connection",
+        "Three simultaneous instances do not hide the enemy silhouette behind them"
+      ],
+      "inContextEvidence": "Gameplay capture of three players grappling the same crate at night, at default camera distance"
+    },
+    {
+      "id": "audio.grapple-pull.hit",
+      "name": "Grapple connect and pull sound",
+      "class": "audio",
+      "styleBinding": "domains/GAME/graphics/stylized-cartoon.md + design/aesthetic-profile.json",
+      "purpose": "Confirms the hook bit into something solid and communicates how heavy the pulled object is",
+      "layers": [
+        "attack: iron bite, 12 ms transient",
+        "body: rope tension creak, 200 ms",
+        "tail: dock timber resonance, 400 ms, shortened on light objects"
+      ],
+      "mixBus": "SFX/interaction, ducks ambience by 4 dB for 250 ms, never ducks dialogue",
+      "repetitionPlan": "Six recorded variations, pitch randomised plus or minus 2 semitones, volume plus or minus 1.5 dB, round-robin without immediate repeats",
+      "redundantCue": "The grapple line spark and the controller rumble carry the same confirmation for muted or deaf players",
+      "storyDetails": [
+        "Recorded from a real dock winch rather than a generic metal impact library",
+        "Heavier objects add a low timber groan that light crates never get"
+      ],
+      "budget": { "voices": 3, "memoryMb": 1.2, "lengthSeconds": 0.9 },
+      "acceptance": [
+        "Distinguishable from the melee hit sound with eyes closed",
+        "Still audible under full harbour ambience at the default mix"
+      ],
+      "inContextEvidence": "Gameplay recording of ten consecutive grapples in the harbour ambience, checked for fatigue and for masking by the water loop"
     }
   ]
 }

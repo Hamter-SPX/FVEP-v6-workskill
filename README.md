@@ -173,6 +173,30 @@ The mechanical audit runs first and produces facts. The judgment review follows 
 
 Until it is enabled the `aesthetic` gate reports not-applicable and does not affect the quality score, so a v4 pipeline upgraded to v5 produces unchanged gate results.
 
+## Modes and the re-check pass
+
+Work runs inside one of ten modes, and no mode closes without an adversarial pass against your
+own output.
+
+```bash
+npm run mode -- resolve "ช่วยรีดีไซน์หน้านี้ให้หน่อย"   # analyze design-ui match-ref design-game implement
+npm run mode -- show design-ui                          # debug review ship author-skill recover
+npm run mode -- check --mode design-ui --state .fx/mode-state.json
+
+npm run recheck -- plan --mode design-ui
+npm run recheck -- audit --record .fx/recheck.json
+```
+
+A mode declares what the phase may do, what it must not do yet, which gates produce its
+evidence, and what has to be true before it closes. `resolve` exits non-zero when the request
+is ambiguous, so the mode gets confirmed instead of assumed.
+
+The re-check answers four questions in writing — what am I claiming, what proves it, how would
+I know if I were wrong, what did I never look at — and the audit rejects unbound claims,
+absolute language on thin evidence, ticked checks with no observation, and clean verdicts with
+no falsification behind them. Read `references/operating-modes.md` and
+`references/recheck-protocol.md`.
+
 ## Vision-in-the-loop commands
 
 | Command | Purpose |
@@ -190,6 +214,8 @@ npm run audit:game-assets -- --assets examples/game-assets.example.json --frame-
 ```
 
 `vision:triage` fixes differences in the order `structure → proportion → value → colour → density → polish`, exits non-zero while the frames still differ, and flags a stall when three rounds produce no measurable convergence. Read `references/visual-delta-triage.md`, `references/scene-completeness.md`, `references/game-vision-loop.md`, `references/game-asset-direction.md`, and `references/world-building-and-level-blockout.md`.
+
+`audit:game-assets` also covers effects, sound, and animation, which fail differently from props: VFX declares timing, readability under overlap, and whether it is gameplay-critical; sound declares its layers, mix bus, repetition plan, and the redundant visual cue; animation declares timing, cancel window, and telegraph. Read `references/vfx-and-sfx-direction.md` and `references/game-feel-and-juice.md`.
 
 Discipline packs — what each role owns, its gates, and its red flags — live in `domains/ROLES/`.
 
@@ -265,7 +291,9 @@ The release builder skips symlinks and development state, rejects unsafe member 
 ## Documentation map
 
 - `SKILL.md` — main agent workflow
-- `PLAYBOOKS.md` — copy-paste flows for redesign, reference matching, scenes, maps, asset sets, and delivery
+- `PLAYBOOKS.md` — copy-paste flows for redesign, reference matching, scenes, maps, asset sets, effects and sound, and delivery
+- `references/operating-modes.md` — the ten modes, their contracts, and how to cross between them
+- `references/recheck-protocol.md` — the adversarial pass every mode closes with
 - `domains/` — product-shaped packs (GAME, APPLICATION, DESIGN, GENERAL) and discipline packs (ROLES)
 - `SUPERPOWERS_ADAPTATION_MATRIX.md` — mapping from every installed Superpowers skill to the process implementation
 - `MIGRATION_V3_TO_V4.md` and `MIGRATION_V4_TO_V5.md` — upgrade guides

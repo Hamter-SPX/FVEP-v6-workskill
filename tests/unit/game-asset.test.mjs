@@ -85,6 +85,55 @@ test('set audit enforces a frame triangle budget', () => {
   assert.ok(result.findings.some((finding) => finding.code === 'ASSET_SET_BUDGET_EXCEEDED'));
 });
 
+test('VFX must declare timing, readability under overlap, and gameplay role', () => {
+  const result = auditAssetSpec({
+    ...solidAsset,
+    id: 'vfx.spark',
+    class: 'vfx',
+    materials: []
+  });
+  const codes = result.findings.map((finding) => finding.code);
+  assert.ok(codes.includes('ASSET_TIMING_MISSING'));
+  assert.ok(codes.includes('ASSET_READABILITY_MISSING'));
+  assert.ok(codes.includes('ASSET_GAMEPLAY_ROLE_MISSING'));
+  assert.ok(!codes.includes('ASSET_MATERIALS_MISSING'), 'VFX is exempt from materials');
+});
+
+test('sound must declare layers, mix bus, repetition plan, and a redundant cue', () => {
+  const result = auditAssetSpec({
+    id: 'audio.hit',
+    name: 'Hit sound',
+    class: 'audio',
+    styleBinding: 'design/aesthetic-profile.json',
+    purpose: 'Confirms the melee hit connected and how heavy it was',
+    budget: { voices: 2 },
+    acceptance: ['Distinct from the block sound with eyes closed'],
+    inContextEvidence: 'Recording of ten consecutive hits under full ambience'
+  });
+  const codes = result.findings.map((finding) => finding.code);
+  assert.ok(codes.includes('ASSET_LAYERS_MISSING'));
+  assert.ok(codes.includes('ASSET_MIX_BUS_MISSING'));
+  assert.ok(codes.includes('ASSET_REPETITION_PLAN_MISSING'));
+  assert.ok(codes.includes('ASSET_REDUNDANT_CUE_MISSING'));
+  assert.ok(!codes.includes('ASSET_SILHOUETTE_MISSING'), 'a sound has no silhouette');
+  assert.ok(!codes.includes('ASSET_SCALE_MISSING'), 'a sound is sized in time, not studs');
+});
+
+test('animation must declare timing, cancel window, and telegraph', () => {
+  const result = auditAssetSpec({
+    ...solidAsset,
+    id: 'anim.swing',
+    class: 'animation',
+    scale: undefined,
+    materials: []
+  });
+  const codes = result.findings.map((finding) => finding.code);
+  assert.ok(codes.includes('ASSET_TIMING_MISSING'));
+  assert.ok(codes.includes('ASSET_CANCEL_WINDOW_MISSING'));
+  assert.ok(codes.includes('ASSET_TELEGRAPH_MISSING'));
+  assert.ok(!codes.includes('ASSET_SCALE_MISSING'), 'animation is sized in time');
+});
+
 test('the shipped example asset set passes its own policy', async () => {
   const raw = JSON.parse(await fs.readFile(path.join(root, 'examples/game-assets.example.json'), 'utf8'));
   const result = auditAssetSet(raw.assets, raw.policy);

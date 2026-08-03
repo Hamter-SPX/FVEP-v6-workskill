@@ -55,6 +55,15 @@ const required = [
   'prompts/vision-triage-loop.md', 'agents/scene-and-asset-critic.md',
   'PLAYBOOKS.md',
 
+  // Operating modes and the adversarial re-check pass.
+  'lib/mode-engine.mjs', 'scripts/mode.mjs',
+  'lib/recheck-engine.mjs', 'scripts/recheck.mjs',
+  'references/operating-modes.md', 'references/operating-modes_TH.md',
+  'references/recheck-protocol.md', 'references/recheck-protocol_TH.md',
+  'references/vfx-and-sfx-direction.md', 'references/game-feel-and-juice.md',
+  'schemas/recheck-record.schema.json', 'templates/recheck-record.md',
+  'examples/recheck.example.json', 'prompts/recheck-pass.md',
+
   // Retained frontend vision and evidence engines.
   'lib/config.mjs', 'lib/browser-runner.mjs', 'lib/compare-engine.mjs', 'lib/perceptual-diff.mjs',
   'lib/ascii-map-engine.mjs',
@@ -369,7 +378,7 @@ const requiredScripts = [
   'process:audit', 'process:route', 'process:workspace', 'process:plan', 'process:tdd',
   'process:review', 'process:integration', 'skill:conformance', 'release:build', 'docs:all-in-one',
   'audit:aesthetics', 'aesthetics:review',
-  'vision:triage', 'audit:scene', 'audit:game-assets'
+  'vision:triage', 'audit:scene', 'audit:game-assets', 'mode', 'recheck'
 ];
 for (const script of requiredScripts) if (!packageJson.scripts?.[script]) errors.push(`Missing package script: ${script}`);
 checks.package = {

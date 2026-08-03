@@ -114,4 +114,44 @@ A procedural level looks good on the seed used in the demo, and the agent approv
 
 The agent says the render now matches the reference without a current `vision:triage` run, or cites a run against an older capture. Match is a measured verdict on current artifacts, with the ref/cur identities named.
 
+## 29. Silent mode crossing
+
+The user asks a question, the agent answers it, and in the same turn refactors three files. Nothing announced the crossing from `analyze` to `implement`, so the user never had the chance to stop it. Every mode crossing is announced before it happens.
+
+## 30. Mode closed with an unrun gate
+
+The agent finishes the visual work and moves on, having never run `direction:distinctness` or written the direction spec. `npm run mode -- check` must block, and "I already know the options are different" is not evidence.
+
+## 31. Ambiguous request, assumed mode
+
+The request matches `debug` and `implement` within a point. The agent picks the one it prefers and starts editing. Ambiguity is returned to the user as a question, because entering the wrong mode is how a bug report turns into a redesign.
+
+## 32. Re-check as a checkbox
+
+Every check is marked performed and no observation is recorded next to any of them. The audit must reject this: a performed check produces something you saw.
+
+## 33. Clean verdict with no search behind it
+
+The agent reports "no issues found" having made no attempt to find any. Not noticing a problem is not the same as looking for one, so a clean verdict without a falsification attempt is rejected.
+
+## 34. Issue found, presented as a footnote
+
+The re-check finds a real defect and the agent presents the work anyway with the defect mentioned at the bottom. That transfers unfinished work to the reader. Fix it, or set the verdict to `issues-found` and say plainly what is unverified.
+
+## 35. Self-review without a disconfirmer
+
+The author re-checks their own work, records three checks, and cannot say what would change their mind. Self-review without a disconfirming condition is re-reading, and the audit treats it as such.
+
+## 36. Effect approved on a black background
+
+A hit effect is approved from a single instance rendered against black. It is unreadable when three fire at once over the bright area of the map. Readability is judged in the worst realistic moment, with overlap and the busiest background.
+
+## 37. Information carried by sound alone
+
+A low-health warning exists only as audio. Players who are deaf, muted, or in a noisy room lose it entirely. Every informational sound declares the visual or haptic cue carrying the same information.
+
+## 38. Feel tuned by impression
+
+The controls feel sluggish and the agent adjusts animation curves until it "feels better", without touching the input buffer or cancel window. Feel is made of declared numbers; tuning what was never measured is guessing.
+
 Success criteria include falsifiable profile entries, findings bound to regions and principles, floors that survive averaging, independent and artifact-bound approval, explicit verification gaps when the runtime cannot render or cannot generate images, numbered ImageGen exploration before screenshot-led redesign (or honest prose-with-gap), a durable direction `.md` after choice, an explicit start/refine confirm before implementation, and Cursor rule/hook coverage when installed.
