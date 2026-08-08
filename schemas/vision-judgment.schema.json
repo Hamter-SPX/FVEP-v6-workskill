@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "vision-judgment.schema.json",
+  "title": "Vision Judgment Record",
+  "type": "object",
+  "required": ["schema_version", "case_label", "mode", "verdict", "findings", "judged_by", "judged_at"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "case_label": { "type": "string", "minLength": 1 },
+    "mode": { "enum": ["metrics", "model", "human"] },
+    "verdict": { "enum": ["pass", "warn", "fail"] },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["rule", "severity", "expected", "observed"],
+        "properties": {
+          "rule": { "type": "string" },
+          "severity": { "enum": ["warn", "fail"] },
+          "expected": {}, "observed": {}
+        },
+        "additionalProperties": false
+      }
+    },
+    "metrics_ref": { "type": ["string", "null"] },
+    "capture_ref": { "type": ["string", "null"] },
+    "judged_by": { "type": "string" },
+    "judged_at": { "type": "string", "format": "date-time" },
+    "goal": { "type": ["string", "null"] }
+  },
+  "additionalProperties": false
+}
