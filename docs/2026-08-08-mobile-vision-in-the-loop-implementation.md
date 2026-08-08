@@ -608,7 +608,7 @@ export function occupancyGrid(image, { cols = 8, rows = 5, tolerance = 48, empty
   const minRatio = ratios.length ? Math.min(...ratios) : 0;
   // สีพื้นหลังน่าสงสัย = border หลากสี (share ต่ำ) หรือ occupancy เต็มทุก cell
   // (gradient border / modal ring ทำให้ background ที่เดาได้ "ผิด" — judge ต้องรู้)
-  const suspectBackground = bgInfo.share < 0.5 || minRatio >= 0.9;
+  const suspectBackground = bgInfo.share < 0.5 || minRatio >= 0.9 || emptyCells.length === 0;
   return {
     grid: { cols, rows },
     cells: ratios,
@@ -743,7 +743,7 @@ export function alignmentScore(image, { threshold = 0.18 } = {}) {
     }
     const bins = new Map();
     for (const d of diffs) {
-      const key = Math.round(d / 2) * 2;
+      const key = Math.floor(d / 2) * 2;
       bins.set(key, (bins.get(key) ?? 0) + 1);
     }
     let dominantCount = 0;
