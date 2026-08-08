@@ -438,14 +438,60 @@ test('extractPalette — dominant colors + harmony classification', () => {
   assert.equal(reds.length, 1);
 });
 
-test('alignmentScore — strongly columned layout scores higher than noise', () => {
-  const cols = solid(60, 40, [255, 255, 255, 255]);
-  paint(cols, 10, 0, 20, 40, [0, 0, 0, 255]);      // one block with sharp vertical edges at x=10, x=30
-  const structured = alignmentScore(cols);
-  const noise = alignmentScore(solid(60, 40, [128, 128, 128, 255]));
-  assert.ok((structured.vertical ?? 0) > 0);
-  assert.ok(noise.vertical === null || noise.vertical === 0);
+test('extractPalette — quantizeShift guard', () => {
+  const img = solid(8, 8, [255, 255, 255, 255]);
+  assert.throws(() => extractPalette(img, { quantizeShift: 0 }), RangeError);
+  assert.throws(() => extractPalette(img, { quantizeShift: 5 }), RangeError);
+  assert.doesNotThrow(() => extractPalette(img, { quantizeShift: 3 }));
 });
+
+test('alignmentScore — columned layout > scattered noise > single edge > none', () => {
+  const cols = solid(60, 40, [255, 255, 255, 255]);
+  paint(cols, 10, 0, 20, 40, [0, 0, 0, 255]);      // sharp vertical edges at x=10, x=30
+  const structured = alignmentScore(cols);
+  assert.ok(structured.vertical >= 0.6, `two-edge block ≈ 0.67 (1.0 × coverage 2/3), got ${structured.vertical}`);
+
+  // truly irregular scatter — consecutive spacings all different
+  const noisy = solid(70, 40, [255, 255, 255, 255]);
+  for (const x of [3, 7, 16, 22, 35, 41, 55, 60]) paint(noisy, x, 0, 1, 40, [0, 0, 0, 255]);
+  const noise = alignmentScore(noisy);
+  assert.ok((noise.vertical ?? 0) < 0.5, `scattered noise must score low, got ${noise.vertical}`);
+
+  const smear = solid(60, 40, [255, 255, 255, 255]);
+  paint(smear, 20, 0, 16, 40, [0, 0, 0, 255]);      // one wide soft blob → 2 wide runs? edges ~2px each
+  const single = alignmentScore(smear);
+  assert.ok((single.vertical ?? 0) <= 0.67, `single block caps ≤0.67, got ${single.vertical}`);
+
+  const flat = alignmentScore(solid(60, 40, [128, 128, 128, 255]));
+  assert.equal(flat.vertical, null);
+  assert.equal(flat.score, null);
+});
+
+test('occupancyGrid — suspectBackground flags', () => {
+  // normal case: white page + content blob → not suspect
+  const normal = paint(solid(80, 40, [255, 255, 255, 255]), 0, 0, 10, 8, [0, 0, 0, 255]);
+  const occOk = occupancyGrid(normal, { cols: 8, rows: 5 });
+  assert.equal(occOk.suspectBackground, false);
+  assert.ok(occOk.backgroundShare > 0.5);
+
+  // gradient border: every border pixel unique-ish → dominant share collapses
+  const grad = solid(80, 40, [255, 255, 255, 255]);
+  for (let x = 0; x < 80; x += 1) for (let y = 0; y < 4; y += 1) paint(grad, x, y, 1, 1, [x * 3 % 256, (x * 7) % 256, (x * 13) % 256, 255]);
+  for (let x = 0; x < 80; x += 1) for (let y = 36; y < 40; y += 1) paint(grad, x, y, 1, 1, [(x * 5) % 256, (x * 11) % 256, (x * 17) % 256, 255]);
+  for (let y = 0; y < 40; y += 1) for (let x = 0; x < 4; x += 1) paint(grad, x, y, 1, 1, [(y * 3) % 256, (y * 9) % 256, (y * 15) % 256, 255]);
+  for (let y = 0; y < 40; y += 1) for (let x = 76; x < 80; x += 1) paint(grad, x, y, 1, 1, [(y * 7) % 256, (y * 5) % 256, (y * 11) % 256, 255]);
+  const occGrad = occupancyGrid(grad, { cols: 8, rows: 5 });
+  assert.equal(occGrad.suspectBackground, true, 'fragmented border must flag suspect');
+
+  // modal ring case: colored full-perimeter ring + fully filled interior
+  const ring = solid(80, 40, [200, 30, 30, 255]);
+  paint(ring, 6, 6, 68, 28, [200, 30, 30, 255]);
+  // interior also busy (all cells occupied) → suspect via minRatio
+  for (let y = 6; y < 34; y += 1) for (let x = 6; x < 74; x += 1) paint(ring, x, y, 1, 1, [10 + (x % 40), 30, 60, 255]);
+  const occRing = occupancyGrid(ring, { cols: 8, rows: 5 });
+  assert.equal(occRing.suspectBackground, true, 'all-cells-full must flag suspect');
+});
+
 
 test('computeVisionMetrics — full shape', () => {
   const img = paint(solid(80, 40, [255, 255, 255, 255]), 0, 0, 20, 40, [230, 57, 70, 255]);
@@ -504,10 +550,12 @@ export function sampleBorderBackground(image, { border = 4 } = {}) {
   assertImage(image);
   const b = Math.max(1, Math.min(border, Math.floor(Math.min(image.width, image.height) / 4)));
   const counts = new Map();
+  let total = 0;
   const push = (x, y) => {
     const o = (y * image.width + x) * 4;
     const key = quantKey(data8(image.data, o), data8(image.data, o + 1), data8(image.data, o + 2));
     counts.set(key, (counts.get(key) ?? 0) + 1);
+    total += 1;
   };
   for (let y = 0; y < image.height; y += 1) {
     for (let x = 0; x < image.width; x += 1) {
@@ -517,7 +565,7 @@ export function sampleBorderBackground(image, { border = 4 } = {}) {
   let best = null;
   for (const [key, n] of counts) if (!best || n > best.n) best = { key, n };
   const [r, g, bch] = best.key.split(',').map(Number);
-  return [r, g, bch];
+  return { rgb: [r, g, bch], share: total ? best.n / total : 0 };
 }
 
 function data8(data, o) { return data[o] ?? 0; }
@@ -530,7 +578,8 @@ function colorDistance(data, o, bg) {
 
 export function occupancyGrid(image, { cols = 8, rows = 5, tolerance = 48, emptyBelow = 0.02 } = {}) {
   assertImage(image);
-  const bg = sampleBorderBackground(image);
+  const bgInfo = sampleBorderBackground(image);
+  const bg = bgInfo.rgb;
   const cells = new Array(cols * rows).fill(0);
   const counts = new Array(cols * rows).fill(0);
   for (let y = 0; y < image.height; y += 1) {
@@ -556,11 +605,17 @@ export function occupancyGrid(image, { cols = 8, rows = 5, tolerance = 48, empty
     if (wy < 0) top += ratio * -wy; else bottom += ratio * wy;
   });
   const total = Math.max(1e-9, ratios.reduce((a, b) => a + b, 0));
+  const minRatio = ratios.length ? Math.min(...ratios) : 0;
+  // สีพื้นหลังน่าสงสัย = border หลากสี (share ต่ำ) หรือ occupancy เต็มทุก cell
+  // (gradient border / modal ring ทำให้ background ที่เดาได้ "ผิด" — judge ต้องรู้)
+  const suspectBackground = bgInfo.share < 0.5 || minRatio >= 0.9;
   return {
     grid: { cols, rows },
     cells: ratios,
     emptyCells,
     background: bg,
+    backgroundShare: bgInfo.share,
+    suspectBackground,
     balance: {
       left: left / total, right: right / total, top: top / total, bottom: bottom / total,
       centerX: right / total - left / total,
@@ -603,6 +658,9 @@ function rgbToHue(r, g, b) {
 
 export function extractPalette(image, { topK = 6, quantizeShift = 3 } = {}) {
   assertImage(image);
+  if (!Number.isInteger(quantizeShift) || quantizeShift < 1 || quantizeShift > 4) {
+    throw new RangeError('quantizeShift must be an integer 1..4');
+  }
   const counts = new Map();
   let total = 0;
   for (let o = 0; o < image.width * image.height * 4; o += 4) {
@@ -640,25 +698,34 @@ export function alignmentScore(image, { threshold = 0.18 } = {}) {
   assertImage(image);
   const { width, height, data } = image;
   if (width < 8 || height < 8) return { vertical: null, horizontal: null, score: null };
-  const vCols = [];
-  for (let x = 1; x < width - 1; x += 1) {
-    let acc = 0;
-    for (let y = 1; y < height - 1; y += 1) {
-      const o = (y * width + x) * 4;
-      acc += Math.abs(lumaAtData(data, o + 4) - lumaAtData(data, o - 4));
+
+  const strongLines = (orientation) => {
+    const out = [];
+    if (orientation === 'vertical') {
+      for (let x = 1; x < width - 1; x += 1) {
+        let acc = 0;
+        for (let y = 1; y < height - 1; y += 1) {
+          const o = (y * width + x) * 4;
+          acc += Math.abs(lumaAtData(data, o + 4) - lumaAtData(data, o - 4));
+        }
+        if (acc / (height - 2) > threshold) out.push(x);
+      }
+    } else {
+      for (let y = 1; y < height - 1; y += 1) {
+        let acc = 0;
+        for (let x = 1; x < width - 1; x += 1) {
+          const o = (y * width + x) * 4;
+          acc += Math.abs(lumaAtData(data, o + width * 4) - lumaAtData(data, o - width * 4));
+        }
+        if (acc / (width - 2) > threshold) out.push(y);
+      }
     }
-    if (acc / (height - 2) > threshold) vCols.push(x);
-  }
-  const hRows = [];
-  for (let y = 1; y < height - 1; y += 1) {
-    let acc = 0;
-    for (let x = 1; x < width - 1; x += 1) {
-      const o = (y * width + x) * 4;
-      acc += Math.abs(lumaAtData(data, o + width * 4) - lumaAtData(data, o - width * 4));
-    }
-    if (acc / (width - 2) > threshold) hRows.push(y);
-  }
-  const clustered = (positions) => {
+    return out;
+  };
+
+  // Alignment = grid consistency: CONSECUTIVE strong-line runs share a dominant
+  // spacing. A lone edge is not a layout (0.25); full score needs >= 3 runs.
+  const runsAlignment = (positions) => {
     if (positions.length === 0) return null;
     const runs = [];
     let start = positions[0]; let prev = positions[0];
@@ -667,14 +734,31 @@ export function alignmentScore(image, { threshold = 0.18 } = {}) {
       runs.push([start, prev]); start = p; prev = p;
     }
     runs.push([start, prev]);
-    return Math.min(1, runs.length / Math.max(1, positions.length / 8));
+    if (runs.length < 2) return 0.25;
+
+    const centers = runs.map(([a, b]) => (a + b) / 2);
+    const diffs = [];
+    for (let i = 0; i + 1 < centers.length; i += 1) {
+      diffs.push(Math.abs(centers[i + 1] - centers[i]));
+    }
+    const bins = new Map();
+    for (const d of diffs) {
+      const key = Math.round(d / 2) * 2;
+      bins.set(key, (bins.get(key) ?? 0) + 1);
+    }
+    let dominantCount = 0;
+    for (const n of bins.values()) if (n > dominantCount) dominantCount = n;
+    const base = dominantCount / diffs.length;
+    const coverage = Math.min(1, runs.length / 3);
+    return Math.round(base * coverage * 100) / 100;
   };
-  const vertical = clustered(vCols);
-  const horizontal = clustered(hRows);
+
+  const vertical = runsAlignment(strongLines('vertical'));
+  const horizontal = runsAlignment(strongLines('horizontal'));
   const present = [vertical, horizontal].filter((v) => v !== null);
   return {
     vertical, horizontal,
-    score: present.length ? present.reduce((a, b) => a + b, 0) / present.length : null
+    score: present.length ? Math.round((present.reduce((a, b) => a + b, 0) / present.length) * 100) / 100 : null
   };
 }
 
@@ -709,7 +793,7 @@ export function computeVisionMetrics(image, { cols = 8, rows = 5 } = {}) {
 - [ ] **Step 4: Run — verify tests PASS**
 
 Run: `node --test tests/unit/vision-metrics-engine.test.mjs`
-Expected: PASS 7 tests. ถ้า `alignmentScore` structured-case ไม่ผ่าน ให้ debug ที่ threshold (0.18) กับ fixture ขนาด 60x40 — ขอบ block x=10/x=30 ต้องมี mean|Δ| ≈ 1.0 (ขาว→ดำ) จึงผ่าน
+Expected: PASS 9 tests. ถ้า `alignmentScore` structured-case ไม่ผ่าน ให้ debug ที่ threshold (0.18) กับ fixture ขนาด 60x40 — ขอบ block x=10/x=30 ต้องมี mean|Δ| ≈ 1.0 (ขาว→ดำ) จึงผ่าน; noise fixture ต้อง < 0.5 (consecutive offsets ไม่สม่ำเสมอ)
 
 - [ ] **Step 5: CLI script**
 
@@ -798,7 +882,13 @@ git commit -m "feat(vision): deterministic metrics engine (occupancy/density/pal
 - Consumes: metrics object จาก `computeVisionMetrics` (Task 2 — fields `.occupancy.emptyCells`, `.alignment.score`, `.contrast.*`)
 - Produces:
   - `VERDICTS = ['pass','warn','fail']`
-  - `evaluateMetrics(metrics, thresholds) → findings[]` — threshold keys: `maxEmptyCells`, `minAlignment`, `maxDarkShare`, `minDarkShare`, `maxLightShare`, `minLightShare` (ค่า number = severity fail; `{value, severity}` = กำหนดเอง)
+  - `evaluateMetrics(metrics, thresholds) → findings[]` — threshold keys: `maxEmptyCells`, `minAlignment`, `maxDarkShare`, `minDarkShare`, `maxLightShare`, `minLightShare` (ค่า number = severity fail; `{value, severity}` = กำหนดเอง) + กฎเสมอ `suspectBackground` (warn อัตโนมัติจาก Task 2)
+
+**Semantics ผูกมัด (จาก Task 2 review — ห้ามตีความเพี้ยน):**
+- `alignment.score` วัด "มีเส้น edge คมเรียงสม่ำเสมอ" ไม่ใช่ "จัดหน้าสวยแล้ว" — `null` = ไม่มี edge → กฎข้าม, แปลว่า flat layout จะไม่มีคะแนน alignment (ปกติ)
+- คะแนนเต็มต้องมี ≥3 runs ระยะห่างสม่ำเสมอ — run เดียว/สอง run ได้สูงสุด ~0.67
+- `suspectBackground=true` ⇒ metrics อื่นของ occupancy เชื่อไม่ได้ — judge ต้อง warn ทันที (ทำแล้วใน evaluateMetrics)
+- `palette.harmony` ห้ามใช้เป็นสัญญาณ canvas ว่างหรือคุณภาพสี — สีกลาง/ขาวดำทำให้ hue คลาด (ดู rgb+share ประกอบเท่านั้น)
   - `judgeMetrics({metrics, thresholds, caseLabel, goal}) → verdictRecord`
   - `validateVerdictRecord(parsed) → parsed` (throw ถ้า invalid)
   - `buildVerdictRecord({mode, caseLabel, goal, verdict, findings, metricsRef, captureRef, judgedBy}) → record`
@@ -833,6 +923,15 @@ test('VERDICTS has exactly pass/warn/fail', () => {
 
 test('evaluateMetrics — no thresholds → no findings', () => {
   assert.deepEqual(evaluateMetrics(baseMetrics, {}), []);
+});
+
+test('evaluateMetrics — suspectBackground warns unconditionally', () => {
+  const m = structuredClone(baseMetrics);
+  m.occupancy = { ...m.occupancy, suspectBackground: true, backgroundShare: 0.22 };
+  const findings = evaluateMetrics(m, {});
+  assert.equal(findings.length, 1);
+  assert.equal(findings[0].rule, 'suspectBackground');
+  assert.equal(findings[0].severity, 'warn');
 });
 
 test('evaluateMetrics — maxEmptyCells fail when exceeded', () => {
@@ -912,6 +1011,17 @@ export function evaluateMetrics(metrics, thresholds = {}) {
   const align = metrics?.alignment;
   const con = metrics?.contrast;
 
+  // กฎเสมอ (ไม่ต้องตั้ง threshold): พื้นหลังที่ engine เดาได้ "น่าสงสัย"
+  // (gradient border / modal ring / occupancy เต็มทุก cell) — metrics อื่นอาจเพี้ยนหมด
+  if (occ?.suspectBackground === true) {
+    findings.push({
+      rule: 'suspectBackground',
+      severity: 'warn',
+      expected: 'stable background estimate',
+      observed: { share: occ.backgroundShare ?? null, suspect: true }
+    });
+  }
+
   const rules = [
     ['maxEmptyCells', () => (occ ? occ.emptyCells.length : 0), 'max'],
     ['minAlignment', () => align?.score, 'min'],
@@ -925,7 +1035,7 @@ export function evaluateMetrics(metrics, thresholds = {}) {
     if (!(rule in thresholds)) continue;
     const { value: expected, severity } = ruleSeverity(thresholds[rule]);
     const observed = readObserved();
-    if (observed === null || observed === undefined) continue;
+    if (observed === null || observed === undefined) continue; // รูปแบบ alignment=null (ไม่มี edge) = ข้าม ไม่ใช่ผิด
     const breached = direction === 'max' ? observed > expected : observed < expected;
     if (breached) {
       findings.push({ rule, severity, expected, observed });
@@ -1252,4 +1362,4 @@ git status --short   # ควรสะอาด
 
 - Spec coverage: G1 (adapter → Task 1) ✅, G2 (metrics → Task 2) ✅, G3 (judge slot → Task 3) ✅, G4 (ไม่เพิ่ม dep — ทุก task ใช้ pngjs/ของเดิม) ✅; wiring/docs → Task 4 ✅; verification+live smoke → Task 5 ✅
 - Type consistency: `computeVisionMetrics(image,{cols,rows})` (Task 2) ↔ `evaluateMetrics` อ่าน `.occupancy.emptyCells/.alignment.score/.contrast.darkShare/.lightShare` (Task 3) ↔ fixtures ใน tests ตรงกัน ✅; `captureSimulatorScreenshot({exec, sleep})` injection ใช้ใน test Task 1 ✅
-- Known risk ที่ยอมรับ: `alignmentScore` เป็น heuristic กลาง ๆ — test fixture เล็กที่ pin พฤติกรรมขั้นต่ำเท่านั้น (structured > noise)
+- Known risk ที่ยอมรับ: `alignmentScore` เป็น heuristic — หลัง amendment (2026-08-08) วัด Grid consistency ผ่าน consecutive run spacings (≥3 runs สำหรับคะแนนเต็ม; noise ต้องต่ำ) + `suspectBackground` flag กัน bg เดาผิด — ยังไม่ใช่ "เครื่องวัดความสวย" แต่ตัวเลขไม่หลอกผู้อ่านแล้ว
