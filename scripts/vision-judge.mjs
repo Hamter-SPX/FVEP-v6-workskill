@@ -19,7 +19,7 @@ Options:
   --label <name>        Case label (default: screen)
   --capture <file>      Capture PNG path (recorded in verdict)
   --out <file>          Write verdict JSON here (default: stdout only)
-  -h, --help            Show help
+  --help                Show help
 
 Examples:
   node scripts/vision-judge.mjs --judge metrics --metrics .fx/metrics.json --thresholds '{"maxEmptyCells":3}' --out .fx/verdict.json
@@ -58,7 +58,19 @@ try {
       if (!args['verdict-file'] && !args.verdictFile) fail(new TypeError('--verdict-file is required in model/human mode'));
       const external = readJson(`@${args['verdict-file'] ?? args.verdictFile}`, 'verdict file');
       validateVerdictRecord(external);
-      record = { ...external, mode, case_label: external.case_label ?? args.label ?? 'screen', goal: external.goal ?? args.goal ?? null };
+      // Rebuild via the engine (no key spread) so model/human records can never
+      // carry unknown keys or schema-nonconforming fields.
+      record = buildVerdictRecord({
+        mode,
+        caseLabel: external.case_label ?? args.label ?? 'screen',
+        goal: external.goal ?? args.goal ?? null,
+        verdict: external.verdict,
+        findings: external.findings,
+        metricsRef: external.metrics_ref,
+        captureRef: external.capture_ref ?? args.capture,
+        judgedBy: external.judged_by,
+        judgedAt: external.judged_at
+      });
     }
     if (args.out) fs.writeFileSync(args.out, `${JSON.stringify(record, null, 2)}\n`);
     process.stdout.write(`${record.verdict.toUpperCase()} (${record.findings.length} findings) — ${record.case_label}\n`);

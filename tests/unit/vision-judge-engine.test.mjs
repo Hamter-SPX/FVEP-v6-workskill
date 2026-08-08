@@ -62,6 +62,46 @@ test('judgeMetrics — fail dominates warn dominates pass', () => {
   assert.equal(vPass.verdict, 'pass');
 });
 
+test('evaluateMetrics — threshold table covers all six rule keys', () => {
+  const cases = [
+    {
+      rule: 'maxEmptyCells', thresholds: { maxEmptyCells: 1 },
+      mutate: (m) => { m.occupancy.emptyCells = [{ col: 0, row: 0, ratio: 0 }, { col: 1, row: 0, ratio: 0.01 }]; },
+      observed: 2
+    },
+    { rule: 'minAlignment', thresholds: { minAlignment: 0.9 }, mutate: null, observed: 0.6 },
+    { rule: 'maxDarkShare', thresholds: { maxDarkShare: 0.4 }, mutate: null, observed: 0.5 },
+    { rule: 'minDarkShare', thresholds: { minDarkShare: 0.6 }, mutate: null, observed: 0.5 },
+    { rule: 'maxLightShare', thresholds: { maxLightShare: 0.4 }, mutate: null, observed: 0.5 },
+    { rule: 'minLightShare', thresholds: { minLightShare: 0.6 }, mutate: null, observed: 0.5 }
+  ];
+  for (const { rule, thresholds, mutate, observed } of cases) {
+    const m = structuredClone(baseMetrics);
+    if (mutate) mutate(m);
+    const findings = evaluateMetrics(m, thresholds);
+    assert.equal(findings.length, 1, rule);
+    assert.equal(findings[0].rule, rule);
+    assert.equal(findings[0].severity, 'fail');
+    assert.equal(findings[0].observed, observed);
+  }
+  // Same six keys at generous bounds → no findings.
+  assert.deepEqual(evaluateMetrics(baseMetrics, {
+    maxEmptyCells: 99, minAlignment: 0, maxDarkShare: 1, minDarkShare: 0, maxLightShare: 1, minLightShare: 0
+  }), []);
+});
+
+test('evaluateMetrics — invalid severity throws TypeError', () => {
+  assert.throws(() => evaluateMetrics(baseMetrics, { maxEmptyCells: { value: 1, severity: 'info' } }), /severity/);
+});
+
+test('evaluateMetrics — alignment.score null skips minAlignment (never a failure)', () => {
+  const m = structuredClone(baseMetrics);
+  m.alignment = { vertical: null, horizontal: null, score: null };
+  const findings = evaluateMetrics(m, { minAlignment: 0.9 });
+  assert.equal(findings.length, 0);
+  assert.equal(judgeMetrics({ metrics: m, thresholds: { minAlignment: 0.9 } }).verdict, 'pass');
+});
+
 test('buildVerdictRecord + validateVerdictRecord round-trip', () => {
   const rec = buildVerdictRecord({
     mode: 'metrics', caseLabel: 'chat', goal: 'g',
@@ -73,4 +113,18 @@ test('buildVerdictRecord + validateVerdictRecord round-trip', () => {
   assert.throws(() => validateVerdictRecord({ ...rec, verdict: 'meh' }), /verdict/);
   assert.throws(() => validateVerdictRecord({ ...rec, judged_at: 'not-a-date' }), /judged_at/);
   assert.throws(() => validateVerdictRecord({ verdict: 'pass' }), /case_label/);
+});
+
+test('validateVerdictRecord — requires schema_version 1, judged_by, known keys, ISO judged_at', () => {
+  const rec = buildVerdictRecord({ mode: 'human', caseLabel: 'chat', verdict: 'pass', judgedBy: 'jirawat' });
+  assert.equal(validateVerdictRecord(rec), rec);
+  assert.throws(() => validateVerdictRecord({ ...rec, schema_version: 2 }), /schema_version/);
+  const { schema_version: _v, ...noVersion } = rec;
+  assert.throws(() => validateVerdictRecord(noVersion), /schema_version/);
+  assert.throws(() => validateVerdictRecord({ ...rec, judged_by: '' }), /judged_by/);
+  const { judged_by: _j, ...noJudge } = rec;
+  assert.throws(() => validateVerdictRecord(noJudge), /judged_by/);
+  assert.throws(() => validateVerdictRecord({ ...rec, extra_stuff: true }), /unknown key/);
+  assert.throws(() => validateVerdictRecord({ ...rec, judged_at: '2026-08-08 00:00:00' }), /judged_at/);
+  assert.throws(() => validateVerdictRecord({ ...rec, judged_at: 'Sat Aug 08 2026' }), /judged_at/);
 });
