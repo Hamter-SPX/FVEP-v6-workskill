@@ -9,6 +9,7 @@ import {
   buildSimctlLaunchArgs,
   buildSimctlOpenUrlArgs,
   captureSimulatorScreenshot,
+  captureAllMobile,
   metaPathFor
 } from '../../lib/mobile-capture-engine.mjs';
 
@@ -130,4 +131,107 @@ test('captureSimulatorScreenshot — meta carries web-convention sha fields', ()
   assert.equal(meta.screenshotBytes, png.length);
   const onDisk = JSON.parse(fs.readFileSync(metaPathFor(out), 'utf8'));
   assert.equal(onDisk.screenshotSha256, expected);
+});
+
+function mobileFixture(overrides = {}) {
+  const outputDir = fs.mkdtempSync(path.join(os.tmpdir(), 'mce-matrix-'));
+  return {
+    outputDir,
+    capture: { type: 'ios-sim' },
+    mobile: {
+      udid: 'booted',
+      serial: 'emulator-5554',
+      cases: [
+        { key: 'home', label: 'Home', bundleId: 'com.example.app', launchActivity: null, openUrl: null, settleMs: 5, udid: null, serial: null },
+        { key: 'chat', label: 'Chat', bundleId: null, launchActivity: null, openUrl: 'app://chat/1', settleMs: 0, udid: 'DEVICE-2', serial: null }
+      ],
+      judge: { thresholds: {} }
+    },
+    ...overrides
+  };
+}
+
+// Simulates `xcrun simctl`: every `io ... screenshot <out>` call materializes
+// a fake PNG at the requested out path.
+function fakeSimctlExec(calls) {
+  return (cmd, args) => {
+    calls.push([cmd, ...args]);
+    if (args[1] === 'io') fs.writeFileSync(args[4], fakePngBytes(1170, 2532));
+    return { status: 0, stdout: '', stderr: '' };
+  };
+}
+
+test('captureAllMobile — matrix over mobile.cases writes png + schemaVersion-2 metadata per case', async () => {
+  const config = mobileFixture();
+  const calls = [];
+  const results = await captureAllMobile(config, { exec: fakeSimctlExec(calls), sleep: () => {} });
+  assert.equal(results.length, 2);
+  for (const result of results) {
+    assert.equal(result.ok, true);
+    assert.equal(result.regionCount, 0);
+    assert.equal(result.unresolvedRequiredRegionCount, 0);
+    assert.ok(fs.existsSync(result.screenshotPath));
+    assert.equal(path.resolve(config.outputDir, result.relativeScreenshot), result.screenshotPath);
+    // Driver sidecar is folded into the matrix metadata, not left on disk.
+    assert.equal(fs.existsSync(metaPathFor(result.screenshotPath)), false);
+    const metadata = JSON.parse(fs.readFileSync(result.metadataPath, 'utf8'));
+    assert.equal(metadata.schemaVersion, 2);
+    assert.equal(metadata.mode, 'current');
+    assert.equal(metadata.platform, 'ios-sim');
+    assert.equal(metadata.state, null);
+    assert.deepEqual(metadata.viewport, { width: 1170, height: 2532 });
+    assert.equal(metadata.screenshotPath, result.screenshotPath);
+    const pngBytes = fs.readFileSync(result.screenshotPath);
+    assert.equal(metadata.screenshotSha256, crypto.createHash('sha256').update(pngBytes).digest('hex'));
+    assert.equal(metadata.screenshotBytes, pngBytes.length);
+    assert.equal(metadata.mobile.platform, 'ios-simulator');
+    assert.equal(metadata.mobile.screenshotSha256, metadata.screenshotSha256);
+  }
+  const [home, chat] = results;
+  assert.equal(JSON.parse(fs.readFileSync(home.metadataPath, 'utf8')).key, 'home');
+  assert.equal(JSON.parse(fs.readFileSync(chat.metadataPath, 'utf8')).route, 'Chat');
+  // Case identity rides the web artifact layout: label->route, 'mobile' viewport, key->state.
+  assert.match(home.screenshotPath, /current[/\\]home__mobile__home\.png$/);
+  assert.match(chat.metadataPath, /metadata[/\\]chat__mobile__chat\.current\.capture\.json$/);
+  // bundleId launches before the screenshot; openurl precedes the chat capture;
+  // the per-case udid override reaches the driver.
+  assert.deepEqual(calls[0].slice(1), ['simctl', 'launch', 'booted', 'com.example.app']);
+  assert.deepEqual(calls[1].slice(1, 4), ['simctl', 'io', 'booted']);
+  assert.deepEqual(calls[2].slice(1), ['simctl', 'openurl', 'DEVICE-2', 'app://chat/1']);
+  assert.deepEqual(calls[3].slice(1, 4), ['simctl', 'io', 'DEVICE-2']);
+});
+
+test('captureAllMobile — mode reference writes into the reference tree', async () => {
+  const config = mobileFixture();
+  const calls = [];
+  const results = await captureAllMobile(config, { mode: 'reference', exec: fakeSimctlExec(calls), sleep: () => {} });
+  assert.equal(results.length, 2);
+  assert.match(results[0].screenshotPath, /reference[/\\]home__mobile__home\.png$/);
+  const metadata = JSON.parse(fs.readFileSync(results[0].metadataPath, 'utf8'));
+  assert.equal(metadata.mode, 'reference');
+  assert.match(results[0].metadataPath, /metadata[/\\]home__mobile__home\.reference\.capture\.json$/);
+});
+
+test('captureAllMobile — filters.case and filters.route narrow the matrix', async () => {
+  const config = mobileFixture();
+  const calls = [];
+  const byCase = await captureAllMobile(config, { filters: { case: 'chat' }, exec: fakeSimctlExec(calls), sleep: () => {} });
+  assert.equal(byCase.length, 1);
+  assert.match(byCase[0].screenshotPath, /chat__mobile__chat\.png$/);
+  assert.equal(fs.existsSync(path.join(config.outputDir, 'current', 'home__mobile__home.png')), false);
+  calls.length = 0;
+  const byRoute = await captureAllMobile(config, { filters: { route: 'Home' }, exec: fakeSimctlExec(calls), sleep: () => {} });
+  assert.equal(byRoute.length, 1);
+  assert.match(byRoute[0].screenshotPath, /home__mobile__home\.png$/);
+});
+
+test('captureAllMobile — rejects capture.type playwright (web path) and Task-4-pending android', async () => {
+  await assert.rejects(
+    () => captureAllMobile(mobileFixture({ capture: { type: 'playwright' } }), { exec: () => {}, sleep: () => {} }),
+    /requires capture\.type ios-sim\|android/
+  );
+  await assert.rejects(
+    () => captureAllMobile(mobileFixture({ capture: { type: 'android' } }), { exec: () => {}, sleep: () => {} }),
+    (error) => error instanceof TypeError && /Task 4 pending/.test(error.message)
+  );
 });

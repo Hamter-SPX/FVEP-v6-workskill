@@ -131,6 +131,13 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
+        "type": {
+          "enum": [
+            "playwright",
+            "ios-sim",
+            "android"
+          ]
+        },
         "fullPage": {
           "type": "boolean"
         },
@@ -178,6 +185,76 @@
             "string",
             "null"
           ]
+        }
+      }
+    },
+    "mobile": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "udid": {
+          "type": "string"
+        },
+        "serial": {
+          "type": "string"
+        },
+        "cases": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "key": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "bundleId": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "launchActivity": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "openUrl": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "settleMs": {
+                "type": "number",
+                "minimum": 0
+              },
+              "udid": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "serial": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "judge": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "thresholds": {
+              "type": "object"
+            }
+          }
         }
       }
     },

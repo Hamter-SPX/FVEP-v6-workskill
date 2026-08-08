@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import fsSync from 'node:fs';
 import path from 'node:path';
 import { loadAestheticEvidence } from '../lib/aesthetic-audit-engine.mjs';
 import { auditA11yAll } from '../lib/a11y-engine.mjs';
@@ -12,6 +13,8 @@ import { runEngineeringChecks } from '../lib/engineering.mjs';
 import { inspectAll } from '../lib/inspect-engine.mjs';
 import { inspectInteractionsAll } from '../lib/interaction-engine.mjs';
 import { loadSemanticVisualReview } from '../lib/manual-review-engine.mjs';
+import { captureAllMobile } from '../lib/mobile-capture-engine.mjs';
+import { runMobileChecks } from '../lib/mobile-checks-engine.mjs';
 import { auditPerformanceAll } from '../lib/performance-engine.mjs';
 import { createRunProvenance } from '../lib/provenance.mjs';
 import { writeRunSummary } from '../lib/run-summary.mjs';
@@ -101,27 +104,60 @@ try {
     const currentBaseUrl = args['base-url'];
     const referenceUrl = args['reference-url'];
     const sections = {};
+    // capture.type selects the driver: 'playwright' runs the web pipeline
+    // below unchanged; ios-sim|android run the mobile matrix (capture,
+    // optional stored-reference compare, per-case metrics+judge) instead.
+    const captureType = config.capture?.type ?? 'playwright';
+    const isMobile = captureType !== 'playwright';
 
-    if (args['refresh-reference']) {
-      const liveReferenceUrl = referenceUrl ?? config.referenceBaseUrl;
-      if (!liveReferenceUrl) throw new Error('--refresh-reference requires --reference-url or referenceBaseUrl in the config.');
-      sections.referenceCapture = await captureAll(config, { mode: 'reference', baseUrl: liveReferenceUrl, headed: args.headed, filters });
+    if (isMobile) {
+      if (!args['skip-capture']) sections.capture = await captureAllMobile(config, { mode: 'current', filters });
+      if (!args['skip-compare'] && fsSync.existsSync(path.join(config.outputDir, 'reference'))) {
+        sections.comparison = await compareAll(config, { filters });
+      } else if (!args['skip-compare']) {
+        process.stdout.write('compare: skipped (no stored reference captures for mobile)\n');
+      }
+      sections.mobileChecks = await runMobileChecks(config, { filters });
+      for (const name of ['inspect', 'a11y', 'interaction', 'state-crawler', 'performance', 'tokens', 'breakpoints', 'engineering']) {
+        process.stdout.write(`${name}: skipped (web-only section)\n`);
+      }
+    } else {
+      if (args['refresh-reference']) {
+        const liveReferenceUrl = referenceUrl ?? config.referenceBaseUrl;
+        if (!liveReferenceUrl) throw new Error('--refresh-reference requires --reference-url or referenceBaseUrl in the config.');
+        sections.referenceCapture = await captureAll(config, { mode: 'reference', baseUrl: liveReferenceUrl, headed: args.headed, filters });
+      }
+      if (!args['skip-capture']) sections.capture = await captureAll(config, { mode: 'current', baseUrl: currentBaseUrl, headed: args.headed, filters });
+      if (!args['skip-inspect']) sections.inspection = await inspectAll(config, { baseUrl: currentBaseUrl, headed: args.headed, filters });
+      if (!args['skip-a11y']) sections.accessibility = await auditA11yAll(config, { baseUrl: currentBaseUrl, headed: args.headed, filters });
+      if (!args['skip-interaction']) sections.interaction = await inspectInteractionsAll(config, { baseUrl: currentBaseUrl, headed: args.headed, filters });
+      if (!args['skip-state-crawler']) sections.stateCrawler = await crawlInteractionStatesAll(config, { baseUrl: currentBaseUrl, headed: args.headed, filters });
+      if (!args['skip-performance']) sections.performance = await auditPerformanceAll(config, { baseUrl: currentBaseUrl, headed: args.headed, filters });
+      if (!args['skip-tokens']) sections.tokens = await collectTokenEvidence(config, { baseUrl: currentBaseUrl, referenceUrl, headed: args.headed, filters, refreshReference: args['refresh-reference'] });
+      if (!args['skip-breakpoints']) sections.breakpoints = await discoverBreakpoints(config, { baseUrl: currentBaseUrl, headed: args.headed, filters });
+      if (config.baseline.enabled) sections.baseline = await verifyBaselineForConfig(config);
+      if (!args['skip-engineering']) sections.engineering = await runEngineeringChecks(config);
+      if (!args['skip-compare']) sections.comparison = await compareAll(config, { filters });
+      if (!args['skip-manual-review']) sections.manualReview = await loadSemanticVisualReview(config, provenance.configHash);
+      if (!args['skip-aesthetics']) sections.aesthetics = await loadAestheticEvidence(config, provenance.configHash);
     }
-    if (!args['skip-capture']) sections.capture = await captureAll(config, { mode: 'current', baseUrl: currentBaseUrl, headed: args.headed, filters });
-    if (!args['skip-inspect']) sections.inspection = await inspectAll(config, { baseUrl: currentBaseUrl, headed: args.headed, filters });
-    if (!args['skip-a11y']) sections.accessibility = await auditA11yAll(config, { baseUrl: currentBaseUrl, headed: args.headed, filters });
-    if (!args['skip-interaction']) sections.interaction = await inspectInteractionsAll(config, { baseUrl: currentBaseUrl, headed: args.headed, filters });
-    if (!args['skip-state-crawler']) sections.stateCrawler = await crawlInteractionStatesAll(config, { baseUrl: currentBaseUrl, headed: args.headed, filters });
-    if (!args['skip-performance']) sections.performance = await auditPerformanceAll(config, { baseUrl: currentBaseUrl, headed: args.headed, filters });
-    if (!args['skip-tokens']) sections.tokens = await collectTokenEvidence(config, { baseUrl: currentBaseUrl, referenceUrl, headed: args.headed, filters, refreshReference: args['refresh-reference'] });
-    if (!args['skip-breakpoints']) sections.breakpoints = await discoverBreakpoints(config, { baseUrl: currentBaseUrl, headed: args.headed, filters });
-    if (config.baseline.enabled) sections.baseline = await verifyBaselineForConfig(config);
-    if (!args['skip-engineering']) sections.engineering = await runEngineeringChecks(config);
-    if (!args['skip-compare']) sections.comparison = await compareAll(config, { filters });
-    if (!args['skip-manual-review']) sections.manualReview = await loadSemanticVisualReview(config, provenance.configHash);
-    if (!args['skip-aesthetics']) sections.aesthetics = await loadAestheticEvidence(config, provenance.configHash);
 
-    const summary = await writeRunSummary(config, sections, { provenance });
+    // Mobile runs skip the web-only sections above, so the summary scores a
+    // clone of the config with those sections' evidence gates disabled;
+    // the web path keeps the original config untouched.
+    const summaryConfig = isMobile
+      ? {
+          ...config,
+          accessibility: { ...config.accessibility, enabled: false },
+          interaction: { ...config.interaction, enabled: false },
+          stateCrawler: { ...config.stateCrawler, enabled: false },
+          performance: { ...config.performance, enabled: false },
+          tokens: { ...config.tokens, enabled: false },
+          engineeringChecks: [],
+          breakpoints: { ...config.breakpoints, enabled: false }
+        }
+      : config;
+    const summary = await writeRunSummary(summaryConfig, sections, { provenance });
     process.stdout.write([
       `Automated evidence gate: ${summary.automatedGatePassed ? 'PASS' : 'FAIL'}`,
       `Quality score: ${summary.quality.score}/100 (${summary.quality.grade})`,
