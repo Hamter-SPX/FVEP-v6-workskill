@@ -84,13 +84,58 @@ test('extractPalette — dominant colors + harmony classification', () => {
   assert.equal(reds.length, 1);
 });
 
-test('alignmentScore — strongly columned layout scores higher than noise', () => {
+test('extractPalette — quantizeShift guard', () => {
+  const img = solid(8, 8, [255, 255, 255, 255]);
+  assert.throws(() => extractPalette(img, { quantizeShift: 0 }), RangeError);
+  assert.throws(() => extractPalette(img, { quantizeShift: 5 }), RangeError);
+  assert.doesNotThrow(() => extractPalette(img, { quantizeShift: 3 }));
+});
+
+test('alignmentScore — columned layout > scattered noise > single edge > none', () => {
   const cols = solid(60, 40, [255, 255, 255, 255]);
-  paint(cols, 10, 0, 20, 40, [0, 0, 0, 255]);      // one block with sharp vertical edges at x=10, x=30
+  paint(cols, 10, 0, 20, 40, [0, 0, 0, 255]);      // sharp vertical edges at x=10, x=30
   const structured = alignmentScore(cols);
-  const noise = alignmentScore(solid(60, 40, [128, 128, 128, 255]));
-  assert.ok((structured.vertical ?? 0) > 0);
-  assert.ok(noise.vertical === null || noise.vertical === 0);
+  assert.ok(structured.vertical >= 0.6, `two-edge block ≈ 0.67 (1.0 × coverage 2/3), got ${structured.vertical}`);
+
+  // truly irregular scatter — consecutive spacings all different
+  const noisy = solid(70, 40, [255, 255, 255, 255]);
+  for (const x of [3, 7, 16, 22, 35, 41, 55, 60]) paint(noisy, x, 0, 1, 40, [0, 0, 0, 255]);
+  const noise = alignmentScore(noisy);
+  assert.ok((noise.vertical ?? 0) < 0.5, `scattered noise must score low, got ${noise.vertical}`);
+
+  const smear = solid(60, 40, [255, 255, 255, 255]);
+  paint(smear, 20, 0, 16, 40, [0, 0, 0, 255]);      // one wide soft blob → 2 wide runs? edges ~2px each
+  const single = alignmentScore(smear);
+  assert.ok((single.vertical ?? 0) <= 0.67, `single block caps ≤0.67, got ${single.vertical}`);
+
+  const flat = alignmentScore(solid(60, 40, [128, 128, 128, 255]));
+  assert.equal(flat.vertical, null);
+  assert.equal(flat.score, null);
+});
+
+test('occupancyGrid — suspectBackground flags', () => {
+  // normal case: white page + content blob → not suspect
+  const normal = paint(solid(80, 40, [255, 255, 255, 255]), 0, 0, 10, 8, [0, 0, 0, 255]);
+  const occOk = occupancyGrid(normal, { cols: 8, rows: 5 });
+  assert.equal(occOk.suspectBackground, false);
+  assert.ok(occOk.backgroundShare > 0.5);
+
+  // gradient border: every border pixel unique-ish → dominant share collapses
+  const grad = solid(80, 40, [255, 255, 255, 255]);
+  for (let x = 0; x < 80; x += 1) for (let y = 0; y < 4; y += 1) paint(grad, x, y, 1, 1, [x * 3 % 256, (x * 7) % 256, (x * 13) % 256, 255]);
+  for (let x = 0; x < 80; x += 1) for (let y = 36; y < 40; y += 1) paint(grad, x, y, 1, 1, [(x * 5) % 256, (x * 11) % 256, (x * 17) % 256, 255]);
+  for (let y = 0; y < 40; y += 1) for (let x = 0; x < 4; x += 1) paint(grad, x, y, 1, 1, [(y * 3) % 256, (y * 9) % 256, (y * 15) % 256, 255]);
+  for (let y = 0; y < 40; y += 1) for (let x = 76; x < 80; x += 1) paint(grad, x, y, 1, 1, [(y * 7) % 256, (y * 5) % 256, (y * 11) % 256, 255]);
+  const occGrad = occupancyGrid(grad, { cols: 8, rows: 5 });
+  assert.equal(occGrad.suspectBackground, true, 'fragmented border must flag suspect');
+
+  // modal ring case: colored full-perimeter ring + fully filled interior
+  const ring = solid(80, 40, [200, 30, 30, 255]);
+  paint(ring, 6, 6, 68, 28, [200, 30, 30, 255]);
+  // interior also busy (all cells occupied) → suspect via minRatio
+  for (let y = 6; y < 34; y += 1) for (let x = 6; x < 74; x += 1) paint(ring, x, y, 1, 1, [10 + (x % 40), 30, 60, 255]);
+  const occRing = occupancyGrid(ring, { cols: 8, rows: 5 });
+  assert.equal(occRing.suspectBackground, true, 'all-cells-full must flag suspect');
 });
 
 test('computeVisionMetrics — full shape', () => {
