@@ -35,6 +35,13 @@ try {
     const png = PNG.sync.read(fs.readFileSync(args.image));
     const grid = parseGrid(args.grid);
     const metrics = computeVisionMetrics({ width: png.width, height: png.height, data: png.data }, grid);
+    const pngBytes = fs.readFileSync(args.image);
+    const { createHash } = await import('node:crypto');
+    metrics.source = {
+      sha256: createHash('sha256').update(pngBytes).digest('hex'),
+      width: png.width,
+      height: png.height
+    };
     if (args.out) fs.writeFileSync(args.out, `${JSON.stringify(metrics, null, 2)}\n`);
     if (args.compact) {
       const o = metrics.occupancy;

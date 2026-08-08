@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -113,4 +114,20 @@ test('captureSimulatorScreenshot — suffix-less out writes <out>.meta.json with
   assert.equal(meta.file, out);
   // The captured PNG itself must remain byte-identical (meta must not clobber it).
   assert.deepEqual(fs.readFileSync(out), pngBytes);
+});
+
+test('captureSimulatorScreenshot — meta carries web-convention sha fields', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'mce-'));
+  const out = path.join(dir, 'cur.png');
+  const png = fakePngBytes(8, 4);
+  const exec = (cmd, args) => {
+    if (args[1] === 'io') fs.writeFileSync(out, png);
+    return { status: 0, stdout: '', stderr: '' };
+  };
+  const meta = captureSimulatorScreenshot({ out, exec, sleep: () => {} });
+  const expected = crypto.createHash('sha256').update(png).digest('hex');
+  assert.equal(meta.screenshotSha256, expected);
+  assert.equal(meta.screenshotBytes, png.length);
+  const onDisk = JSON.parse(fs.readFileSync(metaPathFor(out), 'utf8'));
+  assert.equal(onDisk.screenshotSha256, expected);
 });

@@ -146,3 +146,23 @@ test('validateVerdictRecord — requires schema_version 1, judged_by, known keys
   assert.throws(() => validateVerdictRecord({ ...rec, judged_at: '2026-08-08 00:00:00' }), /judged_at/);
   assert.throws(() => validateVerdictRecord({ ...rec, judged_at: 'Sat Aug 08 2026' }), /judged_at/);
 });
+
+test('evaluateMetrics — sourceMismatch finding when hashes differ', () => {
+  const m = structuredClone(baseMetrics);
+  const findings = evaluateMetrics(m, {}, {
+    metricsSource: { sha256: 'aaa', width: 8, height: 8 },
+    captureSha256: 'bbb'
+  });
+  const hit = findings.find((f) => f.rule === 'sourceMismatch');
+  assert.ok(hit, 'expected sourceMismatch finding');
+  assert.equal(hit.severity, 'fail');
+});
+
+test('evaluateMetrics — matching hashes produce no sourceMismatch', () => {
+  const m = structuredClone(baseMetrics);
+  const findings = evaluateMetrics(m, {}, {
+    metricsSource: { sha256: 'aaa', width: 8, height: 8 },
+    captureSha256: 'aaa'
+  });
+  assert.equal(findings.find((f) => f.rule === 'sourceMismatch'), undefined);
+});

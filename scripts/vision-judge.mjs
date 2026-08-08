@@ -18,6 +18,7 @@ Options:
   --goal <text>         What the render is supposed to achieve
   --label <name>        Case label (default: screen)
   --capture <file>      Capture PNG path (recorded in verdict)
+  --verify-source       Fail unless metrics.source.sha256 matches --capture PNG hash
   --out <file>          Write verdict JSON here (default: stdout only)
   --help                Show help
 
@@ -49,11 +50,18 @@ try {
       if (!args.metrics) throw new TypeError('--metrics is required in metrics mode');
       const metrics = readJson(`@${args.metrics}`, 'metrics file');
       const thresholds = args.thresholds ? readJson(args.thresholds, 'thresholds') : {};
-      record = judgeMetrics({
-        metrics, thresholds,
-        caseLabel: args.label ?? 'screen', goal: args.goal,
-        metricsRef: args.metrics, captureRef: args.capture
-      });
+      let sourceCheck = null;
+      if (args['verify-source']) {
+        if (!metrics.source?.sha256) fail(new TypeError('--verify-source requires metrics JSON with a source block (run vision-metrics again)'));
+        const capturePath = args.capture;
+        if (!capturePath) fail(new TypeError('--verify-source requires --capture <png>'));
+        const { createHash } = await import('node:crypto');
+        sourceCheck = {
+          metricsSource: metrics.source,
+          captureSha256: createHash('sha256').update(fs.readFileSync(capturePath)).digest('hex')
+        };
+      }
+      record = judgeMetrics({ metrics, thresholds, sourceCheck, caseLabel: args.label ?? 'screen', goal: args.goal, metricsRef: args.metrics, captureRef: args.capture });
     } else {
       if (!args['verdict-file'] && !args.verdictFile) throw new TypeError('--verdict-file is required in model/human mode');
       const external = readJson(`@${args['verdict-file'] ?? args.verdictFile}`, 'verdict file');
