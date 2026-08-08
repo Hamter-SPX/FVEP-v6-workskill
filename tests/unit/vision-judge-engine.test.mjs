@@ -166,3 +166,19 @@ test('evaluateMetrics — matching hashes produce no sourceMismatch', () => {
   });
   assert.equal(findings.find((f) => f.rule === 'sourceMismatch'), undefined);
 });
+
+test('validateVerdictRecord — deep validation', () => {
+  const ok = {
+    schema_version: 1, case_label: 'chat', mode: 'human', verdict: 'warn',
+    findings: [{ rule: 'maxEmptyCells', severity: 'warn', expected: 1, observed: 2 }],
+    metrics_ref: null, capture_ref: '/tmp/x.png', judged_by: 'j', judged_at: '2026-08-08T00:00:00.000Z', goal: 'g'
+  };
+  assert.equal(validateVerdictRecord(ok), ok);
+
+  assert.throws(() => validateVerdictRecord({ ...ok, mode: 'alien' }), /mode must be/);
+  assert.throws(() => validateVerdictRecord({ ...ok, judged_by: '' }), /judged_by/);
+  assert.throws(() => validateVerdictRecord({ ...ok, findings: [{ rule: 'x', severity: 'info', expected: 1, observed: 2 }] }), /severity/);
+  assert.throws(() => validateVerdictRecord({ ...ok, findings: [{ severity: 'warn', expected: 1, observed: 2 }] }), /rule/);
+  assert.throws(() => validateVerdictRecord({ ...ok, metrics_ref: 42 }), /metrics_ref/);
+  assert.throws(() => validateVerdictRecord({ ...ok, goal: 7 }), /goal/);
+});
