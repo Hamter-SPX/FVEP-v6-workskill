@@ -15,7 +15,7 @@
         "type": "object",
         "required": ["rule", "severity", "expected", "observed"],
         "properties": {
-          "rule": { "type": "string" },
+          "rule": { "type": "string", "minLength": 1 },
           "severity": { "enum": ["warn", "fail"] },
           "expected": {}, "observed": {}
         },
@@ -24,7 +24,7 @@
     },
     "metrics_ref": { "type": ["string", "null"] },
     "capture_ref": { "type": ["string", "null"] },
-    "judged_by": { "type": "string" },
+    "judged_by": { "type": "string", "pattern": ".*\\S.*" },
     "judged_at": { "type": "string", "format": "date-time" },
     "goal": { "type": ["string", "null"] }
   },

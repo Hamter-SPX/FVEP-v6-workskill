@@ -1,6 +1,6 @@
 {
   "schemaVersion": 4,
-  "generatedAt": "2026-08-03T18:01:42.931Z",
+  "generatedAt": "2026-08-08T18:47:11.668Z",
   "package": {
     "name": "fullstack-vision-engineering-pro",
     "version": "5.0.0"
@@ -27,29 +27,29 @@
       "missing": []
     },
     "json": {
-      "files": 77,
+      "files": 78,
       "failed": 0
     },
     "exampleConfigs": "PASS",
     "syntax": {
-      "files": 239,
+      "files": 249,
       "failed": []
     },
     "dynamicExecutionScan": {
-      "files": 149,
+      "files": 155,
       "findings": []
     },
     "unitTests": {
-      "files": 89,
-      "tests": 344,
-      "passed": 344,
+      "files": 93,
+      "tests": 381,
+      "passed": 381,
       "failed": 0,
       "exitStatus": 0
     },
     "package": {
       "name": "fullstack-vision-engineering-pro",
       "version": "5.0.0",
-      "scripts": 57,
+      "scripts": 60,
       "binaries": 55,
       "exactDependencies": true,
       "packageLockPresent": true
@@ -121,20 +121,20 @@
       "installedInValidationEnvironment": true
     },
     "documentation": {
-      "englishReadmeBytes": 17290,
-      "thaiReadmeBytes": 25137
+      "englishReadmeBytes": 18048,
+      "thaiReadmeBytes": 26067
     },
-    "filesScanned": 558
+    "filesScanned": 572
   },
   "wordCounts": {
     "AESTHETIC_WALKTHROUGH.md": 614,
     "ARCHITECTURE.md": 501,
-    "CHANGELOG.md": 1509,
+    "CHANGELOG.md": 1573,
     "MIGRATION_V3_TO_V4.md": 404,
     "MIGRATION_V4_TO_V5.md": 679,
     "PLAYBOOKS.md": 994,
-    "README.md": 2162,
-    "README_TH.md": 977,
+    "README.md": 2268,
+    "README_TH.md": 1052,
     "SECURITY.md": 269,
     "SKILL.md": 3305,
     "SUPERPOWERS_ADAPTATION_MATRIX.md": 680,
@@ -162,6 +162,10 @@
     "agents/visual-critic.md": 115,
     "ci/github-actions-fullstack.md": 305,
     "ci/github-actions.md": 92,
+    "docs/2026-08-08-mobile-vision-in-the-loop-design.md": 460,
+    "docs/2026-08-08-mobile-vision-in-the-loop-implementation.md": 6602,
+    "docs/2026-08-08-mobile-vision-loop-full-wiring-design.md": 590,
+    "docs/2026-08-08-mobile-vision-loop-full-wiring-implementation.md": 3457,
     "domains/APPLICATION/README.md": 122,
     "domains/DESIGN/README.md": 111,
     "domains/GAME/README.md": 639,
@@ -362,18 +366,17 @@
     "tests/process-pressure-scenarios-v4.md": 307
   },
   "sha256": {
-    ".DS_Store": "ebdbb26602cd0b53b2994999bc4214582f14a11e2bd5e8421d30978681c7ca6c",
     ".github/workflows/frontend-vision-loop.yml": "60e4cd9fabd1c2d10f67040a96f81663ddf95e8bc8cc0047db8cfa0893e66694",
     ".github/workflows/fullstack-evidence-gate.yml": "120b0eea1cf6250c6bb50204dbaa5b45e9e454dca92adf8f10b3bee1ec31fca9",
     ".gitignore": "f58d1caed9b2cdf28e66bcd6b00ea0feb00c9c754d927207ea8eef4195bab51f",
     "AESTHETIC_WALKTHROUGH.md": "77e9d63378828a64c30260d90b686b57966b6fc93ab0f6bc4cb6b8d3d2806dbe",
     "ARCHITECTURE.md": "45485702c851bf1e4fc3b873f82cfd2b36c5eca9e464c6769d23e8ed8b0d686d",
-    "CHANGELOG.md": "e3ec9224b64cd0385d3cc067c1c1ae2cd50479018b6b11d4aa67270f733fcf9f",
+    "CHANGELOG.md": "94ea9f074337850e47418e5278f66bd82d48708443a8abcc06e6dce6ddccdd72",
     "MIGRATION_V3_TO_V4.md": "c48416bb853061a1327e26931e73505c3ead7d3fb94edd9b6d8b3d7a257f9e97",
     "MIGRATION_V4_TO_V5.md": "3a2fabb5069b033e17d033e97100d29c62c86624b9ff134b43fc981484066972",
     "PLAYBOOKS.md": "b6d97adb14ee9b322c1a30bbcb55b381d2b32576d7fdec2d3cd61a763362cad5",
-    "README.md": "1fed7f4a6d029a20c197d21f0b81991962fc24cf9a7f4d1613638fd190c38c81",
-    "README_TH.md": "25cadf9d71de46db946a357b6335682873a9cf5df3caa3777e1154f8021a95c5",
+    "README.md": "cf6eee6b86442b9e9021937e4b98dc8dbd86bbd49ccd5e7981aa8dc5de28ebf5",
+    "README_TH.md": "e896959710774af092fb4f7506b3424db2b04ed05d442b06ae88d617c37ef81f",
     "SECURITY.md": "688c6acb994d22638e0335c99feba9c3273b4ad3ef7c02ad2388a34f81b498a7",
     "SKILL.md": "3940f1ddfcb46ddb9c9c916291cc4cc069be7e994672dedb440cd7d6dbb48688",
     "SUPERPOWERS_ADAPTATION_MATRIX.md": "91b0f08e8c7b0bfc0ee6067fc036200851cc7eb29547748983bf4eafcd53381d",
@@ -401,6 +404,10 @@
     "agents/visual-critic.md": "b8b2caba59727f9b9e4fa21f702cecadc75a470b876bd7c46e4cc2cdaced20a5",
     "ci/github-actions-fullstack.md": "fd7fef93dccc29c6e14e8c5e4a9c14c5b4820dc0cc373f1345638c0dd11eb7b4",
     "ci/github-actions.md": "9bcff63142440f51f4db0d9b4fb2f430321003764a59ab3afe9cab2591a070f0",
+    "docs/2026-08-08-mobile-vision-in-the-loop-design.md": "b779382724cf63fde370c9a72c79ea5a7fb517e82cfb95ce0a19a9fc0f54afb4",
+    "docs/2026-08-08-mobile-vision-in-the-loop-implementation.md": "44545fb5ebbd6f069fef61fbc7291340bb6bac107adc54d7bbbf28975b1bd3cd",
+    "docs/2026-08-08-mobile-vision-loop-full-wiring-design.md": "962bede04d1de58691693bdddc6e63733bbdd9cd75768ccd586fef160ff60e97",
+    "docs/2026-08-08-mobile-vision-loop-full-wiring-implementation.md": "812726c64894e5a1a7ef17996fc932c2ddd46c84ef8950913bd4ee0344dd4964",
     "domains/APPLICATION/README.md": "f21d3916beac288b7dd93b63d62e0f4352f5fc9265306f08af83501ab291dc30",
     "domains/DESIGN/README.md": "e4ec46ddbb5423d7c61c38fd1881a3e48c9d4162a005951a6d82045f43521d98",
     "domains/GAME/README.md": "8d9e547d9dfbd7163e154b64b339da9452d9e8db8fe37bd1d74b1050ed134e46",
@@ -544,6 +551,7 @@
     "lib/layout-structure-engine.mjs": "685f8812c1f564f20cb1e78500b4c01a2d3b221205f8e5b8e305b57814332077",
     "lib/manual-review-engine.mjs": "bfefada8b793f3b59cc5a8116f172e43084acc059bc2ad16b75095484d974ef1",
     "lib/migration-risk-engine.mjs": "27b9dc7b5b49a84c2d05857b122fd8729da97df18bd03d2ea143db35a69d5af3",
+    "lib/mobile-capture-engine.mjs": "9e41057b7e75c7a1b8f0412bddc4702159082bed8b944500d4feba332fe812f2",
     "lib/mode-engine.mjs": "4b99ac2314e536478fdb426728b9bdbd5ee923c660442985affa5a1aafa98f16",
     "lib/motion-quality-engine.mjs": "d62585e2bc85dd1ec4cc3f59ba4f277888f79ad6cae876df604415799b327627",
     "lib/observability-engine.mjs": "a0cc24e44145df4db9c1433225308ab1eee1532f4ebc4d8d353ab452dbad1dbb",
@@ -579,10 +587,12 @@
     "lib/tdd-evidence-engine.mjs": "ecf0cd475ca766f678dcc21f297f72a959921e835dafd65f48c53213e3933055",
     "lib/token-engine.mjs": "241237474c218e5485c273dfb190c3b2a70298c4be4c9be0fa4a2fdb910cc707",
     "lib/typography-scale-engine.mjs": "906f0a40f1d561a1380563db5bfccf4abdf17064bfbdae7263cb2305a8557258",
+    "lib/vision-judge-engine.mjs": "4e94f918364b2bd26fc1e60edfa6f3434ff933faabea478441433df204567e2a",
+    "lib/vision-metrics-engine.mjs": "ca9e143427425999aa633402eefa30db826b88822b3737cd0571575e28a2b277",
     "lib/visual-diff-triage-engine.mjs": "3f43fc6e699f2666bb1f60a3edb55c6e69cd025e7b8261de69e289df0bdc3592",
     "lib/workspace-safety-engine.mjs": "4fcb2675ecdcf41dbba0d4ba60ee585628e9098a6a007545f65ca7695e753f76",
-    "package-lock.json": "6a4a7321cfeb2a9b442176bb2e4842c347a59faaf2a4751c0e3445630fd64d7d",
-    "package.json": "9057fdd10bb5634e2db2893268c944fe7b57ccc92a5af1c2406bc56b075c79c4",
+    "package-lock.json": "546021385f697c7f3741d432d6382edf7ce9a5fe729eb56d99a0b944c2ea6175",
+    "package.json": "2cd71c7609b34669d044417bc2fe66489aff31e4872cb6cdd2eaa2c905f74ac7",
     "prompts/adversarial-release-review.md": "2aac3aec2df3060bd00446576d619dfbd966ca7e5783215cc99e35123f5ccce2",
     "prompts/aesthetic-critique.md": "151e8c8b01054d234a696fb859e68c8f2ed6027db74a174523d9f2587495bcda",
     "prompts/aesthetic-direction.md": "a4b7f96ce7d7e788a051dccd563a3a3ce72c0fefc29d5b63902277989c420d6b",
@@ -724,6 +734,7 @@
     "schemas/security-contract.schema.json": "d02ea5ba8929296de51245d5eb65bad96c311ae72bbeb3007c766322652c62b5",
     "schemas/semantic-visual-review.schema.json": "869619c69058b9cddadee643c64a0b1b9d71be406a918408c4c1ef7a18ebac6f",
     "schemas/tdd-evidence.schema.json": "8b1165f3b05825789b00f29bed80ee1e45eb0af2de68f1b7a039e88eaf010614",
+    "schemas/vision-judgment.schema.json": "563e4ff2dff42b2e7c152fed84323a885629cb8813f2d40c8a4baad76986444f",
     "schemas/vision-loop-config.schema.json": "5c8c402f1fafeacae3d3a69c25b8f5a4e348e4810d07187f8dee38bbf34d1100",
     "schemas/visual-delta-ledger.schema.json": "057310b9ae3658b47fcab559b316314c6643c6ee8277c744149eb87a1a855654",
     "schemas/workspace-snapshot.schema.json": "1489ff4fb75da8c41552e8b6f67e5812b854a0f7860a3a896a5f1b89248ed3d7",
@@ -745,6 +756,7 @@
     "scripts/audit-scene.mjs": "ac0e59ec0de64a85b7a9616429e4dff3b99cec458dc3ba1daa4a488bbe72448e",
     "scripts/audit-security.mjs": "b5e509a632a26dca0d00825d3e6c92fb034949ac7fc36a4db9defa4d42508495",
     "scripts/build-release.mjs": "041a5fb2e6d1f73e4dc2aafed70d2850e93aaec7c97c7561b99c84b7b83b2e18",
+    "scripts/capture-mobile.mjs": "1c5f7fc48e588a95add612043ba570d43583cbee022f0803c20f812ed470a606",
     "scripts/capture.mjs": "8862afcee010321135c8a8da65a8c2a66d80690a8743a09d3b4efd7d378b3a67",
     "scripts/compare.mjs": "c3a71755dc157a7c586f926a71f2320d79e907c80c40837d647586b5dce34fcd",
     "scripts/crawl-states.mjs": "b94236785f0e17c08646c54e091f1d086d94c536626155251008464446c480c6",
@@ -780,7 +792,9 @@
     "scripts/validate-skill-conformance.mjs": "a20f3e39ab11e71469beb18c794a915aeea37c30295294c185f990abead6a5fc",
     "scripts/validate-tdd.mjs": "d2a3087f3f9a5e4ddbb7be9b6e89ed5a5b7bf73c1c3a1fb3a62bf52656823335",
     "scripts/verify-baseline.mjs": "2ea8280c5524ebedc55723e2848f29651722d4dccfac56bf8c72ddcdc7d8ec89",
+    "scripts/vision-judge.mjs": "9b517c6778c50e6a63ab7cbc555691f4b5caeaeefb2c99dc12ac7e097842b370",
     "scripts/vision-loop.mjs": "29edcb03f78c09ad378b1dc12ce950b16f3dd2d7bfeaa928549f240962ef4c50",
+    "scripts/vision-metrics.mjs": "510b0db0ef6227d0d43d27917a0ec1520a59888e9bbcc22244b45455d309d756",
     "scripts/vision-triage.mjs": "61b6e80e3f9aeca5c7598b679eb6e4a8573f3b9fe2ef80a0ed92c3bb33aa5bc4",
     "setup.ps1": "a38ca23c83d46e605fdc1809c5bf7c2c46b7a4e96154db75bdfef849eb7d3dbb",
     "setup.sh": "b9df17678be1c7a8fd3ed51a2fe61ec2fc79acbf981ccffda01ed2f82c85d5ea",
@@ -877,6 +891,7 @@
     "tests/unit/layout-structure.test.mjs": "374c308fdc5d4bd0f15e0c4431ad678012e4fab355fc68c66b119ca9eb71a83e",
     "tests/unit/manual-review.test.mjs": "bbc486190f4671f54f55d1b760957e5052e389a5f9b9cf90b35fdfb17dbc65a2",
     "tests/unit/migration-risk-v3.test.mjs": "52ec651df71d474ed8478124988b414f8bda61bbf9aaaeb9d813cd97a980e6a7",
+    "tests/unit/mobile-capture-engine.test.mjs": "cef19aaf86702b579bfe62eda6671bb6c1cb831b5b500d80eadcdaa1a97dee89",
     "tests/unit/mode-engine.test.mjs": "89272c2457ddf19a41de10379869d6a0722ac797a24f514fedece9fecca0d19d",
     "tests/unit/motion-quality.test.mjs": "137dcb6cc979a0bf8fe3796d88c07906ed779a5651a938892de9e7427d05c0b1",
     "tests/unit/observability-v3.test.mjs": "e451551493f2699331d8224d970689150327fe2dbc590a5eaeb911b99246124f",
@@ -914,8 +929,11 @@
     "tests/unit/tdd-evidence-v4.test.mjs": "3fb0009ad39e193fba5d5519c57d2ff3567e6800edef3487d0f105f9910cf4f6",
     "tests/unit/tokens.test.mjs": "18df7470c085feb9cbf508ad81c71d9049b2e31b31b900e5761bc74b01b478f2",
     "tests/unit/typography-scale.test.mjs": "5094ab461f554c74ba4dcec85ef1b15767c01a98fa132285e0b8fc44a669aa17",
+    "tests/unit/validate-suite-cli.test.mjs": "352b3d732d75f97422b0eaf73c85a4baad2d3b3bb0ca0d7736939cd668076043",
+    "tests/unit/vision-judge-engine.test.mjs": "6ce63d2812bf763cefe228d139bd3d9db8f3afb18dab1ef1bafba6ef3b2ac4b7",
+    "tests/unit/vision-metrics-engine.test.mjs": "2082e0c5cfefff8582104753db7bd40ef44002824275f5326a4604f6eded5d46",
     "tests/unit/visual-diff-triage.test.mjs": "6ee4dc24f0cdc97f57a0d560caff7187c0547391c04f5b384dd4cbd87c4d4e3a",
     "tests/unit/workspace-safety-v4.test.mjs": "ee30278ee9ceecb03661c59f278f1777ac0eb0cf6f1942a8975be5e453c3c67c",
-    "vision-loop.config.example.json": "c026741626cb803b013493d2d86becdbf0fab86dfe3febe9a15ba1824b7f9ba2"
+    "vision-loop.config.example.json": "bb7d767a838ff65eea07139949a9d1fef7ebae6962c1aefb86a4e42cf8d77b18"
   }
 }

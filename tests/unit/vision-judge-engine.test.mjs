@@ -177,6 +177,7 @@ test('validateVerdictRecord — deep validation', () => {
 
   assert.throws(() => validateVerdictRecord({ ...ok, mode: 'alien' }), /mode must be/);
   assert.throws(() => validateVerdictRecord({ ...ok, judged_by: '' }), /judged_by/);
+  assert.throws(() => validateVerdictRecord({ ...ok, judged_by: '   ' }), /judged_by/); // schema pattern .*\S.*
   assert.throws(() => validateVerdictRecord({ ...ok, findings: [{ rule: 'x', severity: 'info', expected: 1, observed: 2 }] }), /severity/);
   assert.throws(() => validateVerdictRecord({ ...ok, findings: [{ severity: 'warn', expected: 1, observed: 2 }] }), /rule/);
   assert.throws(() => validateVerdictRecord({ ...ok, metrics_ref: 42 }), /metrics_ref/);
