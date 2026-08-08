@@ -102,6 +102,24 @@ test('evaluateMetrics — alignment.score null skips minAlignment (never a failu
   assert.equal(judgeMetrics({ metrics: m, thresholds: { minAlignment: 0.9 } }).verdict, 'pass');
 });
 
+const assertInvalidMetricsPayload = (fn) => assert.throws(
+  fn,
+  (err) => err instanceof TypeError && err.message.startsWith('invalid metrics payload')
+);
+
+test('judgeMetrics — malformed metrics payload throws invalid metrics payload', () => {
+  for (const bad of [{}, { occupancy: { cells: [] } }, null]) {
+    assertInvalidMetricsPayload(() => judgeMetrics({ metrics: bad, thresholds: { maxEmptyCells: 1 } }));
+  }
+});
+
+test('evaluateMetrics — malformed metrics payload throws invalid metrics payload (never a silent PASS)', () => {
+  for (const bad of [{}, { occupancy: { cells: [] } }, null]) {
+    assertInvalidMetricsPayload(() => evaluateMetrics(bad, {}));
+    assertInvalidMetricsPayload(() => evaluateMetrics(bad, { maxEmptyCells: 99 }));
+  }
+});
+
 test('buildVerdictRecord + validateVerdictRecord round-trip', () => {
   const rec = buildVerdictRecord({
     mode: 'metrics', caseLabel: 'chat', goal: 'g',

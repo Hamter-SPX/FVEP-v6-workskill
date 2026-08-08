@@ -46,7 +46,7 @@ try {
   } else {
     let record;
     if (mode === 'metrics') {
-      if (!args.metrics) fail(new TypeError('--metrics is required in metrics mode'));
+      if (!args.metrics) throw new TypeError('--metrics is required in metrics mode');
       const metrics = readJson(`@${args.metrics}`, 'metrics file');
       const thresholds = args.thresholds ? readJson(args.thresholds, 'thresholds') : {};
       record = judgeMetrics({
@@ -55,7 +55,7 @@ try {
         metricsRef: args.metrics, captureRef: args.capture
       });
     } else {
-      if (!args['verdict-file'] && !args.verdictFile) fail(new TypeError('--verdict-file is required in model/human mode'));
+      if (!args['verdict-file'] && !args.verdictFile) throw new TypeError('--verdict-file is required in model/human mode');
       const external = readJson(`@${args['verdict-file'] ?? args.verdictFile}`, 'verdict file');
       validateVerdictRecord(external);
       // Rebuild via the engine (no key spread) so model/human records can never

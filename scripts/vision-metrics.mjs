@@ -15,7 +15,7 @@ Options:
   --grid <CxR>        Occupancy/density grid, e.g. 8x5 (default: 8x5)
   --out <file>        Write metrics JSON here (default: stdout only)
   --compact           Print single-line summary instead of full JSON
-  -h, --help          Show help
+  --help              Show help
 
 Examples:
   node scripts/vision-metrics.mjs --image .fx/cur.png --grid 8x5 --out .fx/metrics.json

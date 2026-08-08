@@ -15,7 +15,7 @@ Options:
   --open-url <url>    Open a (deep) link before capturing
   --settle <sec>      Wait before capturing (default: 0)
   --platform <name>   ios | android (android = phase 2 stub, exits non-zero)
-  -h, --help          Show help
+  --help              Show help
 
 Examples:
   node scripts/capture-mobile.mjs --out .fx/cur.png --label chat

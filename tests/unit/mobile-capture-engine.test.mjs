@@ -92,3 +92,25 @@ test('captureSimulatorScreenshot — empty output file is an error', () => {
     /non-empty file/
   );
 });
+
+test('metaPathFor — suffix mapping never returns the input path itself', () => {
+  assert.equal(metaPathFor('/tmp/a.png'), '/tmp/a.meta.json');
+  assert.equal(metaPathFor('/tmp/a.PNG'), '/tmp/a.meta.json');
+  assert.equal(metaPathFor('/tmp/a'), '/tmp/a.meta.json');
+});
+
+test('captureSimulatorScreenshot — suffix-less out writes <out>.meta.json without clobbering the PNG', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'mce-'));
+  const out = path.join(dir, 'cur'); // deliberately no .png suffix
+  const pngBytes = fakePngBytes(1170, 2532);
+  const exec = (cmd, args) => {
+    if (args[1] === 'io') fs.writeFileSync(out, pngBytes);
+    return { status: 0, stdout: '', stderr: '' };
+  };
+  const meta = captureSimulatorScreenshot({ out, exec, sleep: () => {} });
+  assert.equal(metaPathFor(out), `${out}.meta.json`);
+  assert.equal(fs.existsSync(`${out}.meta.json`), true);
+  assert.equal(meta.file, out);
+  // The captured PNG itself must remain byte-identical (meta must not clobber it).
+  assert.deepEqual(fs.readFileSync(out), pngBytes);
+});

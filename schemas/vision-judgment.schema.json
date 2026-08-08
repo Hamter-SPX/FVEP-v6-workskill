@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "vision-judgment.schema.json",
+  "$id": "https://frontend-vision-loop.local/schemas/vision-judgment-v1.json",
   "title": "Vision Judgment Record",
   "type": "object",
   "required": ["schema_version", "case_label", "mode", "verdict", "findings", "judged_by", "judged_at"],
