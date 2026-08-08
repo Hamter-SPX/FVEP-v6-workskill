@@ -52,9 +52,9 @@ try {
       const thresholds = args.thresholds ? readJson(args.thresholds, 'thresholds') : {};
       let sourceCheck = null;
       if (args['verify-source']) {
-        if (!metrics.source?.sha256) fail(new TypeError('--verify-source requires metrics JSON with a source block (run vision-metrics again)'));
+        if (!metrics.source?.sha256) throw new TypeError('--verify-source requires metrics JSON with a source block (run vision-metrics again)');
         const capturePath = args.capture;
-        if (!capturePath) fail(new TypeError('--verify-source requires --capture <png>'));
+        if (!capturePath) throw new TypeError('--verify-source requires --capture <png>');
         const { createHash } = await import('node:crypto');
         sourceCheck = {
           metricsSource: metrics.source,
