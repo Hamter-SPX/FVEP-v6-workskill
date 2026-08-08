@@ -220,6 +220,20 @@ npm run audit:game-assets -- --assets examples/game-assets.example.json --frame-
 
 Discipline packs — what each role owns, its gates, and its red flags — live in `domains/ROLES/`.
 
+### Mobile Vision Loop (iOS, phase 1)
+
+Capture Flutter/native app screens from the iOS Simulator and feed the existing
+compare / ascii-map / layout-structure pipeline. Text-only judging is available
+through deterministic metrics + a judge slot (metrics | model | human).
+
+```bash
+npm run capture:mobile -- --out .fx/cur.png --label chat --launch <bundleId> --settle 2
+npm run vision:metrics -- --image .fx/cur.png --grid 8x5 --out .fx/metrics.json
+npm run vision:judge -- --judge metrics --metrics .fx/metrics.json --thresholds '{"maxEmptyCells":3}' --out .fx/verdict.json
+```
+
+Android capture is a documented phase-2 stub (`--platform android` exits non-zero).
+
 ## Domain commands
 
 The v3 surface is preserved:

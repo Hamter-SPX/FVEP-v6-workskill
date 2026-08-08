@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-08-08 — Mobile Vision Loop (iOS, phase 1)
+
+### Added
+
+- `capture-mobile`: iOS Simulator screenshot adapter (simctl) + PNG sidecar meta
+- `vision-metrics`: deterministic metrics engine (occupancy/density/palette/alignment/contrast)
+- `vision-judge`: judge slot 3 modes (metrics/model/human) + shared verdict schema
+- Android adapter: documented phase-2 stub
+
 ## Unreleased — operating modes, the re-check pass, and effects direction
 
 ### Added

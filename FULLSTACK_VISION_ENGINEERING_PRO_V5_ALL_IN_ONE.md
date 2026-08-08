@@ -732,6 +732,20 @@ npm run audit:game-assets -- --assets examples/game-assets.example.json --frame-
 
 Discipline packs — what each role owns, its gates, and its red flags — live in `domains/ROLES/`.
 
+### Mobile Vision Loop (iOS, phase 1)
+
+Capture Flutter/native app screens from the iOS Simulator and feed the existing
+compare / ascii-map / layout-structure pipeline. Text-only judging is available
+through deterministic metrics + a judge slot (metrics | model | human).
+
+```bash
+npm run capture:mobile -- --out .fx/cur.png --label chat --launch <bundleId> --settle 2
+npm run vision:metrics -- --image .fx/cur.png --grid 8x5 --out .fx/metrics.json
+npm run vision:judge -- --judge metrics --metrics .fx/metrics.json --thresholds '{"maxEmptyCells":3}' --out .fx/verdict.json
+```
+
+Android capture is a documented phase-2 stub (`--platform android` exits non-zero).
+
 ## Domain commands
 
 The v3 surface is preserved:
@@ -1061,6 +1075,20 @@ npm run audit:game-assets -- --assets examples/game-assets.example.json --frame-
 `audit:game-assets` ครอบคลุม **VFX / SFX / Animation** ด้วย เพราะสามอย่างนี้พังคนละแบบกับ prop: VFX ต้องระบุ timing เป็นมิลลิวินาที, ความอ่านออกตอนซ้อนกันหลายตัว และเป็นเอฟเฟกต์ที่ “ให้ข้อมูลเกมเพลย์” หรือแค่ตกแต่ง · เสียงต้องระบุ layer (attack/body/tail), mix bus พร้อมกฎ ducking, แผนกันเสียงซ้ำจนล้า และ cue ทางภาพที่ให้ข้อมูลเดียวกันสำหรับคนที่ปิดเสียงหรือหูหนวก · แอนิเมชันต้องระบุ timing, ช่วงที่ยกเลิกได้ (cancel window) และท่าที่อ่านออกก่อนโดน (telegraph)
 
 เอกสาร: `references/vfx-and-sfx-direction.md`, `references/game-feel-and-juice.md`
+
+### Mobile Vision Loop (iOS, phase 1)
+
+Capture หน้าจอแอป Flutter/native จาก iOS Simulator แล้วส่งต่อเข้า pipeline เดิม
+(compare / ascii-map / layout-structure) ได้ทันที การตัดสินแบบไม่ต้องเห็นภาพตัดสินได้
+ผ่าน metrics แบบ deterministic บวกช่อง judge สามโหมด (metrics | model | human)
+
+```bash
+npm run capture:mobile -- --out .fx/cur.png --label chat --launch <bundleId> --settle 2
+npm run vision:metrics -- --image .fx/cur.png --grid 8x5 --out .fx/metrics.json
+npm run vision:judge -- --judge metrics --metrics .fx/metrics.json --thresholds '{"maxEmptyCells":3}' --out .fx/verdict.json
+```
+
+การ capture บน Android ยังเป็น stub ของ phase 2 (`--platform android` จะ exit ไม่เป็นศูนย์)
 
 ## วงจรการทำงาน
 

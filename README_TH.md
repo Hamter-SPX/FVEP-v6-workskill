@@ -215,6 +215,20 @@ npm run audit:game-assets -- --assets examples/game-assets.example.json --frame-
 
 เอกสาร: `references/vfx-and-sfx-direction.md`, `references/game-feel-and-juice.md`
 
+### Mobile Vision Loop (iOS, phase 1)
+
+Capture หน้าจอแอป Flutter/native จาก iOS Simulator แล้วส่งต่อเข้า pipeline เดิม
+(compare / ascii-map / layout-structure) ได้ทันที การตัดสินแบบไม่ต้องเห็นภาพตัดสินได้
+ผ่าน metrics แบบ deterministic บวกช่อง judge สามโหมด (metrics | model | human)
+
+```bash
+npm run capture:mobile -- --out .fx/cur.png --label chat --launch <bundleId> --settle 2
+npm run vision:metrics -- --image .fx/cur.png --grid 8x5 --out .fx/metrics.json
+npm run vision:judge -- --judge metrics --metrics .fx/metrics.json --thresholds '{"maxEmptyCells":3}' --out .fx/verdict.json
+```
+
+การ capture บน Android ยังเป็น stub ของ phase 2 (`--platform android` จะ exit ไม่เป็นศูนย์)
+
 ## วงจรการทำงาน
 
 ```text

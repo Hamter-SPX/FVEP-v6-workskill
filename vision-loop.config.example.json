@@ -24,6 +24,7 @@
     "failOnHttpError": true
   },
   "capture": {
+    "type": "playwright",
     "fullPage": true,
     "animations": "disabled",
     "caret": "hide",
@@ -34,6 +35,12 @@
     "maskColor": "#ff00ff",
     "hideSelectors": ["[data-capture-hidden]"],
     "style": ""
+  },
+  "capture_ios_sim_example": {
+    "_comment": "Mobile Vision Loop (phase 1): use npm run capture:mobile to produce cur.png + cur.meta.json, then feed both into compare/ascii-map/layout-structure as usual. vision-loop.mjs reads only type=playwright today; ios-sim wiring into vision-loop.mjs is a follow-up.",
+    "type": "ios-sim",
+    "udid": "booted",
+    "settleMs": 1200
   },
   "diff": {
     "threshold": 0.1,
