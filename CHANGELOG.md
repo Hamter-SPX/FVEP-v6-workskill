@@ -9,6 +9,11 @@
 - `createPrompter` in the tutorial engine: wraps readline prompting with a single interface-`close` guard so EOF (Ctrl+D) resolves the pending prompt with `null` and the walk ends quietly, instead of leaving an unsettled top-level await (exit 13) and an orphaned sandbox
 - "Interactive onboarding" subsections in `README.md` / `README_TH.md` right after the One Framework intro, pointing new users at `npm run tutorial` first
 
+### Fixed
+
+- `npm run tutorial` no longer strands the temp sandbox on Ctrl+C/SIGTERM: the CLI registers one-shot SIGINT/SIGTERM handlers for exactly the sandbox lifetime (`registerSandboxCleanup` in the engine, disposed in the walk's `finally` so no handler outlives the sandbox), removes the sandbox, and exits 128+signo (130/143) without printing a summary — `--json` never emits a partial envelope on a signal, `--keep` is still honored, and removal is once-only so the signal path and the `finally` path cannot double-clean
+- The `--json` summary envelope now carries `stepsCompleted`/`stepsTotal`, so an EOF (Ctrl+D) partial walk is distinguishable from a full walk; `--help` now states that exit 0 covers user-aborted EOF walks while exit 1 remains reserved for executed steps that miss their expectation (WARN)
+
 ## 2026-08-09 — Smart error remediation
 
 ### Added

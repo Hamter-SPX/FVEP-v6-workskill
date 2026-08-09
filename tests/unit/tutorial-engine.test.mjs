@@ -1,10 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { EventEmitter } from 'node:events';
+import { EventEmitter, once } from 'node:events';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { spawnSync } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 import {
@@ -20,7 +20,8 @@ import {
   replayStep,
   createPrompter,
   prepareToyRun,
-  cleanupToyRun
+  cleanupToyRun,
+  registerSandboxCleanup
 } from '../../lib/tutorial-engine.mjs';
 
 const CLI_PATH = path.join(PACKAGE_ROOT, 'scripts', 'tutorial.mjs');
@@ -334,6 +335,71 @@ test('prepareToyRun removes the orphan dir when the copy fails', () => {
   }
 });
 
+test('cleanupToyRun is idempotent — a second call after removal is a no-op', () => {
+  const dir = prepareToyRun(TOY_DIR);
+  cleanupToyRun(dir);
+  assert.equal(fs.existsSync(dir), false);
+  assert.doesNotThrow(() => cleanupToyRun(dir), 'signal path + finally path must never double-throw');
+});
+
+// --------------------------------------------------------- sandbox signals
+
+test('registerSandboxCleanup removes the sandbox on SIGTERM and exits 128+signo', () => {
+  const sandbox = prepareToyRun(TOY_DIR);
+  const cleaned = [];
+  const exits = [];
+  const prior = { int: process.listeners('SIGINT'), term: process.listeners('SIGTERM') };
+  const unregister = registerSandboxCleanup({ getSandbox: () => sandbox, cleanup: (dir) => cleaned.push(dir), exit: (code) => exits.push(code) });
+  assert.equal(process.listenerCount('SIGTERM'), prior.term.length + 1);
+  assert.equal(process.listenerCount('SIGINT'), prior.int.length + 1);
+  const sigterm = process.listeners('SIGTERM').find((fn) => !prior.term.includes(fn));
+  const sigint = process.listeners('SIGINT').find((fn) => !prior.int.includes(fn));
+  sigterm();
+  assert.deepEqual(cleaned, [sandbox], 'cleanup runs exactly once with the live sandbox');
+  assert.deepEqual(exits, [143], 'SIGTERM exits 128+15');
+  sigint();
+  assert.deepEqual(exits, [143, 130], 'SIGINT exits 128+2');
+  unregister();
+  assert.equal(process.listenerCount('SIGTERM'), prior.term.length, 'disposer removes the SIGTERM handler');
+  assert.equal(process.listenerCount('SIGINT'), prior.int.length, 'disposer removes the SIGINT handler');
+});
+
+test('registerSandboxCleanup once-listeners survive exactly one real emit', () => {
+  const sandbox = prepareToyRun(TOY_DIR);
+  const exits = [];
+  const baseline = { int: process.listenerCount('SIGINT'), term: process.listenerCount('SIGTERM') };
+  const unregister = registerSandboxCleanup({
+    getSandbox: () => sandbox,
+    cleanup: cleanupToyRun, // real removal — emit path must delete the dir
+    exit: (code) => exits.push(code)
+  });
+  try {
+    process.emit('SIGTERM');
+    process.emit('SIGTERM'); // once-listener already consumed: no double-cleanup, no second exit
+    assert.deepEqual(exits, [143]);
+    assert.equal(fs.existsSync(sandbox), false, 'the emit path physically removed the sandbox');
+    assert.equal(process.listenerCount('SIGTERM'), baseline.term, 'consumed once-listener detaches itself');
+    assert.equal(process.listenerCount('SIGINT'), baseline.int + 1, 'untouched SIGINT handler still registered');
+  } finally {
+    unregister();
+    if (fs.existsSync(sandbox)) cleanupToyRun(sandbox);
+  }
+  assert.equal(process.listenerCount('SIGINT'), baseline.int, 'no handler leaks');
+  assert.equal(process.listenerCount('SIGTERM'), baseline.term, 'no handler leaks');
+});
+
+test('registerSandboxCleanup with no sandbox assigned exits without touching cleanup', () => {
+  const cleaned = [];
+  const exits = [];
+  const prior = process.listeners('SIGTERM');
+  const unregister = registerSandboxCleanup({ getSandbox: () => null, cleanup: (dir) => cleaned.push(dir), exit: (code) => exits.push(code) });
+  process.listeners('SIGTERM').find((fn) => !prior.includes(fn))();
+  assert.deepEqual(cleaned, [], 'off/auto without a sandbox must not run cleanup');
+  assert.deepEqual(exits, [143]);
+  unregister();
+  assert.equal(process.listenerCount('SIGTERM'), prior.length, 'no handler leaks when the sandbox never existed');
+});
+
 // --------------------------------------------------------------------- CLI
 
 function runCli(cliArgs, options = {}) {
@@ -387,6 +453,8 @@ test('CLI --json emits a single machine-readable summary', () => {
   const summary = JSON.parse(result.stdout);
   assert.equal(summary.ok, true);
   assert.equal(summary.mode, 'off');
+  assert.equal(summary.stepsCompleted, 8);
+  assert.equal(summary.stepsTotal, 8, 'a full walk reports stepsCompleted === stepsTotal');
   assert.equal(summary.steps.length, 8);
   assert.equal(summary.steps[4].id, 'implement-tdd');
 });
@@ -397,6 +465,8 @@ test('CLI --json --keep keeps stdout JSON-parseable (keep notice goes to stderr)
   const summary = JSON.parse(result.stdout);
   assert.equal(summary.ok, true);
   assert.equal(summary.mode, 'auto');
+  assert.equal(summary.stepsCompleted, 8);
+  assert.equal(summary.stepsTotal, 8);
   assert.equal(summary.steps.length, 8);
   const kept = result.stderr.match(/sandbox ยังอยู่: (\S+)/);
   assert.ok(kept, 'keep notice printed on stderr');
@@ -441,4 +511,92 @@ test('CLI --auto --from 3 resumes at step 3 and walks through step 8', () => {
   assert.doesNotMatch(result.stdout, /ขั้นที่ 1\/8/);
   assert.doesNotMatch(result.stdout, /ขั้นที่ 2\/8/);
   assert.match(result.stdout, /สรุป: 6 ขั้น · PASS 5 · NOTE 1 · WARN 0/);
+});
+
+// -------------------------------------------------- CLI signals mid-walk
+
+function spawnCli(cliArgs) {
+  const child = spawn(process.execPath, [CLI_PATH, ...cliArgs], { cwd: PACKAGE_ROOT, stdio: ['ignore', 'pipe', 'pipe'] });
+  let stdout = '';
+  let stderr = '';
+  child.stdout.on('data', (chunk) => { stdout += chunk; });
+  child.stderr.on('data', (chunk) => { stderr += chunk; });
+  return { child, closed: once(child, 'close'), read: () => ({ stdout, stderr }) };
+}
+
+function waitForIntroSandbox(child, read) {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error(`sandbox line never appeared; tail: ${read().stdout.slice(-400)}`)), 30_000);
+    child.stdout.on('data', () => {
+      const match = read().stdout.match(/sandbox: (\S+)/);
+      if (match) { clearTimeout(timer); resolve(match[1]); }
+    });
+    child.on('exit', (code) => reject(new Error(`CLI exited ${code} before it could be signaled; tail: ${read().stdout.slice(-400)}`)));
+  });
+}
+
+test('CLI SIGTERM mid-walk removes the sandbox and exits 143 without a summary', async () => {
+  const { child, closed, read } = spawnCli(['--auto']);
+  const sandbox = await waitForIntroSandbox(child, read);
+  assert.equal(fs.existsSync(sandbox), true);
+  child.kill('SIGTERM');
+  const [code, signal] = await closed;
+  assert.equal(code, 143, 'SIGTERM exits 128+15');
+  assert.equal(signal, null, 'the CLI exits itself with the signal code instead of dying raw');
+  assert.equal(fs.existsSync(sandbox), false, 'SIGTERM mid-walk must not strand the sandbox');
+  assert.doesNotMatch(read().stdout, /สรุป:/, 'no summary is printed on signal');
+});
+
+test('CLI SIGINT mid-walk (Ctrl+C) removes the sandbox and exits 130', async () => {
+  const { child, closed, read } = spawnCli(['--auto']);
+  const sandbox = await waitForIntroSandbox(child, read);
+  child.kill('SIGINT');
+  const [code] = await closed;
+  assert.equal(code, 130, 'SIGINT exits 128+2');
+  assert.equal(fs.existsSync(sandbox), false, 'Ctrl+C mid-walk must not strand the sandbox');
+  assert.doesNotMatch(read().stdout, /สรุป:/);
+});
+
+test('CLI SIGTERM in --json mode removes the sandbox and never prints a partial envelope', async () => {
+  const before = new Set(fs.readdirSync(os.tmpdir()).filter((name) => name.startsWith('fvep-tutorial-')));
+  const { child, closed, read } = spawnCli(['--auto', '--json']);
+  // json mode prints no intro — watch tmpdir for the fresh sandbox instead
+  const sandbox = await new Promise((resolve, reject) => {
+    const deadline = Date.now() + 30_000;
+    const probe = () => {
+      const fresh = fs.readdirSync(os.tmpdir()).filter((name) => name.startsWith('fvep-tutorial-') && !before.has(name));
+      if (fresh.length > 0) { resolve(path.join(os.tmpdir(), fresh[0])); return; }
+      if (Date.now() > deadline) { reject(new Error('sandbox never appeared')); return; }
+      setTimeout(probe, 25);
+    };
+    probe();
+    child.on('exit', (code) => reject(new Error(`CLI exited ${code} before it could be signaled; stderr: ${read().stderr.slice(-400)}`)));
+  });
+  child.kill('SIGTERM');
+  const [code] = await closed;
+  assert.equal(code, 143);
+  assert.equal(fs.existsSync(sandbox), false, 'SIGTERM mid-walk must not strand the sandbox');
+  assert.equal(read().stdout.trim(), '', 'a signal must not leave a partial JSON envelope on stdout');
+});
+
+// ------------------------------------------------------------- CLI EOF path
+
+// ^D on an interactive walk needs a real TTY: script(1) relays the immediately
+// closed stdin through a pty. macOS: `script -q /dev/null <argv...>`;
+// util-linux: `script -qec "<command>" /dev/null`. Not available on Windows.
+test('CLI interactive EOF (^D) ends the walk quietly; JSON reports stepsCompleted/stepsTotal', { skip: process.platform === 'win32' }, () => {
+  const args = process.platform === 'linux'
+    ? ['-qec', `${process.execPath} ${CLI_PATH} --interactive --json`, '/dev/null']
+    : ['-q', '/dev/null', process.execPath, CLI_PATH, '--interactive', '--json'];
+  // script(1) wants a real fd on stdin (spawnSync pipes are socketpairs) — /dev/null gives it an immediate EOF
+  const result = spawnSync('script', args, { encoding: 'utf8', stdio: [fs.openSync('/dev/null', 'r'), 'pipe', 'pipe'], timeout: 180_000, cwd: PACKAGE_ROOT });
+  assert.equal(result.status, 0, `EOF ends the walk with exit 0; stderr: ${result.stderr}\nstdout tail: ${result.stdout.slice(-400)}`);
+  const match = result.stdout.match(/\{"ok".*\}/);
+  assert.ok(match, `JSON envelope missing on the EOF path; tail: ${result.stdout.slice(-400)}`);
+  const summary = JSON.parse(match[0]);
+  assert.equal(summary.ok, true);
+  assert.equal(summary.mode, 'interactive');
+  assert.equal(summary.stepsCompleted, 1, 'EOF at the first prompt ends the walk after step 1');
+  assert.equal(summary.stepsTotal, 8);
+  assert.equal(summary.steps.length, 1);
 });

@@ -6,6 +6,7 @@ import {
   TOY_DIR,
   prepareToyRun,
   cleanupToyRun,
+  registerSandboxCleanup,
   runStep,
   replayStep,
   renderStep,
@@ -32,7 +33,10 @@ Options:
 
 Walk the GOLDEN_PATH 8-step tutorial on a temp copy of the golden-path toy
 (the source example is never modified; the sandbox is removed afterwards).
-Exit 0 เมื่อเดินครบทุกขั้นโดยไม่มีขั้นที่รันจริงแล้วพลาด expectation, มิฉะนั้น exit 1.
+Exit 0 เมื่อไม่มีขั้นที่รันจริงแล้วพลาด expectation — รวมถึง walk ที่ผู้ใช้งานจบกะทันหันด้วย ^D
+(partial walk; โหมด --json รายงาน stepsCompleted/stepsTotal เสมอ จึงแยกจาก walk เต็มได้)
+exit 1 เฉพาะเมื่อมีขั้นที่รันจริงแล้วเป็น WARN — Ctrl+C/SIGTERM จะลบ sandbox แล้วออกด้วย
+รหัสสัญญาณ 128+signo (130/143) โดยไม่พิมพ์สรุปผลและไม่พิมพ์ JSON ค้างไว้
 `;
 
 function resolveMode(args) {
@@ -88,10 +92,24 @@ try {
 
       let toyDir = TOY_DIR;
       let sandbox = null;
+      let cleaned = false;
+      const removeSandbox = () => {
+        if (sandbox && !cleaned) {
+          cleaned = true;
+          cleanupToyRun(sandbox);
+        }
+      };
       if (mode !== 'off') {
         sandbox = prepareToyRun(TOY_DIR);
         toyDir = sandbox;
       }
+      // Ctrl+C/SIGTERM skips the walk's try/finally — clean the sandbox via
+      // one-shot signal handlers (removed again by the disposer in finally),
+      // then exit 128+signo without printing any summary or partial JSON.
+      const unregisterSandboxCleanup = registerSandboxCleanup({
+        getSandbox: () => sandbox,
+        cleanup: () => { if (!args.keep) removeSandbox(); }
+      });
       const rl = mode === 'interactive' ? readline.createInterface({ input: process.stdin, output: process.stdout }) : null;
       const prompter = rl ? createPrompter(rl) : null;
 
@@ -101,6 +119,10 @@ try {
       let failures = 0;
       try {
         for (let index = 0; index < steps.length; index += 1) {
+          // Parked SIGINT/SIGTERM are only delivered on an event-loop turn,
+          // and the walk is otherwise one long chain of sync spawns — yield
+          // once per step so the cleanup handler fires at a step boundary.
+          await new Promise((resolve) => { setImmediate(resolve); });
           const step = steps[index];
           let result;
           if (mode === 'off' || !step.run) {
@@ -124,15 +146,16 @@ try {
         }
       } finally {
         if (rl) rl.close();
+        unregisterSandboxCleanup();
         if (sandbox) {
           // --keep notice goes to stderr so `--json --keep` leaves stdout parseable
           if (args.keep) process.stderr.write(`sandbox ยังอยู่: ${sandbox}\n`);
-          else cleanupToyRun(sandbox);
+          else removeSandbox();
         }
       }
 
       if (jsonMode) {
-        process.stdout.write(`${JSON.stringify({ ok: failures === 0, mode, from, steps: results })}\n`);
+        process.stdout.write(`${JSON.stringify({ ok: failures === 0, mode, from, stepsCompleted: results.length, stepsTotal: steps.length, steps: results })}\n`);
       } else {
         writeSummary(results, failures);
       }
