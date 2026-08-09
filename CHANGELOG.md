@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-08-08 — Mobile Vision Loop (full wiring)
+
+### Added
+
+- `vision-loop` mobile branch: `capture.type: ios-sim|android` captures the declared `mobile.cases`, runs per-case metrics + judge verdicts (`mobileChecks`), and skips web-only sections with an explicit log line
+- Android capture adapter (adb `screencap` via `exec-out`, `/sdcard` pull fallback, `mobile.adbPath` + per-case `serial` overrides) — replaces the phase-2 stub
+- sha256 provenance chain: capture metadata hash, metrics `source` block, and `vision:judge --verify-source`, which halts before verdict emission when its required inputs are missing
+- Strict value-level verdict validation (mode/severity/ref types), with the runtime validator aligned to the judgment JSON schema
+
+### Fixed
+
+- Mobile run gate reflects the `mobileChecks` verdict set — any failing case exits 1; the inapplicable web score floor no longer fails clean mobile runs
+
 ## 2026-08-08 — Mobile Vision Loop (iOS, phase 1)
 
 ### Added

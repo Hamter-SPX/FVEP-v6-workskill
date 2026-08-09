@@ -222,20 +222,51 @@ Discipline packs — what each role owns, its gates, and its red flags — live 
 
 ### Mobile Vision Loop (iOS + Android)
 
-Capture Flutter/native app screens from the iOS Simulator and feed the existing
-compare / ascii-map / layout-structure pipeline. Text-only judging is available
-through deterministic metrics + a judge slot (metrics | model | human).
+The loop is fully wired: set `capture.type` to `ios-sim` or `android` in
+`vision-loop.config.json`, declare `mobile.cases`, and `vision-loop` captures every
+case from the booted simulator/emulator, computes deterministic metrics per case,
+and writes a judge verdict (`metadata/<key>.mobile.judgment.json`). Web-only
+sections log `skipped (web-only section)`; the run gate is the mobileChecks verdict
+set — any failing case exits 1. Because no web gates apply to a mobile run, the
+summary lifts the web quality floor (`minScore`/`minConfidence`) instead of failing
+clean runs on a non-applicable score.
+
+```json
+{
+  "capture": { "type": "ios-sim" },
+  "mobile": {
+    "udid": "booted",
+    "cases": [ { "key": "home", "label": "home", "settleMs": 1500 } ],
+    "judge": { "thresholds": { "maxEmptyCells": 3 } }
+  }
+}
+```
+
+```bash
+node scripts/vision-loop.mjs --config vision-loop.config.json
+```
+
+For Android use `capture.type: "android"` with `mobile.serial` (default
+`emulator-5554`; `mobile.adbPath` points at a specific adb binary). Per-case
+`udid`/`serial` override the device-level defaults.
+
+One-off capture and text-only judging stay available standalone:
 
 ```bash
 npm run capture:mobile -- --out .fx/cur.png --label chat --launch <bundleId> --settle 2
+npm run capture:mobile -- --platform android --serial emulator-5554 --out .fx/home.png --label home --settle 2
 npm run vision:metrics -- --image .fx/cur.png --grid 8x5 --out .fx/metrics.json
 npm run vision:judge -- --judge metrics --metrics .fx/metrics.json --thresholds '{"maxEmptyCells":3}' --out .fx/verdict.json
 ```
 
-Android capture ships via `adb screencap` (`exec-out` with an `/sdcard` pull fallback):
+Android capture ships via `adb screencap` (`exec-out` with an `/sdcard` pull
+fallback). Every mobile capture records its PNG sha256 in the capture metadata and
+metrics record their source image hash — pass `--verify-source` (with `--capture`)
+to `vision:judge` to fail unless the metrics were computed from the exact capture
+under judgment:
 
 ```bash
-npm run capture:mobile -- --platform android --serial emulator-5554 --out .fx/home.png --label home --settle 2
+npm run vision:judge -- --judge metrics --metrics .fx/metrics.json --capture .fx/cur.png --verify-source --out .fx/verdict.json
 ```
 
 ## Domain commands
