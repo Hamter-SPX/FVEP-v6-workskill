@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-08-09 — Mobile compare in the vision loop
+
+### Added
+
+- `compareAll` enumerates `mobile.cases` when `capture.type` is `ios-sim|android` (case label → route, fixed `mobile` viewport, case key → state — the same artifact identity `captureAllMobile` writes), so the stored-reference pixel + perceptual visual gate now runs on mobile captures
+- `mobile.cases[].masks`: PNG-space ignore rectangles (`x`/`y`/`width`/`height`, `w`/`h` shorthand accepted) parsed through config and the JSON schema, applied before the mobile diff; `regions` pass through as raw contracts
+- `vision-loop` mobile branch: `--refresh-reference` captures a fresh reference set from the booted devices via `captureAllMobile` reference mode, and compare runs by default — the `--refresh-reference is not supported` warning and the `compare: skipped on mobile` line are removed
+
 ## 2026-08-08 — Mobile Vision Loop (full wiring)
 
 ### Added

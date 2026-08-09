@@ -743,6 +743,14 @@ set — any failing case exits 1. Because no web gates apply to a mobile run, th
 summary lifts the web quality floor (`minScore`/`minConfidence`) instead of failing
 clean runs on a non-applicable score.
 
+Visual comparison rides the same case matrix. Run once with `--refresh-reference`
+to capture fresh reference PNGs from the booted devices, and every later run diffs
+the current captures against the stored references with the standard pixel +
+perceptual gates — a blocker or major diff fails the run. Per-case `masks` are
+PNG-space rectangles (`{"x":0,"y":0,"width":100,"height":44}`, `w`/`h` shorthand
+accepted) that blank volatile regions such as clocks and battery indicators
+before the diff.
+
 ```json
 {
   "capture": { "type": "ios-sim" },
@@ -755,7 +763,8 @@ clean runs on a non-applicable score.
 ```
 
 ```bash
-node scripts/vision-loop.mjs --config vision-loop.config.json
+node scripts/vision-loop.mjs --config vision-loop.config.json --refresh-reference  # seed/refresh the reference baseline
+node scripts/vision-loop.mjs --config vision-loop.config.json                      # capture + compare against it
 ```
 
 For Android use `capture.type: "android"` with `mobile.serial` (default
@@ -1122,6 +1131,13 @@ mobileChecks — เคสไหน fail รันจะ exit 1 เนื่อ�
 summary จึงยกพื้นคะแนนเว็บ (`minScore`/`minConfidence`) ออก แทนที่จะ fail รันที่
 สะอาดด้วยคะแนนที่ไม่ได้ใช้งาน
 
+การ compare ภาพวิ่งบนเมทริกซ์เคสเดียวกันนี้: รันครั้งแรกด้วย `--refresh-reference`
+เพื่อ capture ภาพ reference ใหม่จากอุปกรณ์ที่ boot อยู่ แล้วทุกรันถัดไปจะ diff
+ภาพ current เทียบกับ reference ที่เก็บไว้ด้วยเกต pixel + perceptual มาตรฐาน —
+diff ระดับ blocker หรือ major จะ fail รันทันที `masks` ต่อเคสคือสี่เหลี่ยมในพิกัด
+PNG (`{"x":0,"y":0,"width":100,"height":44}` หรือ shorthand `w`/`h`) สำหรับปิดบัง
+จุดที่เปลี่ยนตลอด เช่น นาฬิกา ไอคอนแบตเตอรี ก่อน diff
+
 ```json
 {
   "capture": { "type": "ios-sim" },
@@ -1134,7 +1150,8 @@ summary จึงยกพื้นคะแนนเว็บ (`minScore`/`minC
 ```
 
 ```bash
-node scripts/vision-loop.mjs --config vision-loop.config.json
+node scripts/vision-loop.mjs --config vision-loop.config.json --refresh-reference  # ปลูก/รีเฟรช baseline
+node scripts/vision-loop.mjs --config vision-loop.config.json                      # capture + compare เทียบ baseline
 ```
 
 สำหรับ Android ใช้ `capture.type: "android"` กับ `mobile.serial` (ดีฟอลต์

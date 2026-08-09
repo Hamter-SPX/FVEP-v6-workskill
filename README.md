@@ -231,6 +231,14 @@ set — any failing case exits 1. Because no web gates apply to a mobile run, th
 summary lifts the web quality floor (`minScore`/`minConfidence`) instead of failing
 clean runs on a non-applicable score.
 
+Visual comparison rides the same case matrix. Run once with `--refresh-reference`
+to capture fresh reference PNGs from the booted devices, and every later run diffs
+the current captures against the stored references with the standard pixel +
+perceptual gates — a blocker or major diff fails the run. Per-case `masks` are
+PNG-space rectangles (`{"x":0,"y":0,"width":100,"height":44}`, `w`/`h` shorthand
+accepted) that blank volatile regions such as clocks and battery indicators
+before the diff.
+
 ```json
 {
   "capture": { "type": "ios-sim" },
@@ -243,7 +251,8 @@ clean runs on a non-applicable score.
 ```
 
 ```bash
-node scripts/vision-loop.mjs --config vision-loop.config.json
+node scripts/vision-loop.mjs --config vision-loop.config.json --refresh-reference  # seed/refresh the reference baseline
+node scripts/vision-loop.mjs --config vision-loop.config.json                      # capture + compare against it
 ```
 
 For Android use `capture.type: "android"` with `mobile.serial` (default

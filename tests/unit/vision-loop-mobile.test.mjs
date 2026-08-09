@@ -3,6 +3,9 @@
  * spawns the real scripts/vision-loop.mjs against a tmp config with seeded
  * captures (--skip-capture, no devices needed) and asserts the headline
  * exit-code contract: pass run → 0, failing mobileChecks verdict → 1.
+ * The loop also runs the mobile-aware compare (--refresh-reference seeds the
+ * baseline on devices; tests seed the stored reference PNGs directly), so a
+ * differing current capture fails the visual gate and exits 1.
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -39,13 +42,42 @@ function partiallyEmptyPng() {
   return PNG.sync.write(png);
 }
 
-function runLoop(thresholds) {
+// Same fixture with the dark 10x10 block moved to the bottom-right cell: the
+// occupancy metrics stay identical (mobileChecks verdict unchanged) while
+// 200/4000 pixels differ from the reference (mismatchRatio 0.05 > the default
+// majorMismatchRatio 0.02 → blocker).
+function blockMovedPng() {
+  const png = new PNG({ width: 80, height: 50 });
+  for (let o = 0; o < png.data.length; o += 4) {
+    png.data[o] = 255;
+    png.data[o + 1] = 255;
+    png.data[o + 2] = 255;
+    png.data[o + 3] = 255;
+  }
+  for (let y = 40; y < 50; y += 1) {
+    for (let x = 70; x < 80; x += 1) {
+      const o = (y * 80 + x) * 4;
+      png.data[o] = 10;
+      png.data[o + 1] = 10;
+      png.data[o + 2] = 10;
+    }
+  }
+  return PNG.sync.write(png);
+}
+
+function runLoop(thresholds, { currentDiffers = false } = {}) {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'vision-loop-mobile-'));
   // Mobile artifact identity rides the web layout as label__mobile__key
   // (lib/mobile-capture-engine.mjs caseIdentity), seeded as "current" capture.
+  // A stored "reference" capture is seeded too so the mobile compare has a
+  // baseline to diff against (default diff.failOnMissingReference is true —
+  // without it the missing reference would now block the run).
   const currentDir = path.join(tmp, 'artifacts', 'current');
+  const referenceDir = path.join(tmp, 'artifacts', 'reference');
   fs.mkdirSync(currentDir, { recursive: true });
-  fs.writeFileSync(path.join(currentDir, 'home__mobile__home.png'), partiallyEmptyPng());
+  fs.mkdirSync(referenceDir, { recursive: true });
+  fs.writeFileSync(path.join(referenceDir, 'home__mobile__home.png'), partiallyEmptyPng());
+  fs.writeFileSync(path.join(currentDir, 'home__mobile__home.png'), currentDiffers ? blockMovedPng() : partiallyEmptyPng());
   const configPath = path.join(tmp, 'vision-loop.config.json');
   fs.writeFileSync(configPath, `${JSON.stringify({
     outputDir: 'artifacts',
@@ -57,11 +89,13 @@ function runLoop(thresholds) {
     },
     routes: [{ name: 'home', path: '/' }]
   }, null, 2)}\n`);
-  return spawnSync(process.execPath, [LOOP_SCRIPT, '--config', configPath, '--skip-capture'], {
+  const result = spawnSync(process.execPath, [LOOP_SCRIPT, '--config', configPath, '--skip-capture'], {
     cwd: root,
     encoding: 'utf8',
     timeout: 120_000
   });
+  result.outputDir = path.join(tmp, 'artifacts');
+  return result;
 }
 
 test('vision-loop mobile: clean run exits 0 with mobile checks pass and web sections skipped', () => {
@@ -75,4 +109,26 @@ test('vision-loop mobile: failing judge thresholds exit 1 with mobile checks fai
   const result = runLoop({ maxEmptyCells: 0 }); // fixture has 39 empty cells
   assert.equal(result.status, 1, `expected exit 1; stdout:\n${result.stdout}\nstderr:\n${result.stderr}`);
   assert.match(result.stdout, /Mobile checks: 0 passed, 1 failed/);
+});
+
+test('vision-loop mobile: identical stored reference compares green (exit 0, comparison accepted)', () => {
+  const result = runLoop({});
+  assert.equal(result.status, 0, `expected exit 0; stdout:\n${result.stdout}\nstderr:\n${result.stderr}`);
+  assert.doesNotMatch(result.stdout, /compare: skipped on mobile/);
+  const comparison = JSON.parse(fs.readFileSync(path.join(result.outputDir, 'reports', 'comparison.json'), 'utf8'));
+  assert.equal(comparison.comparisons.length, 1);
+  assert.equal(comparison.comparisons[0].key, 'Home__mobile__home');
+  assert.equal(comparison.comparisons[0].severity, 'accepted');
+  assert.equal(comparison.comparisons[0].mismatchRatio, 0);
+  assert.equal(comparison.summary.blockers, 0);
+});
+
+test('vision-loop mobile: differing current fails the visual gate (exit 1)', () => {
+  const result = runLoop({}, { currentDiffers: true });
+  assert.equal(result.status, 1, `expected exit 1; stdout:\n${result.stdout}\nstderr:\n${result.stderr}`);
+  assert.match(result.stdout, /Automated evidence gate: FAIL/);
+  const comparison = JSON.parse(fs.readFileSync(path.join(result.outputDir, 'reports', 'comparison.json'), 'utf8'));
+  assert.equal(comparison.comparisons.length, 1);
+  assert.equal(comparison.comparisons[0].severity, 'blocker');
+  assert.ok(comparison.summary.blockers >= 1, `expected blockers >= 1, got ${comparison.summary.blockers}`);
 });

@@ -111,12 +111,10 @@ try {
 
     if (isMobile) {
       if (args['refresh-reference']) {
-        process.stdout.write('--refresh-reference is not supported for mobile captures (ignored)\n');
+        sections.referenceCapture = await captureAllMobile(config, { mode: 'reference', filters });
       }
       if (!args['skip-capture']) sections.capture = await captureAllMobile(config, { mode: 'current', filters });
-      if (!args['skip-compare']) {
-        process.stdout.write('compare: skipped on mobile (mobile-aware compare is a follow-up)\n');
-      }
+      if (!args['skip-compare']) sections.comparison = await compareAll(config, { filters });
       sections.mobileChecks = await runMobileChecks(config, { filters });
       for (const name of ['inspect', 'a11y', 'interaction', 'state-crawler', 'performance', 'tokens', 'breakpoints', 'engineering']) {
         process.stdout.write(`${name}: skipped (web-only section)\n`);

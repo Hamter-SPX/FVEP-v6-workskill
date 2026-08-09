@@ -56,7 +56,9 @@ test('mobile block parses cases with defaults and per-case overrides', () => {
     openUrl: 'app://home',
     settleMs: 1500,
     udid: 'OVERRIDE-1',
-    serial: 'emulator-5558'
+    serial: 'emulator-5558',
+    masks: [],
+    regions: []
   });
   assert.deepEqual(result.mobile.cases[1], {
     key: 'Chat',
@@ -66,8 +68,35 @@ test('mobile block parses cases with defaults and per-case overrides', () => {
     openUrl: null,
     settleMs: 1000,
     udid: null,
-    serial: null
+    serial: null,
+    masks: [],
+    regions: []
   });
+});
+
+test('mobile case masks parse to PNG-space rectangles (w/h aliases accepted) and regions pass through', () => {
+  const result = normalizeConfig({
+    ...base,
+    mobile: {
+      cases: [{
+        key: 'home',
+        label: 'Home',
+        masks: [{ x: 4, y: 8, width: 40, height: 12 }, { x: 1, y: 2, w: 3, h: 5 }],
+        regions: [{ name: 'hero', selector: '#hero' }]
+      }]
+    }
+  }, '/tmp/config.json');
+  assert.deepEqual(result.mobile.cases[0].masks, [
+    { x: 4, y: 8, width: 40, height: 12 },
+    { x: 1, y: 2, width: 3, height: 5 }
+  ]);
+  assert.deepEqual(result.mobile.cases[0].regions, [{ name: 'hero', selector: '#hero' }]);
+});
+
+test('mobile case masks/regions default to empty arrays', () => {
+  const result = normalizeConfig({ ...base, mobile: { cases: [{ key: 'home', label: 'Home' }] } }, '/tmp/config.json');
+  assert.deepEqual(result.mobile.cases[0].masks, []);
+  assert.deepEqual(result.mobile.cases[0].regions, []);
 });
 
 test('mobile block applies defaults when absent or partial', () => {
