@@ -225,7 +225,7 @@ Discipline packs — what each role owns, its gates, and its red flags — live 
 The loop is fully wired: set `capture.type` to `ios-sim` or `android` in
 `vision-loop.config.json`, declare `mobile.cases`, and `vision-loop` captures every
 case from the booted simulator/emulator, computes deterministic metrics per case,
-and writes a judge verdict (`metadata/<key>.mobile.judgment.json`). Web-only
+and writes a judge verdict (`metadata/<label>__mobile__<key>.mobile.judgment.json`). Web-only
 sections log `skipped (web-only section)`; the run gate is the mobileChecks verdict
 set — any failing case exits 1. Because no web gates apply to a mobile run, the
 summary lifts the web quality floor (`minScore`/`minConfidence`) instead of failing

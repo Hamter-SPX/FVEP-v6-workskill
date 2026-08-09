@@ -1,12 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { normalizeConfig } from '../../lib/config.mjs';
+import { normalizeConfig, validateConfig } from '../../lib/config.mjs';
 
 const base = { routes: [{ name: 'home', path: '/' }] };
 
-test('capture.type defaults to playwright when not configured', () => {
+test('capture.type key is absent when not configured (consumers default to playwright)', () => {
   const result = normalizeConfig(base, '/tmp/config.json');
-  assert.equal(result.capture.type, 'playwright');
+  assert.equal(result.capture.type, undefined);
+  assert.ok(!Object.hasOwn(result.capture, 'type'));
 });
 
 test('capture.type ios-sim is honored', () => {
@@ -19,9 +20,17 @@ test('capture.type android is honored', () => {
   assert.equal(result.capture.type, 'android');
 });
 
-test('unknown capture.type falls back to playwright', () => {
+test('unknown capture.type is dropped (consumers default to playwright)', () => {
   const result = normalizeConfig({ ...base, capture: { type: 'selenium' } }, '/tmp/config.json');
-  assert.equal(result.capture.type, 'playwright');
+  assert.equal(result.capture.type, undefined);
+  assert.ok(!Object.hasOwn(result.capture, 'type'));
+});
+
+test('config without explicit capture.type stays provenance-stable (no capture.type key in parsed config)', () => {
+  const result = normalizeConfig(base, '/tmp/config.json');
+  assert.ok(!('type' in result.capture));
+  const serialized = JSON.parse(JSON.stringify(result));
+  assert.ok(!('type' in serialized.capture));
 });
 
 test('mobile block parses cases with defaults and per-case overrides', () => {
@@ -91,4 +100,42 @@ test('other capture fields keep their existing defaults alongside capture.type',
   assert.equal(result.capture.animations, 'disabled');
   assert.equal(result.capture.waitUntil, 'domcontentloaded');
   assert.equal(result.capture.settleMs, 250);
+});
+
+test('duplicate mobile-case artifact identities are rejected (safeSegment collapse)', () => {
+  // safeSegment('My Case') === safeSegment('my-case') → both cases map to the
+  // same artifact path 'my-case__mobile__home' and would overwrite each other.
+  assert.throws(
+    () => validateConfig(normalizeConfig({
+      ...base,
+      capture: { type: 'ios-sim' },
+      mobile: { cases: [{ key: 'home', label: 'My Case' }, { key: 'home', label: 'my-case' }] }
+    }, '/tmp/config.json')),
+    (error) => {
+      assert.match(error.message, /Duplicate mobile case artifact identity/);
+      assert.match(error.message, /my-case__mobile__home/); // names the colliding identity
+      return true;
+    }
+  );
+});
+
+test('mobile capture type with empty mobile.cases is rejected', () => {
+  assert.throws(
+    () => validateConfig(normalizeConfig({
+      ...base,
+      capture: { type: 'ios-sim' },
+      mobile: { cases: [] }
+    }, '/tmp/config.json')),
+    (error) => {
+      assert.ok(error instanceof TypeError);
+      assert.match(error.message, /At least one mobile case \(mobile\.cases\) is required/);
+      return true;
+    }
+  );
+});
+
+test('playwright config with empty mobile.cases stays valid (back-compat)', () => {
+  const web = validateConfig(normalizeConfig({ ...base, mobile: { cases: [] } }, '/tmp/config.json'));
+  assert.equal(web.mobile.cases.length, 0);
+  assert.equal(web.capture.type, undefined);
 });

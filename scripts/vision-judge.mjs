@@ -19,6 +19,7 @@ Options:
   --label <name>        Case label (default: screen)
   --capture <file>      Capture PNG path (recorded in verdict)
   --verify-source       Fail unless metrics.source.sha256 matches --capture PNG hash
+                        (metrics mode only; ignored in model/human modes)
   --out <file>          Write verdict JSON here (default: stdout only)
   --help                Show help
 

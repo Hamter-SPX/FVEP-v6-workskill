@@ -737,7 +737,7 @@ Discipline packs — what each role owns, its gates, and its red flags — live 
 The loop is fully wired: set `capture.type` to `ios-sim` or `android` in
 `vision-loop.config.json`, declare `mobile.cases`, and `vision-loop` captures every
 case from the booted simulator/emulator, computes deterministic metrics per case,
-and writes a judge verdict (`metadata/<key>.mobile.judgment.json`). Web-only
+and writes a judge verdict (`metadata/<label>__mobile__<key>.mobile.judgment.json`). Web-only
 sections log `skipped (web-only section)`; the run gate is the mobileChecks verdict
 set — any failing case exits 1. Because no web gates apply to a mobile run, the
 summary lifts the web quality floor (`minScore`/`minConfidence`) instead of failing
@@ -1116,7 +1116,7 @@ npm run audit:game-assets -- --assets examples/game-assets.example.json --frame-
 ลูปมือถือต่อสายครบแล้ว: ตั้ง `capture.type` เป็น `ios-sim` หรือ `android` ใน
 `vision-loop.config.json` แล้วประกาศ `mobile.cases` — `vision-loop` จะ capture
 ทุกเคสจาก simulator/emulator ที่ boot อยู่ คำนวณ metrics แบบ deterministic ต่อเคส
-และเขียน verdict ของ judge (`metadata/<key>.mobile.judgment.json`) ส่วนที่เป็น
+และเขียน verdict ของ judge (`metadata/<label>__mobile__<key>.mobile.judgment.json`) ส่วนที่เป็น
 web-only จะ log ว่า `skipped (web-only section)` และเกตของรันคือชุด verdict ของ
 mobileChecks — เคสไหน fail รันจะ exit 1 เนื่องจากเกตเว็บไม่เกี่ยวกับรันมือถือ
 summary จึงยกพื้นคะแนนเว็บ (`minScore`/`minConfidence`) ออก แทนที่จะ fail รันที่

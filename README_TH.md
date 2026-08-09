@@ -220,7 +220,7 @@ npm run audit:game-assets -- --assets examples/game-assets.example.json --frame-
 ลูปมือถือต่อสายครบแล้ว: ตั้ง `capture.type` เป็น `ios-sim` หรือ `android` ใน
 `vision-loop.config.json` แล้วประกาศ `mobile.cases` — `vision-loop` จะ capture
 ทุกเคสจาก simulator/emulator ที่ boot อยู่ คำนวณ metrics แบบ deterministic ต่อเคส
-และเขียน verdict ของ judge (`metadata/<key>.mobile.judgment.json`) ส่วนที่เป็น
+และเขียน verdict ของ judge (`metadata/<label>__mobile__<key>.mobile.judgment.json`) ส่วนที่เป็น
 web-only จะ log ว่า `skipped (web-only section)` และเกตของรันคือชุด verdict ของ
 mobileChecks — เคสไหน fail รันจะ exit 1 เนื่องจากเกตเว็บไม่เกี่ยวกับรันมือถือ
 summary จึงยกพื้นคะแนนเว็บ (`minScore`/`minConfidence`) ออก แทนที่จะ fail รันที่

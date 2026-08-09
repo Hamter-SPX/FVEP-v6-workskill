@@ -156,6 +156,15 @@ try {
           tokens: { ...config.tokens, enabled: false },
           engineeringChecks: [],
           breakpoints: { ...config.breakpoints, enabled: false },
+          // Aesthetic/baseline evidence is web-only: a mobile run can never
+          // produce it, so leaving these enabled would hard-fail every mobile
+          // run as required-but-absent evidence (gate-engine.mjs).
+          aesthetics: { ...config.aesthetics, enabled: false },
+          baseline: { ...config.baseline, enabled: false },
+          // History recording follows the same clone family: mobile runs score
+          // all-not-applicable (0/100) by definition, and recording those rows
+          // would poison the trend analysis of a web repo adopting mobile.
+          history: { ...config.history, enabled: false },
           // On mobile the authoritative gate is the mobileChecks verdict set
           // (plus a mobile comparison when present). The web score floor is
           // removed because no web gates are applicable — with the default

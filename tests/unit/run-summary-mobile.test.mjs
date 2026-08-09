@@ -21,6 +21,9 @@ async function mobileSummaryConfig(root, overrides = {}) {
   // On mobile the authoritative gate is the mobileChecks verdict set (plus a
   // mobile comparison when present); the web score floor is removed because no
   // web gates are applicable (all would be not-applicable, dragging score to 0).
+  // Aesthetic/baseline evidence is web-only (leaving it enabled would hard-fail
+  // every mobile run as required-but-absent evidence); history follows the same
+  // clone family (0/100 mobile rows would poison a web repo's trend analysis).
   return {
     ...config,
     inspection: { ...config.inspection, enabled: false },
@@ -31,6 +34,9 @@ async function mobileSummaryConfig(root, overrides = {}) {
     tokens: { ...config.tokens, enabled: false },
     engineeringChecks: [],
     breakpoints: { ...config.breakpoints, enabled: false },
+    aesthetics: { ...config.aesthetics, enabled: false },
+    baseline: { ...config.baseline, enabled: false },
+    history: { ...config.history, enabled: false },
     quality: { ...config.quality, minScore: 0, minConfidence: 0 }
   };
 }
@@ -74,6 +80,21 @@ test('mobile run summary: a present comparison re-applies the visual gate', asyn
   const summary = await writeRunSummary(config, { ...mobileSections(), comparison });
   assert.equal(summary.quality.gates.visual.status, 'pass');
   assert.equal(summary.quality.gates.runtime.status, 'not-applicable');
+});
+
+test('mobile run summary: aesthetics.enabled true does not hard-fail an all-pass mobile run', async () => {
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), 'fvl-summary-mobile-aes-'));
+  const config = await mobileSummaryConfig(root, {
+    aesthetics: { enabled: true, profilePath: 'direction/aesthetic-profile.json' }
+  });
+  const allPassChecks = [
+    { key: 'home', label: 'Home', verdict: 'pass', findings: [], metricsPath: null, judgmentPath: 'metadata/home__mobile__home.mobile.judgment.json' }
+  ];
+  const summary = await writeRunSummary(config, { ...mobileSections(), mobileChecks: allPassChecks });
+  // Aesthetic evidence is web-only; the mobile clone disables it so the
+  // required-but-absent rule in gate-engine.mjs cannot fire on a mobile run.
+  assert.equal(summary.quality.gates.aesthetic.status, 'not-applicable');
+  assert.equal(summary.automatedGatePassed, true);
 });
 
 test('web run summary: playwright applicability is unchanged and mobileChecks stays null', async () => {
