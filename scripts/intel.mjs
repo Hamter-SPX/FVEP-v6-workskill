@@ -3,7 +3,8 @@
  * Run intelligence report. Reads the store every vision-loop run maintains
  * under <outputDir>/.fx/intel/ (lib/run-intel-store.mjs) and prints the five
  * rule-based insight families from lib/run-intel-engine.mjs — recurring rules,
- * failure streaks, device correlations, resolved rules, pass→fail regressions.
+ * failure-only streaks, device correlations, resolved rules, and regressions
+ * (a failure finding absent from one run's records, then present again).
  * Advisory only: insights never change the exit code. --purge is the only
  * mutating path; it refuses to run without an explicit --yes (no prompts in a
  * gate-tool CLI) and lists every file it deleted.
@@ -19,8 +20,10 @@ const HELP = `Usage:
 
 Reads the run-intelligence store under <outputDir>/.fx/intel/ and prints
 evidence-backed insights from recorded vision-loop runs: recurring rules,
-consecutive-failure streaks, device correlations, resolved rules, and
-pass→fail regressions. Advisory only — the exit code stays 0 for any insight.
+consecutive-failure streaks (failure-severity findings only), device
+correlations, resolved rules, and regressions (a failure finding absent from
+one run's records, then present again). Advisory only — the exit code stays 0
+for any insight.
 
 Options:
   -o, --output-dir <dir>   Vision loop output directory (default: .; positional works too)
@@ -69,10 +72,13 @@ function printTextReport(analysis, { outputDir, windowDays }) {
     printed += analysis.resolved.length;
   }
   if (analysis.regressions.length > 0) {
-    process.stdout.write('รีเกรสชัน (เคสที่เคยผ่านแล้วกลับมาล้ม):\n');
+    process.stdout.write('รีเกรสชัน (finding ที่หายไปแล้วกลับมาพบอีก):\n');
     for (const entry of analysis.regressions) {
-      const [fromPassRunId, toFailRunId] = entry.fromPassedToFailedRunIds;
-      process.stdout.write(`  case '${entry.case_key}' เปลี่ยนจากผ่านเป็นล้ม (run ${fromPassRunId} → ${toFailRunId})\n`);
+      // Absence-based framing, never pass-based: the "absent" run recorded no
+      // failure finding for this case — it may never have run the case at all
+      // (--case/--route filters), so claiming it "ผ่าน" would be fabrication.
+      const [absentRunId, presentRunId] = entry.fromPassedToFailedRunIds;
+      process.stdout.write(`  case '${entry.case_key}' ไม่พบ finding แล้วกลับมาพบอีก (run ${absentRunId} → ${presentRunId})\n`);
     }
     printed += analysis.regressions.length;
   }

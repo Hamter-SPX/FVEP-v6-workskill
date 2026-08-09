@@ -17,9 +17,10 @@ const now = Date.now();
 const isoAt = (daysBack) => new Date(now - daysBack * DAY_MS).toISOString();
 
 // 5-run history, newest first: R1..R5 covering every insight pattern:
-// - recurring: maxEmptyCells in 4 runs; streak: maxEmptyCells (4) + tapTargetSize (2)
+// - recurring: maxEmptyCells in 4 runs; streak: maxEmptyCells (4) only — the
+//   tapTargetSize rows are warn-severity and never narrate as failures
 // - correlation: visual-diff pinned to pixel-7; resolved: suspectBackground (clean in R1,R2)
-// - regression: case 'checkout' passes in R2 then fails in R1
+// - regression: case 'checkout' finding absent in R2 then present again in R1
 const RUNS = [
   { id: 'R1', gate: 'fail', at: isoAt(1), findings: [
     { source: 'mobile-checks', rule: 'maxEmptyCells', severity: 'fail', case_key: 'home', device: null },
@@ -32,15 +33,15 @@ const RUNS = [
   ] },
   { id: 'R3', gate: 'fail', at: isoAt(3), findings: [
     { source: 'mobile-checks', rule: 'maxEmptyCells', severity: 'fail', case_key: 'home', device: null },
-    { source: 'mobile-checks', rule: 'suspectBackground', severity: 'warn', case_key: 'gallery', device: null },
+    { source: 'mobile-checks', rule: 'suspectBackground', severity: 'fail', case_key: 'gallery', device: null },
     { source: 'comparison', rule: 'visual-diff', severity: 'major', case_key: 'checkout', device: 'pixel-7' },
   ] },
   { id: 'R4', gate: 'fail', at: isoAt(4), findings: [
     { source: 'mobile-checks', rule: 'maxEmptyCells', severity: 'fail', case_key: 'home', device: null },
-    { source: 'mobile-checks', rule: 'suspectBackground', severity: 'warn', case_key: 'gallery', device: null },
+    { source: 'mobile-checks', rule: 'suspectBackground', severity: 'fail', case_key: 'gallery', device: null },
   ] },
   { id: 'R5', gate: 'pass', at: isoAt(5), findings: [
-    { source: 'mobile-checks', rule: 'suspectBackground', severity: 'warn', case_key: 'gallery', device: null },
+    { source: 'mobile-checks', rule: 'suspectBackground', severity: 'fail', case_key: 'gallery', device: null },
   ] },
 ];
 
@@ -97,10 +98,12 @@ for (const [label, opts] of [['sqlite', {}], ['jsonl', { forceJsonl: true }]]) {
     assert.match(byRule.get('maxEmptyCells').insight, /rule 'maxEmptyCells' เกิด 4 ครั้งใน 5 รัน/);
     assert.match(byRule.get('maxEmptyCells').insight, /ล่าสุด run R1/);
 
-    // (2) streaks (>= 2 consecutive from the newest run)
+    // (2) streaks (>= 2 consecutive failures from the newest run): warn rows
+    // neither seed nor extend a streak, so warn-only tapTargetSize (R1+R2) is
+    // absent even though it sits in the two newest runs.
     assert.deepEqual(
       analysis.streaks.map((s) => [s.rule, s.consecutiveFailures]),
-      [['maxEmptyCells', 4], ['tapTargetSize', 2]],
+      [['maxEmptyCells', 4]],
     );
     assert.ok(analysis.streaks.every((s) => s.lastRunId === 'R1'));
 
@@ -115,16 +118,24 @@ for (const [label, opts] of [['sqlite', {}], ['jsonl', { forceJsonl: true }]]) {
     assert.match(corr.note, /visual-diff/);
     assert.match(corr.note, /pixel-7/);
 
-    // (4) resolved: suspectBackground last failed at R3, clean for R1+R2
+    // (4) resolved: suspectBackground last failed at R3, clean for R1+R2 — and
+    // the note carries the absence-proxy caveat (filtered runs may not have
+    // exercised the rule at all).
     assert.equal(analysis.resolved.length, 1);
     assert.equal(analysis.resolved[0].rule, 'suspectBackground');
     assert.equal(analysis.resolved[0].lastFailureRunId, 'R3');
     assert.equal(analysis.resolved[0].resolvedAfterRuns, 2);
     assert.match(analysis.resolved[0].note, /R3/);
+    assert.match(analysis.resolved[0].note, /--case\/--route/);
 
-    // (5) regressions: checkout passed (no findings) in R2, failed in R1
-    const checkout = analysis.regressions.find((r) => r.case_key === 'checkout');
-    assert.deepEqual(checkout.fromPassedToFailedRunIds, ['R2', 'R1']);
+    // (5) regressions: exactly two absence→presence transitions — checkout's
+    // failure finding absent in R2's records then present in R1, and home's
+    // absent in the oldest recorded run (R5) then present from R4 on. The
+    // warn-only 'cart' rows (R1+R2) produce no regression narrative.
+    const regByCase = new Map(analysis.regressions.map((r) => [r.case_key, r.fromPassedToFailedRunIds]));
+    assert.equal(analysis.regressions.length, 2);
+    assert.deepEqual(regByCase.get('checkout'), ['R2', 'R1']);
+    assert.deepEqual(regByCase.get('home'), ['R5', 'R4']);
 
     await store.close();
   });
@@ -140,6 +151,78 @@ test('analyzeRunIntel on an empty store returns empty insights without throwing'
   assert.deepEqual(analysis.regressions, []);
   assert.equal(analysis.totals.runsInWindow, 0);
   assert.equal(analysis.totals.findingsInWindow, 0);
+});
+
+// Seed `runsSpec` (newest-first) with one finding row per run.
+async function seedRuns(store, outputDir, runsSpec) {
+  for (const [index, run] of [...runsSpec.entries()].reverse()) { // oldest first
+    const createdAt = isoAt(index + 1);
+    await store.recordRun({
+      run_id: run.id,
+      output_dir: outputDir,
+      gate_outcome: 'fail',
+      score: 40,
+      blockers: 1,
+      cases_count: 1,
+      created_at: createdAt,
+    });
+    if (run.findings.length > 0) {
+      await store.recordFindings(run.findings.map((f) => ({
+        run_id: run.id,
+        output_dir: outputDir,
+        source: 'mobile-checks',
+        rule: f.rule,
+        severity: f.severity,
+        case_key: f.case_key,
+        device: null,
+        detail_json: '{}',
+        created_at: createdAt,
+      })));
+    }
+  }
+}
+
+test('severity filter: warn-only findings never narrate as streak/resolved; recurring stays severity-blind', async () => {
+  const dir = tmpOut();
+  const store = await openIntelStore(dir, { forceJsonl: true });
+  await seedRuns(store, dir, [
+    { id: 'W1', findings: [{ rule: 'tapTargetSize', severity: 'warn', case_key: 'cart' }] },
+    { id: 'W2', findings: [{ rule: 'tapTargetSize', severity: 'warn', case_key: 'cart' }] },
+  ]);
+
+  const analysis = await analyzeRunIntel(dir, { windowDays: 30, store });
+  // The warn rows are recorded and still show up as recurring (severity-blind)…
+  assert.equal(analysis.totals.findingsInWindow, 2);
+  const recurring = analysis.recurring.find((r) => r.rule === 'tapTargetSize');
+  assert.equal(recurring.occurrences, 2);
+  // …but no failure-narrating family may claim them.
+  assert.deepEqual(analysis.streaks, []);
+  assert.deepEqual(analysis.resolved, []);
+  assert.deepEqual(analysis.regressions, []);
+  await store.close();
+});
+
+test('severity filter: mixed warn+fail sequence counts only the fail runs', async () => {
+  const dir = tmpOut();
+  const store = await openIntelStore(dir, { forceJsonl: true });
+  await seedRuns(store, dir, [
+    { id: 'M1', findings: [{ rule: 'maxEmptyCells', severity: 'fail', case_key: 'home' }] },
+    { id: 'M2', findings: [{ rule: 'maxEmptyCells', severity: 'fail', case_key: 'home' }] },
+    { id: 'M3', findings: [{ rule: 'maxEmptyCells', severity: 'warn', case_key: 'home' }] },
+  ]);
+
+  const analysis = await analyzeRunIntel(dir, { windowDays: 30, store });
+  // Streak stops at the warn run: 2, not 3 — a warn never fails the gate.
+  assert.deepEqual(
+    analysis.streaks.map((s) => [s.rule, s.consecutiveFailures]),
+    [['maxEmptyCells', 2]],
+  );
+  // Absence-based regression: M3 recorded no FAILURE-class finding for 'home',
+  // M2 did — the warn row in M3 does not count as presence.
+  assert.deepEqual(analysis.regressions, [
+    { case_key: 'home', fromPassedToFailedRunIds: ['M3', 'M2'] },
+  ]);
+  await store.close();
 });
 
 function mobileFixture(outputDir) {

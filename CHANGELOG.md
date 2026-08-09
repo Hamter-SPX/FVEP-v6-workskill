@@ -9,6 +9,11 @@
 - Summary advisory lines in `scripts/vision-loop.mjs`: after the summary block (and the Mobile checks line on mobile) the loop prints at most two Thai lines from the recorded history — `สถิติ run: rule 'x' เกิด N ครั้งในช่วง D วัน — ตรวจ <case>` (top recurring) and `สตรีค: rule 'y' ล้มติดกัน K รัน` (top streak) — capped for stdout noise, never gate-affecting, and suppressed together with recording by the existing `--skip-intel` flag
 - `formatIntelAdvisory` in `lib/run-intel-engine.mjs`: the two-line advisory renderer the loop summary consumes
 
+### Fixed
+
+- Run-intelligence failure narratives are severity-aware (`lib/run-intel-engine.mjs`): streaks, resolved, and regressions now count only failure-class severities (`fail`/`blocker`/`major`) — warn findings stay recorded and still feed the recurring family, but a warn-only rule is no longer narrated as `ล้มติดกัน N รัน` or `หายแล้ว`, matching the mobile gate where a warn verdict never fails
+- Regression and resolved wording is absence-based, not pass-based: the regression line reads `case 'x' ไม่พบ finding แล้วกลับมาพบอีก (run A → B)` instead of the fabricated `เปลี่ยนจากผ่านเป็นล้ม` (a run recorded with `--case`/`--route` filters may never have exercised the case), and the resolved note carries the same filtered-runs caveat inline
+
 ## 2026-08-10 — Interactive onboarding tutorial
 
 ### Added
