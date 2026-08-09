@@ -8,3 +8,12 @@ test('parseLooseArgs supports flags, equals syntax, typed values, and positional
     { _: ['extra'], config: 'custom.json', headed: false, threshold: 0.12, baseline: true }
   );
 });
+
+test('parseLooseArgs treats json/yes/purge as booleans — never swallow positionals', () => {
+  assert.deepEqual(parseLooseArgs(['--yes', '--purge', 'artifacts/vision-loop']),
+    { _: ['artifacts/vision-loop'], yes: true, purge: true });
+  assert.deepEqual(parseLooseArgs(['--purge', '--yes', 'artifacts/vision-loop']),
+    { _: ['artifacts/vision-loop'], purge: true, yes: true });
+  assert.deepEqual(parseLooseArgs(['--json', '--output-dir', 'd']),
+    { _: [], json: true, 'output-dir': 'd' });
+});

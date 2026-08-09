@@ -82,15 +82,26 @@ function printTextReport(analysis, { outputDir, windowDays }) {
   process.stdout.write('Advisory report — the exit code is 0 regardless of insights.\n');
 }
 
+// Recursive relative file listing so the purge report names every deleted
+// file even when unexpected nested content exists under .fx/intel/.
+async function listFilesRecursive(dir, base = dir) {
+  let found = [];
+  const entries = await fs.readdir(dir, { withFileTypes: true });
+  for (const entry of entries) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) found = found.concat(await listFilesRecursive(full, base));
+    else found.push(path.relative(base, full));
+  }
+  return found;
+}
+
 // Purge never opens the store (opening would recreate it): enumerate what is
-// on disk first, delete every file, then drop the directory. The deleted-file
-// list is the report — operational transparency, not a prompt substitute.
+// on disk first, then drop the whole directory tree. The deleted-file list is
+// the report — operational transparency, not a prompt substitute.
 async function purgeStore(outputDir, { json }) {
   const intelDir = path.join(outputDir, '.fx', 'intel');
-  let entries = [];
-  try { entries = await fs.readdir(intelDir, { withFileTypes: true }); } catch { entries = []; }
-  const deletedFiles = entries.filter((entry) => entry.isFile()).map((entry) => entry.name);
-  for (const name of deletedFiles) await fs.rm(path.join(intelDir, name), { force: true });
+  let deletedFiles = [];
+  try { deletedFiles = await listFilesRecursive(intelDir); } catch { deletedFiles = []; }
   await fs.rm(intelDir, { recursive: true, force: true });
   if (json) {
     process.stdout.write(`${JSON.stringify({ purged: deletedFiles.length > 0, outputDir, intelDir, deletedFiles }, null, 2)}\n`);

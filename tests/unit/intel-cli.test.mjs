@@ -138,6 +138,44 @@ test('intel --purge refuses without --yes, deletes + reports files with it', asy
   assert.match(again.stdout, /nothing to purge/);
 });
 
+// Regression: bare boolean flags must never swallow a following positional —
+// `--yes --purge <dir>` used to consume <dir> as the value of --yes, drop the
+// positional, and purge ./.fx/intel (cwd) instead of the intended directory.
+// With boolean keys, both flag orders target the positional directory.
+for (const order of [['--yes', '--purge'], ['--purge', '--yes']]) {
+  test(`intel ${order.join(' ')} <dir> purges the positional dir, never cwd`, async () => {
+    const target = await seedTwoRuns(tmpOut());
+    const cwd = tmpOut(); // pristine cwd: proves ./.fx/intel is never created/touched
+    const result = spawnSync(process.execPath, [SCRIPT, ...order, target], { encoding: 'utf8', cwd, timeout: 120_000 });
+    assert.equal(result.status ?? 0, 0, result.stderr);
+    assert.match(result.stdout, /Purged run-intelligence store: [1-9]\d* file\(s\) deleted/);
+    assert.ok(!fs.existsSync(path.join(target, '.fx', 'intel')), 'the positional target must be purged');
+    assert.ok(!fs.existsSync(path.join(cwd, '.fx')), 'cwd must stay untouched — no ./.fx/intel created');
+  });
+}
+
+test('intel --purge <dir> without --yes still refuses regardless of positionals', async () => {
+  const dir = await seedTwoRuns(tmpOut());
+  const result = runCli(['--purge', dir]);
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /pass --yes/);
+  assert.ok(fs.existsSync(path.join(dir, '.fx', 'intel')), 'refused purge must not touch the target');
+});
+
+test('intel --purge lists nested files recursively before deleting', () => {
+  const dir = tmpOut();
+  const intelDir = path.join(dir, '.fx', 'intel');
+  fs.mkdirSync(path.join(intelDir, 'wal-side', 'deep'), { recursive: true });
+  fs.writeFileSync(path.join(intelDir, 'wal-side', 'deep', 'leftover.txt'), 'x');
+  fs.writeFileSync(path.join(intelDir, 'top.txt'), 'x');
+  const result = runCli(['-o', dir, '--purge', '--yes']);
+  assert.equal(result.status ?? 0, 0, result.stderr);
+  assert.match(result.stdout, /Purged run-intelligence store: 2 file\(s\) deleted/);
+  assert.match(result.stdout, /top\.txt/);
+  assert.match(result.stdout, /leftover\.txt/); // nested file named via its relative path
+  assert.ok(!fs.existsSync(intelDir), 'purge must remove the whole intel directory tree');
+});
+
 test('formatIntelAdvisory renders the brief formats, capped at two lines', () => {
   const analysis = {
     recurring: [
