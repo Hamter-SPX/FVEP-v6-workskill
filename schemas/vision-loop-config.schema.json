@@ -250,9 +250,7 @@
                   "type": "object",
                   "required": [
                     "x",
-                    "y",
-                    "width",
-                    "height"
+                    "y"
                   ],
                   "properties": {
                     "x": {
@@ -265,6 +263,12 @@
                       "type": "number"
                     },
                     "height": {
+                      "type": "number"
+                    },
+                    "w": {
+                      "type": "number"
+                    },
+                    "h": {
                       "type": "number"
                     }
                   },

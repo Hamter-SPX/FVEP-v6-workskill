@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { normalizeConfig, validateConfig } from '../../lib/config.mjs';
+import { normalizeMaskRectangles } from '../../lib/diff-policy.mjs';
 
 const base = { routes: [{ name: 'home', path: '/' }] };
 
@@ -91,6 +92,58 @@ test('mobile case masks parse to PNG-space rectangles (w/h aliases accepted) and
     { x: 1, y: 2, width: 3, height: 5 }
   ]);
   assert.deepEqual(result.mobile.cases[0].regions, [{ name: 'hero', selector: '#hero' }]);
+});
+
+test('mobile case masks: w/h aliases normalize identically to width/height (web normalizer)', () => {
+  const withMasks = (masks) => normalizeConfig(
+    { ...base, mobile: { cases: [{ key: 'home', label: 'Home', masks }] } },
+    '/tmp/config.json'
+  ).mobile.cases[0].masks;
+  const aliased = withMasks([{ x: 1.7, y: 2.2, w: 3.9, h: 4 }]);
+  const canonical = withMasks([{ x: 1.7, y: 2.2, width: 3.9, height: 4 }]);
+  // The shared normalizer floors coordinates, exactly as on the web path.
+  assert.deepEqual(aliased, canonical);
+  assert.deepEqual(aliased, [{ x: 1, y: 2, width: 3, height: 4 }]);
+});
+
+test('mobile case masks throw identical errors to the web normalizer for the same canonical payload', () => {
+  // Canonical {x,y,width,height} payloads must fail identically on both paths:
+  // same error class AND same message. (Alias {w,h} payloads are mobile-only
+  // input — the web normalizer never sees them — so they are asserted below,
+  // not parity-checked.)
+  const badPayloads = [
+    [{ x: 0, y: 0, width: 0, height: 5 }], // non-positive width → RangeError
+    [{ x: 0, y: 0, width: Number.NaN, height: 5 }], // NaN → TypeError
+    [{ x: 0, y: 0, height: 5 }], // width missing entirely → TypeError (NaN), same as web
+    'not-an-array' // non-array value → TypeError, same canonical message as web
+  ];
+  for (const payload of badPayloads) {
+    let webError = null;
+    try { normalizeMaskRectangles(payload); } catch (error) { webError = error; }
+    assert.ok(webError, `expected web normalizer to reject ${JSON.stringify(payload)}`);
+    assert.throws(
+      () => normalizeConfig({ ...base, mobile: { cases: [{ key: 'home', label: 'Home', masks: payload }] } }, '/tmp/config.json'),
+      (error) => {
+        assert.ok(error instanceof webError.constructor, `expected ${webError.constructor.name}, got ${error.constructor.name} (${error.message})`);
+        assert.equal(error.message, webError.message);
+        return true;
+      }
+    );
+  }
+});
+
+test('mobile case masks: alias payload violations throw after alias pre-mapping', () => {
+  // {w:-2} has no width/w parity on web (web ignores aliases): the mobile
+  // parser pre-maps w → width and the shared normalizer rejects it as
+  // non-positive, matching the canonical {width:-2} failure.
+  assert.throws(
+    () => normalizeConfig({ ...base, mobile: { cases: [{ key: 'home', label: 'Home', masks: [{ x: 0, y: 0, w: -2, h: 5 }] }] } }, '/tmp/config.json'),
+    (error) => {
+      assert.ok(error instanceof RangeError);
+      assert.match(error.message, /must have positive width and height/);
+      return true;
+    }
+  );
 });
 
 test('mobile case masks/regions default to empty arrays', () => {
