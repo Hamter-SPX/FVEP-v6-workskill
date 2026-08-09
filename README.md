@@ -341,6 +341,15 @@ node scripts/vision-loop.mjs --config vision-loop.config.json --evidence-visual 
 npm run evidence:visual -- --output-dir artifacts/vision-loop                      # any prior run's output dir
 ```
 
+### Remediation Report
+
+`npm run remediate -- --output-dir <dir>` rebuilds the prioritized remediation plan from the reports a prior run left on disk (`reports/comparison.json`, `metadata/*.mobile.judgment.json`, plus `reports/run-summary.json` when present) and prints one advisory line per finding, blockers first: severity, category, what fired, why, how to fix it, and how to verify the fix. Judge findings map to a curated rule library (`missingCapture`, `sourceMismatch`, `maxEmptyCells`, `minAlignment`, dark/light share thresholds, …); anything unmapped falls back to generic inspect-the-evidence guidance. `--json` prints the full plan. It is a report, not a gate — the exit code is always 0. The visual evidence report above shows the same curated `fix:` guidance under each judgment finding that maps to a rule.
+
+```bash
+npm run remediate -- --output-dir artifacts/vision-loop
+npm run remediate -- --output-dir artifacts/vision-loop --json
+```
+
 ## Domain commands
 
 The v3 surface is preserved:

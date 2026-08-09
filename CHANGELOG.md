@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-08-09 — Smart error remediation
+
+### Added
+
+- `npm run remediate -- --output-dir <dir> [--json]` + `scripts/remediate.mjs`: rebuilds the prioritized remediation plan with the same `buildRemediationPlan` engine the run summary uses, from the reports a prior run left on disk — `reports/comparison.json`, `metadata/*.mobile.judgment.json`, and `reports/run-summary.json` when present — and prints one advisory line per finding, blockers first (`[SEVERITY] category — finding | ทำไม: why | แก้: action | ตรวจ: verify`); it is a report, not a gate, so the exit code is always 0
+- Judge/mobile remediation rule library (`lib/remediation-rules.mjs`): nine curated rules (`missingCapture`, `sourceMismatch`, `suspectBackground`, `maxEmptyCells`, `minAlignment`, `maxDarkShare`, `minDarkShare`, `maxLightShare`, `minLightShare`) mapping each judge finding to curated why/action/verify guidance, with a generic fallback for unmapped rules; `buildRemediationPlan` now also consumes `sections.mobileChecks[].findings`
+- Visual evidence findings show fix guidance: judgment findings that map to a curated rule carry the rule's action as a `fix:` line under the expected/observed row (escaped like the rest of the card); unmapped rules show nothing rather than generic advice
+
 ## 2026-08-09 — Mobile device matrix
 
 ### Added

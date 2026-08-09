@@ -7,6 +7,7 @@ import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { PNG } from 'pngjs';
+import { lookupRemediationRule } from '../../lib/remediation-rules.mjs';
 import {
   collectEvidence,
   escapeHtml,
@@ -165,6 +166,7 @@ test('collect — merges pngs, capture metadata, comparison and mobile judgment 
   assert.equal(a.severity, 'major'); // comparison severity preserved
   assert.equal(a.findings.length, 1);
   assert.equal(a.findings[0].rule, 'maxEmptyCells');
+  assert.equal(a.findings[0].fix, lookupRemediationRule('maxEmptyCells').action, 'curated rule attaches its action as fix guidance');
   assert.ok(a.thumbs, 'thumbs present when any image exists');
   for (const slot of ['reference', 'current', 'diff']) {
     assert.equal(a.thumbs[slot].width, 8, `${slot} thumb decodes`);
@@ -185,6 +187,7 @@ test('collect — merges pngs, capture metadata, comparison and mobile judgment 
   assert.equal(b.verdict, 'pass'); // comparison severity 'accepted' maps to pass
   assert.equal(b.severity, 'accepted');
   assert.equal(b.findings.length, 1); // synthesized from comparison notes
+  assert.equal(b.findings[0].fix, undefined, 'unmapped rule (comparison reason) carries no fix — nothing shown');
   assert.equal(b.thumbs.diff, null); // no diff png for case B
   assert.ok(b.thumbs.current && b.thumbs.reference);
 
@@ -442,6 +445,8 @@ test('render — self-contained html, doctype, data-case, real hashes, palette, 
   assert.ok(html.startsWith('<!DOCTYPE html>'));
   assert.ok(html.includes('data-case="home__mobile__home"'));
   assert.ok(html.includes(captureMeta.screenshotSha256), 'real screenshotSha256 hash anchor rendered');
+  assert.ok(html.includes(`<span class="fix">fix: ${escapeHtml(lookupRemediationRule('maxEmptyCells').action)}</span>`), 'curated fix guidance rendered under the finding, escaped');
+  assert.equal((html.match(/<span class="fix">/g) ?? []).length, 1, 'only curated-rule findings show a fix line (case B note stays silent)');
   assert.ok(html.includes('shasum -a 256 &lt;file&gt;'), 'verify hint present and escaped');
   assert.ok(html.includes('abc123def4567890'), 'configHash rendered');
   assert.ok(!html.includes('<script>alert(1)</script>'), 'injection neutralized');
