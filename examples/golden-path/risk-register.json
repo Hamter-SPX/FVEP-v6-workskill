@@ -1,0 +1,19 @@
+{
+  "risks": [
+    {
+      "id": "R-001",
+      "title": "Non-Latin headings fall back to 'untitled' instead of transliterating",
+      "likelihood": 2,
+      "impact": 2,
+      "detectability": 2,
+      "status": "mitigated",
+      "owner": "solo-dev",
+      "mitigations": [
+        "Fallback behavior is an explicit design decision and is pinned by tests"
+      ],
+      "evidence": [
+        "test/slug.test.mjs"
+      ]
+    }
+  ]
+}

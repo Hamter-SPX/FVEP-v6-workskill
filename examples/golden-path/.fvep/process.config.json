@@ -1,0 +1,41 @@
+{
+  "version": 4,
+  "project": {
+    "name": "Golden Path Toy — slugify",
+    "rootDir": ".."
+  },
+  "contracts": {
+    "request": "request.json",
+    "design": "design.json",
+    "plan": "plan.json",
+    "workspace": "workspace.json",
+    "ledger": "ledger.json",
+    "tdd": "tdd-evidence.json",
+    "review": "review-chain.json",
+    "claims": "claims.json",
+    "evidence": "evidence.json",
+    "integration": "integration.json"
+  },
+  "outputDir": "artifacts",
+  "policy": {
+    "claims": {
+      "now": "2026-08-09T10:00:00.000Z",
+      "maxAgeHours": 24
+    },
+    "processGate": {
+      "minScore": 90,
+      "minConfidence": 90,
+      "requiredSections": [
+        "routing",
+        "design",
+        "plan",
+        "workspace",
+        "tdd",
+        "review",
+        "claims",
+        "ledger"
+      ],
+      "weights": {}
+    }
+  }
+}

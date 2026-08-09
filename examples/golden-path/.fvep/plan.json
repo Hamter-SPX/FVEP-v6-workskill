@@ -1,0 +1,65 @@
+{
+  "id": "plan-golden-path-toy",
+  "goal": "Add one pure slugify helper with a pinned behavioral contract.",
+  "architecture": "Single pure ES module consumed by a node:test unit suite.",
+  "techStack": [
+    "Node.js 20",
+    "ES modules",
+    "node:test"
+  ],
+  "globalConstraints": [
+    "Observe RED before production code",
+    "Zero runtime dependencies"
+  ],
+  "tasks": [
+    {
+      "id": "task-1",
+      "dependsOn": [],
+      "files": {
+        "create": [
+          "src/slug.js"
+        ],
+        "modify": [],
+        "test": [
+          "test/slug.test.mjs"
+        ]
+      },
+      "interfaces": {
+        "produces": [
+          {
+            "name": "slugify",
+            "signature": "slugify(value, { maxLength } = {}) -> string"
+          }
+        ],
+        "consumes": []
+      },
+      "resources": [],
+      "sharedState": [],
+      "steps": [
+        {
+          "kind": "write-failing-test",
+          "detail": "Pin the slugify contract (casing, accents, punctuation, fallback, truncation) in test/slug.test.mjs."
+        },
+        {
+          "kind": "verify-red",
+          "command": "node --test test/slug.test.mjs",
+          "expected": "FAIL with 'Cannot find module' for src/slug.js"
+        },
+        {
+          "kind": "implement",
+          "detail": "Implement the normalization pipeline in src/slug.js."
+        },
+        {
+          "kind": "verify-green",
+          "command": "node --test test/slug.test.mjs",
+          "expected": "PASS: 5 of 5 tests green"
+        },
+        {
+          "kind": "commit",
+          "command": "git commit -m \"feat: add slugify helper with TDD evidence\"",
+          "expected": "One focused commit on feature/slugify-helper"
+        }
+      ]
+    }
+  ]
+}

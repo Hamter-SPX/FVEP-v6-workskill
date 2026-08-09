@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 4,
+  "status": "pass",
+  "ok": true,
+  "score": 100,
+  "evidenceCount": 12,
+  "evidenceConfidence": 100,
+  "findings": [],
+  "hardFailures": [],
+  "blockers": [],
+  "warnings": [],
+  "required": [
+    "using-superpowers",
+    "brainstorming",
+    "writing-plans",
+    "using-git-worktrees",
+    "executing-plans",
+    "test-driven-development",
+    "verification-before-completion"
+  ],
+  "recommended": [],
+  "constraints": [
+    "inline-execution-with-checkpoints",
+    "red-before-production-code",
+    "fresh-verification-before-claim"
+  ],
+  "reasons": [
+    {
+      "skill": "using-superpowers",
+      "trigger": "feature:implementation"
+    },
+    {
+      "skill": "brainstorming",
+      "trigger": "feature:implementation"
+    },
+    {
+      "skill": "writing-plans",
+      "trigger": "feature:implementation"
+    },
+    {
+      "skill": "using-git-worktrees",
+      "trigger": "feature:implementation"
+    },
+    {
+      "skill": "executing-plans",
+      "trigger": "feature:implementation"
+    },
+    {
+      "skill": "test-driven-development",
+      "trigger": "feature:implementation"
+    },
+    {
+      "skill": "verification-before-completion",
+      "trigger": "feature:implementation"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "taskId": "task-1",
+  "brief": {
+    "id": "brief-task-1",
+    "hash": "6075b4650287d2362ef9a7757ad105c23fdea987e2d49abafdb31baaa3c6cd79",
+    "requirements": [
+      "implement the pure slugify helper pinned by test/slug.test.mjs"
+    ]
+  },
+  "changePackage": {
+    "baseId": "a97f087",
+    "headId": "3ee16c4",
+    "diffHash": "f4ac4d8e996cbada86bd8ba07289e518e09a4b150a1a7c358edfeaff2c2465ea",
+    "bounded": true,
+    "files": [
+      "src/slug.js",
+      "test/slug.test.mjs",
+      "package-lock.json"
+    ]
+  },
+  "implementer": {
+    "id": "implementer-agent",
+    "reportHash": "747142af30ea5b22e24bfb4a8302eb99082a71537a0f52f50c1ddb815e9a1a9d",
+    "testEvidenceIds": [
+      "cycle-1"
+    ]
+  },
+  "reviews": [
+    {
+      "id": "task-review-1",
+      "kind": "task-review",
+      "round": 0,
+      "reviewerId": "reviewer-second-pass",
+      "briefHash": "6075b4650287d2362ef9a7757ad105c23fdea987e2d49abafdb31baaa3c6cd79",
+      "diffHash": "f4ac4d8e996cbada86bd8ba07289e518e09a4b150a1a7c358edfeaff2c2465ea",
+      "specVerdict": "pass",
+      "qualityVerdict": "pass",
+      "findings": []
+    }
+  ],
+  "findings": [],
+  "fixRounds": [],
+  "finalReview": {
+    "id": "final-review-1",
+    "reviewerId": "reviewer-second-pass",
+    "diffHash": "f4ac4d8e996cbada86bd8ba07289e518e09a4b150a1a7c358edfeaff2c2465ea",
+    "verdict": "pass",
+    "residualFindingIds": []
+  }
+}

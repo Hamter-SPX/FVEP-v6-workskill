@@ -1,0 +1,9 @@
+{
+  "isGitRepo": true,
+  "gitDir": "/toy-repo/.git",
+  "gitCommonDir": "/toy-repo/.git",
+  "branch": "feature/slugify-helper",
+  "detached": false,
+  "topLevel": "/toy-repo",
+  "superprojectWorkingTree": null
+}

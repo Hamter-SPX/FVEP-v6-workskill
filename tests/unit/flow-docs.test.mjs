@@ -39,6 +39,15 @@ test('every npm command referenced by flow docs exists', () => {
   }
 });
 
+test('every npm command referenced by GOLDEN_PATH.md exists', () => {
+  const gp = path.join(root, 'GOLDEN_PATH.md');
+  if (!fs.existsSync(gp)) return;
+  const text = fs.readFileSync(gp, 'utf8');
+  for (const match of text.matchAll(/npm run ([a-zA-Z0-9:\-]+)/g)) {
+    assert.ok(npmScripts.has(match[1]), `GOLDEN_PATH references missing npm script "${match[1]}"`);
+  }
+});
+
 test('every lib/engine file referenced by flow docs exists', () => {
   const docs = flowDocs().map((d) => [d, fs.readFileSync(path.join(flowDir, d), 'utf8')]);
   const refPattern = /(?:lib|scripts|templates|references|domains|prompts|agents|schemas|examples)\/[A-Za-z0-9_\-./]+/g;

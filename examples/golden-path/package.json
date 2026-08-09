@@ -1,0 +1,13 @@
+{
+  "name": "golden-path-toy",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Toy project for the GOLDEN_PATH walkthrough: one pure slugify helper.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test"
+  }
+}

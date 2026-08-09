@@ -1,0 +1,22 @@
+{
+  "workspace": {
+    "mode": "normal-repo",
+    "branch": "feature/slugify-helper",
+    "topLevel": "/toy-repo",
+    "cleanupOwned": false
+  },
+  "baseBranch": "main",
+  "verification": {
+    "fullSuitePass": true,
+    "mergedResultPass": null,
+    "fresh": true,
+    "artifactHash": "a51fe319debb42c34736117703fba0682ffe291cdde7df7648fe68d932201dd3"
+  },
+  "commitInventory": [
+    "a97f087 chore: toy scaffold (package.json only)",
+    "3ee16c4 feat: add slugify helper with TDD evidence"
+  ],
+  "remote": {
+    "configured": false
+  }
+}

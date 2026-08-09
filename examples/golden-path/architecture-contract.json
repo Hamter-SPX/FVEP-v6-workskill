@@ -1,0 +1,14 @@
+{
+  "components": [
+    {
+      "id": "slugkit",
+      "type": "library",
+      "owner": "solo-dev",
+      "criticality": "low",
+      "trustZone": "private",
+      "dataClassification": "public",
+      "replicas": 1
+    }
+  ],
+  "edges": []
+}

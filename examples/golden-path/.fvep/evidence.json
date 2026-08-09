@@ -1,0 +1,14 @@
+{
+  "evidence": [
+    {
+      "id": "ev-full-suite",
+      "type": "test-run",
+      "generatedAt": "2026-08-09T09:33:00.000Z",
+      "artifactHash": "a51fe319debb42c34736117703fba0682ffe291cdde7df7648fe68d932201dd3",
+      "status": "pass",
+      "exitStatus": 0,
+      "failures": 0,
+      "scope": "full-suite"
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 4,
+  "status": "pass",
+  "quality": {
+    "schemaVersion": 4,
+    "status": "pass",
+    "ok": true,
+    "score": 100,
+    "evidenceCount": 8,
+    "evidenceConfidence": 100,
+    "findings": [],
+    "hardFailures": [],
+    "blockers": [],
+    "warnings": [],
+    "executionOrder": [
+      "task-1"
+    ],
+    "taskCount": 1,
+    "policy": {
+      "requiredSteps": [
+        "write-failing-test",
+        "verify-red",
+        "implement",
+        "verify-green",
+        "commit"
+      ]
+    }
+  },
+  "graph": {
+    "schemaVersion": 4,
+    "status": "pass",
+    "ok": true,
+    "score": 100,
+    "evidenceCount": 1,
+    "evidenceConfidence": 100,
+    "findings": [],
+    "hardFailures": [],
+    "blockers": [],
+    "warnings": [],
+    "waves": [
+      [
+        "task-1"
+      ]
+    ],
+    "executionOrder": [
+      "task-1"
+    ],
+    "conflicts": [],
+    "parallelizableTaskCount": 0,
+    "policy": {
+      "treatSharedResourcesAsExclusive": true
+    }
+  },
+  "hardFailures": []
+}

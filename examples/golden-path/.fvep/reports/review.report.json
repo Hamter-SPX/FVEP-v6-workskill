@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 4,
+  "status": "pass",
+  "ok": true,
+  "score": 100,
+  "evidenceCount": 4,
+  "evidenceConfidence": 100,
+  "findings": [],
+  "hardFailures": [],
+  "blockers": [],
+  "warnings": [],
+  "independentReview": true,
+  "openBlockingFindings": 0,
+  "fixRoundCount": 0,
+  "reviewerIds": [
+    "reviewer-second-pass"
+  ],
+  "policy": {
+    "maxFixRounds": 5,
+    "requireFinalReview": true
+  }
+}

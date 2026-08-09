@@ -1,0 +1,81 @@
+{
+  "version": 4,
+  "project": {
+    "name": "Golden Path Toy — slugify",
+    "rootDir": ".",
+    "criticalFlows": [
+      {
+        "id": "slugify",
+        "owner": "solo-dev",
+        "criticality": "low"
+      }
+    ]
+  },
+  "outputDir": "artifacts/fullstack-audit",
+  "contracts": {
+    "architecture": "architecture-contract.json",
+    "security": "security-contract.json",
+    "risks": "risk-register.json",
+    "dependencyManifest": "package.json",
+    "processReport": ".fvep/artifacts/process-report.json"
+  },
+  "sourceScan": {
+    "enabled": false
+  },
+  "quality": {
+    "minScore": 90,
+    "minConfidence": 90,
+    "failOnAnyGateFailure": true
+  },
+  "gates": {
+    "frontend": {
+      "required": false
+    },
+    "experience": {
+      "required": false
+    },
+    "api": {
+      "required": false
+    },
+    "architecture": {
+      "required": true,
+      "hard": false
+    },
+    "data": {
+      "required": false
+    },
+    "security": {
+      "required": true,
+      "hard": true
+    },
+    "resilience": {
+      "required": false
+    },
+    "observability": {
+      "required": false
+    },
+    "dependencies": {
+      "required": true,
+      "hard": true
+    },
+    "risks": {
+      "required": true,
+      "hard": true
+    },
+    "process": {
+      "required": true,
+      "hard": true
+    }
+  },
+  "policies": {
+    "security": {
+      "requiredControls": [
+        "inputValidation"
+      ]
+    },
+    "risks": {
+      "blockerRpn": 80,
+      "highRpn": 45
+    }
+  }
+}

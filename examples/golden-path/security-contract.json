@@ -1,0 +1,14 @@
+{
+  "features": [
+    "pure-function",
+    "no-network"
+  ],
+  "controls": {
+    "inputValidation": {
+      "status": "implemented",
+      "evidence": [
+        "test/slug.test.mjs"
+      ]
+    }
+  }
+}

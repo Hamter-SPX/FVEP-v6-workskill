@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 4,
+  "status": "pass",
+  "ok": true,
+  "score": 100,
+  "evidenceCount": 3,
+  "evidenceConfidence": 100,
+  "findings": [],
+  "hardFailures": [],
+  "blockers": [],
+  "warnings": [],
+  "cycles": [
+    {
+      "id": "cycle-1",
+      "behaviorId": "slugify-contract",
+      "classification": "test-first",
+      "accepted": true,
+      "findingCodes": []
+    }
+  ],
+  "acceptedCycles": 1,
+  "rejectedCycles": 0,
+  "policy": {
+    "highRiskNegativeControlRequired": true
+  }
+}

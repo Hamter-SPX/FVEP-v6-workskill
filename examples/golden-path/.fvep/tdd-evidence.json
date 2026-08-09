@@ -1,0 +1,42 @@
+{
+  "cycles": [
+    {
+      "id": "cycle-1",
+      "behaviorId": "slugify-contract",
+      "requirementRef": "plan-golden-path-toy#task-1",
+      "risk": "normal",
+      "test": {
+        "file": "test/slug.test.mjs",
+        "name": "slugify contract (5 cases)"
+      },
+      "red": {
+        "command": "node --test test/slug.test.mjs",
+        "exitStatus": 1,
+        "failureKind": "behavior-missing",
+        "expectedFailureSignature": "Cannot find module",
+        "observedFailureSignature": "Cannot find module '.../examples/golden-path/src/slug.js' imported from '.../examples/golden-path/test/slug.test.mjs'",
+        "outputHash": "2ea43ee30977cb131d35e5786549599c40f6e0e946ef5a23ed98ffbd905a5629",
+        "testHash": "41fe2f4b5f3e3a50cba5c50fa0a253791dfcde79493be4d57b9b14f0fa12177c",
+        "productionHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "at": "2026-08-09T09:28:46.000Z"
+      },
+      "production": {
+        "changeId": "3ee16c4",
+        "productionHash": "a51fe319debb42c34736117703fba0682ffe291cdde7df7648fe68d932201dd3",
+        "at": "2026-08-09T09:29:20.000Z"
+      },
+      "green": {
+        "command": "node --test test/slug.test.mjs",
+        "exitStatus": 0,
+        "passCount": 5,
+        "outputHash": "872ad16f076df21f0e8bd21b922560d890b4a3c4cb2087d6ce3f00cf86d736c9",
+        "testHash": "41fe2f4b5f3e3a50cba5c50fa0a253791dfcde79493be4d57b9b14f0fa12177c",
+        "productionHash": "a51fe319debb42c34736117703fba0682ffe291cdde7df7648fe68d932201dd3",
+        "at": "2026-08-09T09:29:31.000Z"
+      },
+      "refactor": {
+        "changed": false
+      }
+    }
+  ]
+}

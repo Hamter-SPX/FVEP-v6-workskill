@@ -1,0 +1,198 @@
+{
+  "events": [
+    {
+      "schemaVersion": 1,
+      "sequence": 1,
+      "type": "initialize",
+      "actor": "solo-dev",
+      "at": "2026-08-09T09:12:00.000Z",
+      "previousHash": null,
+      "data": {
+        "planId": "plan-golden-path-toy",
+        "state": "requested"
+      },
+      "hash": "3fb0ae37c9828a28baa00521aec0fb781974e227090d22821b5accb2e10e4ca2"
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 2,
+      "type": "transition",
+      "actor": "solo-dev",
+      "at": "2026-08-09T09:13:00.000Z",
+      "previousHash": "3fb0ae37c9828a28baa00521aec0fb781974e227090d22821b5accb2e10e4ca2",
+      "data": {
+        "from": "requested",
+        "to": "routed"
+      },
+      "hash": "da5387d0fd7fb4b90f064ea189df029cd3ca3b67ba77e35b9833921c800008c4"
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 3,
+      "type": "transition",
+      "actor": "solo-dev",
+      "at": "2026-08-09T09:15:00.000Z",
+      "previousHash": "da5387d0fd7fb4b90f064ea189df029cd3ca3b67ba77e35b9833921c800008c4",
+      "data": {
+        "from": "routed",
+        "to": "discovered"
+      },
+      "hash": "db7afc4c5203a2f4dde90c290f1a81db73ae0617963a181534c1410d0e94f2a3"
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 4,
+      "type": "transition",
+      "actor": "solo-dev",
+      "at": "2026-08-09T09:20:00.000Z",
+      "previousHash": "db7afc4c5203a2f4dde90c290f1a81db73ae0617963a181534c1410d0e94f2a3",
+      "data": {
+        "from": "discovered",
+        "to": "designed"
+      },
+      "hash": "43eaed802da2e54078fbcdc2c9f414b27419c0b7d2e780e15c6b4870088e589e"
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 5,
+      "type": "transition",
+      "actor": "solo-dev",
+      "at": "2026-08-09T09:21:00.000Z",
+      "previousHash": "43eaed802da2e54078fbcdc2c9f414b27419c0b7d2e780e15c6b4870088e589e",
+      "data": {
+        "from": "designed",
+        "to": "approved"
+      },
+      "hash": "06bb9244c1acdf47c69511aeb7ab2e80e8c398dcc9b4a8f0b1d8d80017d250e3"
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 6,
+      "type": "transition",
+      "actor": "solo-dev",
+      "at": "2026-08-09T09:26:00.000Z",
+      "previousHash": "06bb9244c1acdf47c69511aeb7ab2e80e8c398dcc9b4a8f0b1d8d80017d250e3",
+      "data": {
+        "from": "approved",
+        "to": "planned"
+      },
+      "hash": "a4311796e1ad86e12c330adda11e4a0a57112572893d6cf9b4bed07446e6eccf"
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 7,
+      "type": "transition",
+      "actor": "solo-dev",
+      "at": "2026-08-09T09:27:00.000Z",
+      "previousHash": "a4311796e1ad86e12c330adda11e4a0a57112572893d6cf9b4bed07446e6eccf",
+      "data": {
+        "from": "planned",
+        "to": "workspace-ready"
+      },
+      "hash": "7c6b77bd6586bcdbf70a67c94980459ad7a78f1942e5c784fdc95c07aa31cd7c"
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 8,
+      "type": "task-started",
+      "actor": "solo-dev",
+      "at": "2026-08-09T09:28:00.000Z",
+      "previousHash": "7c6b77bd6586bcdbf70a67c94980459ad7a78f1942e5c784fdc95c07aa31cd7c",
+      "data": {
+        "taskId": "task-1"
+      },
+      "hash": "e53eb8b2aafa944be12287b268a251c0b5fa0959f9369eb9ae97a221b3384e16"
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 9,
+      "type": "task-state",
+      "actor": "solo-dev",
+      "at": "2026-08-09T09:28:46.000Z",
+      "previousHash": "e53eb8b2aafa944be12287b268a251c0b5fa0959f9369eb9ae97a221b3384e16",
+      "data": {
+        "taskId": "task-1",
+        "state": "red-verified"
+      },
+      "hash": "e8eaae5043b1ee6024880c97a4de6df5d3d29978bc3d9149bb9ea42be0173060"
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 10,
+      "type": "task-state",
+      "actor": "solo-dev",
+      "at": "2026-08-09T09:29:31.000Z",
+      "previousHash": "e8eaae5043b1ee6024880c97a4de6df5d3d29978bc3d9149bb9ea42be0173060",
+      "data": {
+        "taskId": "task-1",
+        "state": "green-verified"
+      },
+      "hash": "2a8f12fa9393d33ee01f1bb106bfecc1457e76f378584fa06243dd8311df0359"
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 11,
+      "type": "task-state",
+      "actor": "solo-dev",
+      "at": "2026-08-09T09:31:00.000Z",
+      "previousHash": "2a8f12fa9393d33ee01f1bb106bfecc1457e76f378584fa06243dd8311df0359",
+      "data": {
+        "taskId": "task-1",
+        "state": "reviewed"
+      },
+      "hash": "f62aa34b9e2af9ac06ba171f1d864a7feaf2880360724cd5388fe8a3a2699b4c"
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 12,
+      "type": "task-state",
+      "actor": "solo-dev",
+      "at": "2026-08-09T09:31:30.000Z",
+      "previousHash": "f62aa34b9e2af9ac06ba171f1d864a7feaf2880360724cd5388fe8a3a2699b4c",
+      "data": {
+        "taskId": "task-1",
+        "state": "complete"
+      },
+      "hash": "3bff4604f1a4843c292018a3024632e794e5d509de03117b5d46e6dea1fb2ad6"
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 13,
+      "type": "transition",
+      "actor": "solo-dev",
+      "at": "2026-08-09T09:31:45.000Z",
+      "previousHash": "3bff4604f1a4843c292018a3024632e794e5d509de03117b5d46e6dea1fb2ad6",
+      "data": {
+        "from": "workspace-ready",
+        "to": "final-reviewed"
+      },
+      "hash": "21a8145d6aca9b104d7764178eaa9ba56b5188fabdb9d2e376aa2a2c07d3efce"
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 14,
+      "type": "transition",
+      "actor": "solo-dev",
+      "at": "2026-08-09T09:33:00.000Z",
+      "previousHash": "21a8145d6aca9b104d7764178eaa9ba56b5188fabdb9d2e376aa2a2c07d3efce",
+      "data": {
+        "from": "final-reviewed",
+        "to": "release-verified"
+      },
+      "hash": "22a1935fbe00c82a121b3e2fba1308a9db80366f9c3a30de2c34bb72ec043e44"
+    },
+    {
+      "schemaVersion": 1,
+      "sequence": 15,
+      "type": "transition",
+      "actor": "solo-dev",
+      "at": "2026-08-09T09:34:00.000Z",
+      "previousHash": "22a1935fbe00c82a121b3e2fba1308a9db80366f9c3a30de2c34bb72ec043e44",
+      "data": {
+        "from": "release-verified",
+        "to": "integration-ready"
+      },
+      "hash": "b8e09af17c63b82b796330db8af7f612560705801e876daea64986d6d4878adc"
+    }
+  ]
+}

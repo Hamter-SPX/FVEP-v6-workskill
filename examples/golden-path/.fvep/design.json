@@ -1,0 +1,71 @@
+{
+  "id": "design-golden-path-toy",
+  "context": {
+    "explored": true,
+    "artifacts": [
+      ".fvep/brief.md"
+    ],
+    "scope": "single-module"
+  },
+  "clarification": {
+    "questions": [
+      "What happens when nothing survives normalization?"
+    ],
+    "assumptions": [
+      "Node.js 20 is available",
+      "The helper stays pure: no I/O, no dependencies"
+    ]
+  },
+  "approaches": [
+    {
+      "id": "regex-pipeline",
+      "summary": "NFKD normalize, strip combining marks, map non-alphanumeric runs to dashes, trim, cap length, fall back.",
+      "tradeoffs": [
+        "Deterministic and dependency-free",
+        "ASCII slugs only — non-Latin headings fall back to 'untitled'"
+      ]
+    },
+    {
+      "id": "transliteration-library",
+      "summary": "Depend on a full transliteration package for broader script coverage.",
+      "tradeoffs": [
+        "Wider script coverage",
+        "Adds a dependency and a supply-chain surface for a cosmetic fallback gain"
+      ]
+    }
+  ],
+  "recommendation": {
+    "approachId": "regex-pipeline",
+    "rationale": "The fallback behavior is already pinned by tests; a dependency buys nothing this toy needs."
+  },
+  "design": {
+    "architecture": "One pure function `slugify(value, { maxLength })` in `src/slug.js`; behavior pinned by `test/slug.test.mjs`.",
+    "components": [
+      "normalization pipeline",
+      "fallback constant",
+      "length cap"
+    ],
+    "dataFlow": [
+      "input string -> NFKD + lower -> dash mapping -> trim/cap -> slug or 'untitled'"
+    ],
+    "errorHandling": [
+      "Non-string input coerced via String(value ?? '')",
+      "Empty result resolves to the 'untitled' fallback"
+    ],
+    "testing": [
+      "Test file written before the implementation (RED observed)",
+      "Unicode, punctuation, empty, and truncation cases pinned"
+    ]
+  },
+  "approval": {
+    "status": "approved",
+    "actor": "solo-dev",
+    "at": "2026-08-09T09:21:00.000Z"
+  },
+  "selfReview": {
+    "placeholderScan": "pass",
+    "consistency": "pass",
+    "scope": "pass",
+    "ambiguity": "pass"
+  }
+}

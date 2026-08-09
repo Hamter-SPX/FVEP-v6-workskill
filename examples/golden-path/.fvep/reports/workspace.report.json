@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 4,
+  "status": "pass",
+  "ok": true,
+  "score": 100,
+  "evidenceCount": 7,
+  "evidenceConfidence": 100,
+  "findings": [],
+  "hardFailures": [],
+  "blockers": [],
+  "warnings": [],
+  "mode": "normal-repo",
+  "branch": "feature/slugify-helper",
+  "implementationAllowed": true,
+  "creationAllowed": true,
+  "cleanupOwned": false,
+  "cleanupAllowed": false,
+  "destructiveActionsRequireExplicitConfirmation": true
+}

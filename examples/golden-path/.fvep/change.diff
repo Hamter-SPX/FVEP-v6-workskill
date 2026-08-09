@@ -1,0 +1,82 @@
+diff --git a/package-lock.json b/package-lock.json
+new file mode 100644
+index 0000000..2b64612
+--- /dev/null
++++ b/package-lock.json
+@@ -0,0 +1,15 @@
++{
++  "name": "golden-path-toy",
++  "version": "1.0.0",
++  "lockfileVersion": 3,
++  "requires": true,
++  "packages": {
++    "": {
++      "name": "golden-path-toy",
++      "version": "1.0.0",
++      "engines": {
++        "node": ">=20"
++      }
++    }
++  }
++}
+diff --git a/src/slug.js b/src/slug.js
+new file mode 100644
+index 0000000..3a0b41c
+--- /dev/null
++++ b/src/slug.js
+@@ -0,0 +1,21 @@
++const FALLBACK = 'untitled';
++const DEFAULT_MAX_LENGTH = 80;
++const COMBINING_MARKS = new RegExp('[\\u0300-\\u036f]', 'g');
++
++function normalizeText(value) {
++  return String(value ?? '')
++    .normalize('NFKD')
++    .replace(COMBINING_MARKS, '')
++    .toLowerCase();
++}
++
++export function slugify(value, options = {}) {
++  const maxLength = Number.isInteger(options.maxLength) && options.maxLength > 0 ? options.maxLength : DEFAULT_MAX_LENGTH;
++  const slug = normalizeText(value)
++    .replace(/[^a-z0-9]+/g, '-')
++    .replace(/-{2,}/g, '-')
++    .replace(/^-+|-+$/g, '')
++    .slice(0, maxLength)
++    .replace(/-+$/g, '');
++  return slug.length > 0 ? slug : FALLBACK;
++}
+diff --git a/test/slug.test.mjs b/test/slug.test.mjs
+new file mode 100644
+index 0000000..f21a455
+--- /dev/null
++++ b/test/slug.test.mjs
+@@ -0,0 +1,28 @@
++import assert from 'node:assert/strict';
++import test from 'node:test';
++
++import { slugify } from '../src/slug.js';
++
++test('lowercases and joins words with dashes', () => {
++  assert.equal(slugify('Hello World'), 'hello-world');
++});
++
++test('strips accents through unicode normalization', () => {
++  assert.equal(slugify('Cafe deja vu'), 'cafe-deja-vu');
++  assert.equal(slugify('Crème brûlée'), 'creme-brulee');
++});
++
++test('collapses punctuation and trims separators', () => {
++  assert.equal(slugify('  A--b!!c  '), 'a-b-c');
++});
++
++test('falls back to "untitled" when nothing survives normalization', () => {
++  assert.equal(slugify('   '), 'untitled');
++  assert.equal(slugify('!!!'), 'untitled');
++});
++
++test('truncates to maxLength without a trailing dash', () => {
++  const slug = slugify('a very long heading that must be shortened', { maxLength: 10 });
++  assert.ok(slug.length <= 10, `expected length <= 10, got ${slug}`);
++  assert.ok(!slug.endsWith('-'), `expected no trailing dash, got ${slug}`);
++});
