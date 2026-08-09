@@ -100,6 +100,30 @@ test('runStep documented step never executes and reports note status', () => {
   assert.equal(result.source, 'documented');
 });
 
+test('runStep requires an explicit toyDir (no silent default onto the real example)', () => {
+  const step = TUTORIAL_STEPS.find((entry) => entry.id === 'route');
+  const { exec, calls } = mockExec();
+  assert.throws(() => runStep(step, { exec }), (error) => error instanceof TypeError && /toyDir is required/.test(error.message));
+  assert.throws(() => runStep(step, { toyDir: '', exec }), TypeError);
+  assert.equal(calls.length, 0, 'exec must not run without a sandbox');
+});
+
+test('runStep refuses mutating steps on the shipped example dir', () => {
+  const isolation = TUTORIAL_STEPS.find((entry) => entry.id === 'isolation'); // has setup (git init/switch)
+  const tdd = TUTORIAL_STEPS.find((entry) => entry.id === 'implement-tdd'); // red variant hides src/slug.js
+  const qualityGate = TUTORIAL_STEPS.find((entry) => entry.id === 'quality-gate'); // setup writes .fvep/artifacts
+  const route = TUTORIAL_STEPS.find((entry) => entry.id === 'route'); // read-only
+  const { exec, calls } = mockExec();
+  const refusal = /refusing to run mutating step .* on the shipped example — pass a sandbox tmp dir/;
+  assert.throws(() => runStep(isolation, { toyDir: TOY_DIR, exec }), refusal);
+  assert.throws(() => runStep(tdd, { toyDir: TOY_DIR, exec, variant: 'red' }), refusal);
+  assert.throws(() => runStep(qualityGate, { toyDir: TOY_DIR, exec }), refusal);
+  assert.equal(calls.length, 0, 'no mutating command may execute on the shipped example');
+  const result = runStep(route, { toyDir: TOY_DIR, exec });
+  assert.equal(result.status, 'pass', 'read-only steps may still target the shipped example');
+  assert.equal(calls.length, 1);
+});
+
 test('runStep mock exec: pass when exit matches expectation, argv and cwd resolved', () => {
   const step = TUTORIAL_STEPS.find((entry) => entry.id === 'route');
   const { exec, calls } = mockExec({ exit: 0, stdout: '{"status":"pass"}', timedOut: false });
@@ -242,7 +266,7 @@ test('prepareToyRun copies the toy and cleanup removes only the sandbox', () => 
   const srcPackage = fs.readFileSync(path.join(TOY_DIR, 'package.json'), 'utf8');
   const tmpDir = prepareToyRun(TOY_DIR);
   try {
-    assert.equal(path.dirname(tmpDir), '/tmp');
+    assert.equal(path.dirname(tmpDir), os.tmpdir().replace(/[\\/]+$/, ''), 'sandbox lives under os.tmpdir()');
     assert.ok(path.basename(tmpDir).startsWith('fvep-tutorial-'));
     assert.equal(fs.readFileSync(path.join(tmpDir, 'test', 'slug.test.mjs'), 'utf8'), before);
     // source untouched
@@ -254,6 +278,23 @@ test('prepareToyRun copies the toy and cleanup removes only the sandbox', () => 
   assert.equal(fs.existsSync(tmpDir), false);
   assert.throws(() => cleanupToyRun('/tmp'));
   assert.throws(() => cleanupToyRun(TOY_DIR));
+});
+
+test('prepareToyRun removes the orphan dir when the copy fails', () => {
+  const base = fs.mkdtempSync(path.join(os.tmpdir(), 'fvep-engine-test-'));
+  const unreadableSrc = path.join(base, 'locked-src');
+  fs.mkdirSync(unreadableSrc);
+  fs.writeFileSync(path.join(unreadableSrc, 'secret.txt'), 'x');
+  fs.chmodSync(unreadableSrc, 0o000); // existsSync passes, cpSync throws EACCES
+  const before = fs.readdirSync(os.tmpdir()).filter((name) => name.startsWith('fvep-tutorial-'));
+  try {
+    assert.throws(() => prepareToyRun(unreadableSrc));
+    const after = fs.readdirSync(os.tmpdir()).filter((name) => name.startsWith('fvep-tutorial-'));
+    assert.deepEqual(after, before, 'failed copy must not leave an orphan sandbox');
+  } finally {
+    fs.chmodSync(unreadableSrc, 0o700);
+    fs.rmSync(base, { recursive: true, force: true });
+  }
 });
 
 // --------------------------------------------------------------------- CLI
@@ -305,6 +346,19 @@ test('CLI --json emits a single machine-readable summary', () => {
   assert.equal(summary.steps[4].id, 'implement-tdd');
 });
 
+test('CLI --json --keep keeps stdout JSON-parseable (keep notice goes to stderr)', () => {
+  const result = runCli(['--auto', '--json', '--keep']);
+  assert.equal(result.status, 0, result.stderr);
+  const summary = JSON.parse(result.stdout);
+  assert.equal(summary.ok, true);
+  assert.equal(summary.mode, 'auto');
+  assert.equal(summary.steps.length, 8);
+  const kept = result.stderr.match(/sandbox ยังอยู่: (\S+)/);
+  assert.ok(kept, 'keep notice printed on stderr');
+  assert.equal(fs.existsSync(kept[1]), true, '--keep leaves the sandbox on disk');
+  fs.rmSync(kept[1], { recursive: true, force: true });
+});
+
 test('CLI rejects an out-of-range --from', () => {
   const result = runCli(['--off', '--from', '99']);
   assert.equal(result.status, 1);
@@ -314,7 +368,7 @@ test('CLI rejects an out-of-range --from', () => {
 test('CLI --auto (non-TTY default path) actually runs the whole path on a temp copy and exits 0', () => {
   const result = runCli(['--auto']);
   assert.equal(result.status, 0, `stderr: ${result.stderr}\nstdout tail: ${result.stdout.slice(-2000)}`);
-  assert.match(result.stdout, /sandbox: \/tmp\/fvep-tutorial-/);
+  assert.ok(result.stdout.includes(`sandbox: ${path.join(os.tmpdir(), 'fvep-tutorial-')}`), `sandbox path under os.tmpdir(), got: ${result.stdout.split('\n')[2]}`);
   assert.match(result.stdout, /สถานะ: PASS \(ผ่าน\)/);
   assert.match(result.stdout, /Full-stack gate: PASS/);
   assert.match(result.stdout, /"implementationAllowed": true/);

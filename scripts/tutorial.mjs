@@ -127,7 +127,8 @@ try {
       } finally {
         if (rl) rl.close();
         if (sandbox) {
-          if (args.keep) process.stdout.write(`\nsandbox ยังอยู่: ${sandbox}\n`);
+          // --keep notice goes to stderr so `--json --keep` leaves stdout parseable
+          if (args.keep) process.stderr.write(`sandbox ยังอยู่: ${sandbox}\n`);
           else cleanupToyRun(sandbox);
         }
       }
