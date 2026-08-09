@@ -265,6 +265,51 @@ For Android use `capture.type: "android"` with `mobile.serial` (default
 `emulator-5554`; `mobile.adbPath` points at a specific adb binary). Per-case
 `udid`/`serial` override the device-level defaults.
 
+#### Device matrix
+
+Declare `mobile.devices` to fan every case out across several simulators,
+emulators, or physical devices in one run — capture, compare, and checks all
+enumerate through one shared identity law, so nothing drifts:
+
+```json
+{
+  "capture": { "type": "ios-sim" },
+  "mobile": {
+    "devices": [
+      { "key": "iphone16", "platform": "ios-sim", "udid": "<your-simulator-udid>" },
+      { "key": "pixel6", "platform": "android", "serial": "emulator-5554" }
+    ],
+    "cases": [
+      { "key": "home", "label": "home", "settleMs": 1500 },
+      { "key": "chat", "label": "chat", "devices": ["iphone16"], "openUrl": "myapp://chat" }
+    ]
+  }
+}
+```
+
+Fan-out semantics:
+
+- Every case runs once **per device**; `devices: ["iphone16"]` on a case
+  restricts it to that subset (absent or `null` means every declared device,
+  and unknown keys are rejected at validation).
+- All artifacts land under a per-device identity
+  `<label>__<deviceKey>__<key>` — reference/current PNGs, diffs, capture
+  metadata, judge verdicts, comparison rows, and the visual evidence cards all
+  key off it. `--refresh-reference` writes **one reference set per device** and
+  later runs diff each device against its own reference.
+- Each device row carries its own endpoint (`udid` for iOS, `serial` for
+  Android) and `platform`, so one run can mix iPhone and Pixel. With a matrix,
+  per-case `udid`/`serial` are **rejected at validation** — the artifact
+  identity is per-device, and a case-level endpoint would mislabel evidence.
+  A subset case is fine; an endpoint on the case is not.
+- Backward compatibility is hard: a config without `mobile.devices` behaves
+  exactly as before, reproducing the legacy `__mobile__` identity
+  byte-for-byte — existing references and baselines keep joining.
+
+A runnable starting point with per-field hints rides in
+`examples/mobile-matrix.config.json` (replace the placeholder UDID/serial with
+your own before running).
+
 One-off capture and text-only judging stay available standalone:
 
 ```bash

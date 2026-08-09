@@ -302,6 +302,43 @@ test('collect — raw mobile comparison key joins onto the canonical artifact ca
   assert.equal((html.match(/data-case="/g) ?? []).length, 1, 'html renders exactly one card');
 });
 
+test('collect — raw device-matrix comparison key joins onto the canonical artifact case (no phantom card)', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'vee-join-matrix-'));
+  for (const folder of ['current', 'reference', 'metadata', 'reports']) {
+    fs.mkdirSync(path.join(dir, folder), { recursive: true });
+  }
+  // Mirror of the legacy __mobile__ join pin above, one level down: with a
+  // device matrix the raw comparison key is `${label}__${device.key}__${key}`
+  // (mobileCaseRuns) — 'Home Page__iphone16__home_screen' for config case
+  // { label: 'Home Page', key: 'home_screen' } on device { key: 'iphone16' } —
+  // while artifactPaths writes the safeSegment-canonical three-part identity.
+  const canonicalKey = 'home-page__iphone16__home-screen';
+  const rawComparisonKey = 'Home Page__iphone16__home_screen';
+  const png = makePng(8, 8);
+  fs.writeFileSync(path.join(dir, 'current', `${canonicalKey}.png`), png);
+  fs.writeFileSync(path.join(dir, 'reference', `${canonicalKey}.png`), png);
+  writeJson(path.join(dir, 'metadata', `${canonicalKey}.current.capture.json`), {
+    schemaVersion: 2, mode: 'current', key: 'home_screen', route: 'Home Page',
+    viewport: { width: 8, height: 8 }, state: null, platform: 'ios-sim', label: 'Home Page',
+    capturedAt: '2026-08-09T11:00:00.000Z', screenshotSha256: sha256(png), screenshotBytes: png.length
+  });
+  writeJson(path.join(dir, 'reports', 'comparison.json'), {
+    schemaVersion: 2, generatedAt: '2026-08-09T11:01:00.000Z', configPath: 'c', mode: 'compare',
+    summary: {}, comparisons: [{ key: rawComparisonKey, severity: 'major', mismatchRatio: 0.3, visualScore: 50, reason: 'mismatch-above-major', regions: [], notes: ['Device-matrix raw-key join regression.'] }]
+  });
+  const evidence = await collectEvidence(dir);
+  assert.equal(evidence.cases.length, 1, 'one joined card, no phantom duplicate');
+  const [item] = evidence.cases;
+  assert.equal(item.key, canonicalKey, 'canonical artifact key wins');
+  assert.equal(item.verdict, 'fail', 'verdict joined from the raw-key comparison entry');
+  assert.equal(item.severity, 'major');
+  assert.equal(item.label, 'Home Page', 'raw label still displayed (escaped on render)');
+  assert.equal(item.findings.length, 1);
+  assert.ok(item.thumbs.current && item.thumbs.reference);
+  const html = renderEvidenceHtml(evidence);
+  assert.equal((html.match(/data-case="/g) ?? []).length, 1, 'html renders exactly one card');
+});
+
 test('collect — reference-only meta: capture hash unknown, no false stale flag', async () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'vee-refonly-'));
   for (const folder of ['current', 'reference', 'metadata', 'reports']) {

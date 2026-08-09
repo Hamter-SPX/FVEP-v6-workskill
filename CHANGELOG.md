@@ -1,5 +1,23 @@
 # Changelog
 
+## 2026-08-09 — Mobile device matrix
+
+### Added
+
+- `mobile.devices`: a device matrix for the vision loop — each row declares `key`, `label`, `platform` (`ios-sim`|`android`, default `ios-sim`) and its own capture endpoint (`udid`/`serial`); schema + config parse + validation included
+- Fan-out across the loop: every `mobile.cases[]` entry runs once per device, and capture (`captureAllMobile`), compare (`compareAll`) and checks (`runMobileChecks`) enumerate through one shared identity law (`mobileCaseRuns`) — artifacts, comparison rows, and verdicts all land under `<label>__<deviceKey>__<key>` with one reference set per device
+- `mobile.cases[].devices`: restrict a case to a subset of device keys (absent/`null` = every declared device; unknown keys are rejected), with a cross-key duplicate-identity guard one level down (case × device)
+- Config guard: a per-case `udid`/`serial` combined with `mobile.devices` throws at validation — endpoints belong on the device rows, so a case-level endpoint can never mislabel per-device evidence
+- `examples/mobile-matrix.config.json` (iPhone 16 placeholder UDID + Pixel 6 `emulator-5554`, `home`/`chat` cases, `_comment` hints per field) and a device-matrix subsection in `README.md`/`README_TH.md`
+
+### Fixed
+
+- Visual evidence join on device-matrix runs: `normalizeComparisonKey` replaced the `__mobile__` marker heuristic with per-segment `safeSegment` canonicalization over three-part keys, so raw comparison keys like `Home Page__iphone16__home` join onto exactly one card instead of rendering a joined card plus a phantom duplicate; legacy `__mobile__` keys pass through bit-identical
+
+### Compatibility
+
+- Configs without `mobile.devices` behave exactly as before — the legacy `<label>__mobile__<key>` identity is reproduced byte-for-byte, and existing references keep joining
+
 ## 2026-08-09 — Visual evidence report
 
 ### Added

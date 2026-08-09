@@ -782,6 +782,51 @@ For Android use `capture.type: "android"` with `mobile.serial` (default
 `emulator-5554`; `mobile.adbPath` points at a specific adb binary). Per-case
 `udid`/`serial` override the device-level defaults.
 
+#### Device matrix
+
+Declare `mobile.devices` to fan every case out across several simulators,
+emulators, or physical devices in one run — capture, compare, and checks all
+enumerate through one shared identity law, so nothing drifts:
+
+```json
+{
+  "capture": { "type": "ios-sim" },
+  "mobile": {
+    "devices": [
+      { "key": "iphone16", "platform": "ios-sim", "udid": "<your-simulator-udid>" },
+      { "key": "pixel6", "platform": "android", "serial": "emulator-5554" }
+    ],
+    "cases": [
+      { "key": "home", "label": "home", "settleMs": 1500 },
+      { "key": "chat", "label": "chat", "devices": ["iphone16"], "openUrl": "myapp://chat" }
+    ]
+  }
+}
+```
+
+Fan-out semantics:
+
+- Every case runs once **per device**; `devices: ["iphone16"]` on a case
+  restricts it to that subset (absent or `null` means every declared device,
+  and unknown keys are rejected at validation).
+- All artifacts land under a per-device identity
+  `<label>__<deviceKey>__<key>` — reference/current PNGs, diffs, capture
+  metadata, judge verdicts, comparison rows, and the visual evidence cards all
+  key off it. `--refresh-reference` writes **one reference set per device** and
+  later runs diff each device against its own reference.
+- Each device row carries its own endpoint (`udid` for iOS, `serial` for
+  Android) and `platform`, so one run can mix iPhone and Pixel. With a matrix,
+  per-case `udid`/`serial` are **rejected at validation** — the artifact
+  identity is per-device, and a case-level endpoint would mislabel evidence.
+  A subset case is fine; an endpoint on the case is not.
+- Backward compatibility is hard: a config without `mobile.devices` behaves
+  exactly as before, reproducing the legacy `__mobile__` identity
+  byte-for-byte — existing references and baselines keep joining.
+
+A runnable starting point with per-field hints rides in
+`examples/mobile-matrix.config.json` (replace the placeholder UDID/serial with
+your own before running).
+
 One-off capture and text-only judging stay available standalone:
 
 ```bash
@@ -1187,6 +1232,51 @@ node scripts/vision-loop.mjs --config vision-loop.config.json                   
 สำหรับ Android ใช้ `capture.type: "android"` กับ `mobile.serial` (ดีฟอลต์
 `emulator-5554`; `mobile.adbPath` ชี้ไปที่ adb binary เฉพาะได้) และแต่ละเคสใช้
 `udid`/`serial` ทับค่าระดับอุปกรณ์ได้
+
+#### Device matrix
+
+ประกาศ `mobile.devices` เพื่อ fan-out ทุกเคสไปหลาย simulator/emulator/เครื่องจริง
+ในรันเดียว — capture, compare และ checks นับเคสผ่านกฎ identity เดียวกันเสมอ
+จึงไม่มีทางเบี่ยงกัน:
+
+```json
+{
+  "capture": { "type": "ios-sim" },
+  "mobile": {
+    "devices": [
+      { "key": "iphone16", "platform": "ios-sim", "udid": "<udid-simulator-ของคุณ>" },
+      { "key": "pixel6", "platform": "android", "serial": "emulator-5554" }
+    ],
+    "cases": [
+      { "key": "home", "label": "home", "settleMs": 1500 },
+      { "key": "chat", "label": "chat", "devices": ["iphone16"], "openUrl": "myapp://chat" }
+    ]
+  }
+}
+```
+
+ความหมายของ fan-out:
+
+- ทุกเคสรันครั้งหนึ่ง **ต่ออุปกรณ์** — `devices: ["iphone16"]` บนเคสจำกัดให้รัน
+  เฉพาะ subset นั้น (ถ้าไม่ใส่หรือเป็น `null` แปลว่ารันทุกเครื่องที่ประกาศไว้
+  และ key ที่ไม่รู้จักจะถูก reject ตอน validate)
+- artifact ทั้งหมดลงดิสก์ภายใต้ identity ต่ออุปกรณ์
+  `<label>__<deviceKey>__<key>` — PNG ของ reference/current, diff, metadata
+  ของ capture, verdict ของ judge, แถว compare และการ์ด visual evidence ทุกอย่าง
+  ผูกกับ identity เดียวกัน `--refresh-reference` เขียน reference **ชุดละอุปกรณ์**
+  และรันถัดไป diff แต่ละเครื่องเทียบกับ reference ของเครื่องตัวเอง
+- แต่ละแถว device มี endpoint ของตัวเอง (`udid` สำหรับ iOS, `serial` สำหรับ
+  Android) และ `platform` ของตัวเอง — รันเดียวผสม iPhone กับ Pixel ได้ เมื่อใช้
+  matrix, `udid`/`serial` ระดับเคสจะ **ถูก reject ตอน validate** เพราะ identity
+  ของ artifact เป็นแบบต่ออุปกรณ์ — endpoint ระดับเคสจะทำหลักฐานสลับเครื่อง
+  จำกัดเคสให้รันเฉพาะ subset ได้ แต่ใส่ endpoint บนเคสไม่ได้
+- backward compatibility แน่นหนา: config ที่ไม่มี `mobile.devices` ทำงานเหมือน
+  เดิมทุกประการ — identity แบบ `__mobile__` ออกมาเหมือนเดิม byte-for-byte
+  reference และ baseline เดิมจึง join ได้ต่อเนื่อง
+
+ตัวอย่างที่เอาไปใช้ต่อได้พร้อมคำอธิบายทุกฟิลด์อยู่ที่
+`examples/mobile-matrix.config.json` (เปลี่ยน UDID/serial ที่เป็น placeholder
+ให้เป็นของเครื่องตัวเองก่อนรัน)
 
 คำสั่งเดี่ยวสำหรับ capture ครั้งเดียวและการตัดสินแบบไม่ต้องเห็นภาพยังใช้ได้เหมือนเดิม:
 

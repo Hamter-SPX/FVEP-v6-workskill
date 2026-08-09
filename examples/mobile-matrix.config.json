@@ -1,0 +1,38 @@
+{
+  "capture": { "type": "ios-sim" },
+  "mobile": {
+    "_comment": "Device matrix example for vision-loop — copy into your vision-loop.config.json. Plain JSON: every hint rides a _comment field (ignored by the parser); delete them in your copy. Every case runs once PER DEVICE (fan-out); artifacts, judgments and diffs land under the identity <label>__<deviceKey>__<key>.",
+    "devices": [
+      {
+        "key": "iphone16",
+        "label": "iPhone 16",
+        "platform": "ios-sim",
+        "udid": "REPLACE-WITH-YOUR-UDID-0000-0000-000000000000",
+        "_comment": "EXAMPLE PLACEHOLDER — put YOUR simulator UDID here. Find it with: xcrun simctl list devices | grep 'iPhone 16' (the value looks like 3F2504E0-4F89-11D3-9A0C-0305E82C3301; 'booted' also works when exactly one simulator is booted)."
+      },
+      {
+        "key": "pixel6",
+        "label": "Pixel 6",
+        "platform": "android",
+        "serial": "emulator-5554",
+        "_comment": "emulator-5554 is the first booted AVD's default serial — list yours with `adb devices` and replace if it differs (a physical Pixel 6 over USB reports its own serial instead)."
+      }
+    ],
+    "cases": [
+      {
+        "key": "home",
+        "label": "home",
+        "settleMs": 1500,
+        "_comment": "No launch hooks here: captures whatever app/screen is foreground after settleMs. Add openUrl (deep link) for iOS, or launchActivity/openUrl for Android, to navigate first. devices omitted -> runs on BOTH devices -> reference/current/diff + metadata under home__iphone16__home and home__pixel6__home."
+      },
+      {
+        "key": "chat",
+        "label": "chat",
+        "settleMs": 2000,
+        "openUrl": "myapp://chat",
+        "_comment": "Optional per-case devices subset: \"devices\": [\"iphone16\"] would restrict this case to one device; absent (or null) means every declared device. IMPORTANT: with a device matrix, per-case udid/serial are rejected by config validation — endpoints belong on the device rows above."
+      }
+    ],
+    "judge": { "thresholds": { "maxEmptyCells": 3 } }
+  }
+}

@@ -259,6 +259,51 @@ node scripts/vision-loop.mjs --config vision-loop.config.json                   
 `emulator-5554`; `mobile.adbPath` ชี้ไปที่ adb binary เฉพาะได้) และแต่ละเคสใช้
 `udid`/`serial` ทับค่าระดับอุปกรณ์ได้
 
+#### Device matrix
+
+ประกาศ `mobile.devices` เพื่อ fan-out ทุกเคสไปหลาย simulator/emulator/เครื่องจริง
+ในรันเดียว — capture, compare และ checks นับเคสผ่านกฎ identity เดียวกันเสมอ
+จึงไม่มีทางเบี่ยงกัน:
+
+```json
+{
+  "capture": { "type": "ios-sim" },
+  "mobile": {
+    "devices": [
+      { "key": "iphone16", "platform": "ios-sim", "udid": "<udid-simulator-ของคุณ>" },
+      { "key": "pixel6", "platform": "android", "serial": "emulator-5554" }
+    ],
+    "cases": [
+      { "key": "home", "label": "home", "settleMs": 1500 },
+      { "key": "chat", "label": "chat", "devices": ["iphone16"], "openUrl": "myapp://chat" }
+    ]
+  }
+}
+```
+
+ความหมายของ fan-out:
+
+- ทุกเคสรันครั้งหนึ่ง **ต่ออุปกรณ์** — `devices: ["iphone16"]` บนเคสจำกัดให้รัน
+  เฉพาะ subset นั้น (ถ้าไม่ใส่หรือเป็น `null` แปลว่ารันทุกเครื่องที่ประกาศไว้
+  และ key ที่ไม่รู้จักจะถูก reject ตอน validate)
+- artifact ทั้งหมดลงดิสก์ภายใต้ identity ต่ออุปกรณ์
+  `<label>__<deviceKey>__<key>` — PNG ของ reference/current, diff, metadata
+  ของ capture, verdict ของ judge, แถว compare และการ์ด visual evidence ทุกอย่าง
+  ผูกกับ identity เดียวกัน `--refresh-reference` เขียน reference **ชุดละอุปกรณ์**
+  และรันถัดไป diff แต่ละเครื่องเทียบกับ reference ของเครื่องตัวเอง
+- แต่ละแถว device มี endpoint ของตัวเอง (`udid` สำหรับ iOS, `serial` สำหรับ
+  Android) และ `platform` ของตัวเอง — รันเดียวผสม iPhone กับ Pixel ได้ เมื่อใช้
+  matrix, `udid`/`serial` ระดับเคสจะ **ถูก reject ตอน validate** เพราะ identity
+  ของ artifact เป็นแบบต่ออุปกรณ์ — endpoint ระดับเคสจะทำหลักฐานสลับเครื่อง
+  จำกัดเคสให้รันเฉพาะ subset ได้ แต่ใส่ endpoint บนเคสไม่ได้
+- backward compatibility แน่นหนา: config ที่ไม่มี `mobile.devices` ทำงานเหมือน
+  เดิมทุกประการ — identity แบบ `__mobile__` ออกมาเหมือนเดิม byte-for-byte
+  reference และ baseline เดิมจึง join ได้ต่อเนื่อง
+
+ตัวอย่างที่เอาไปใช้ต่อได้พร้อมคำอธิบายทุกฟิลด์อยู่ที่
+`examples/mobile-matrix.config.json` (เปลี่ยน UDID/serial ที่เป็น placeholder
+ให้เป็นของเครื่องตัวเองก่อนรัน)
+
 คำสั่งเดี่ยวสำหรับ capture ครั้งเดียวและการตัดสินแบบไม่ต้องเห็นภาพยังใช้ได้เหมือนเดิม:
 
 ```bash

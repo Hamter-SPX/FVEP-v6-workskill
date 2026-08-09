@@ -255,6 +255,55 @@ test('case.devices referencing an unknown device key is rejected and names the k
   );
 });
 
+test('device matrix + per-case udid/serial endpoint override is rejected (endpoint belongs on the device rows)', () => {
+  // With a matrix the artifact identity is per-device (label__device__key)
+  // while a per-case udid/serial would force every device row to capture from
+  // the case's single endpoint — identity vs capture-endpoint mismatch. This
+  // must fail loudly at validation instead of mislabeling evidence.
+  const attempt = (mobileCase) => () => validateConfig(normalizeConfig({
+    ...base,
+    capture: { type: 'ios-sim' },
+    mobile: {
+      devices: [{ key: 'iphone16', udid: 'DEVICE-UDID-1' }, { key: 'pixel6', serial: 'emulator-5554', platform: 'android' }],
+      cases: [mobileCase]
+    }
+  }, '/tmp/config.json'));
+  for (const mobileCase of [
+    { key: 'home', label: 'Home', udid: 'CASE-UDID' }, // fans out to every device
+    { key: 'home', label: 'Home', serial: 'emulator-9999', devices: ['pixel6'] } // subset fan-out
+  ]) {
+    assert.throws(attempt(mobileCase), (error) => {
+      assert.ok(error instanceof TypeError);
+      assert.match(error.message, /Mobile case "home"/); // names the offending case
+      assert.match(error.message, /per-case udid\/serial/);
+      assert.match(error.message, /device rows/); // points at the fix
+      return true;
+    });
+  }
+});
+
+test('device matrix with endpoints only on device rows validates cleanly', () => {
+  const config = validateConfig(normalizeConfig({
+    ...base,
+    capture: { type: 'ios-sim' },
+    mobile: {
+      devices: [{ key: 'iphone16', udid: 'DEVICE-UDID-1' }, { key: 'pixel6', serial: 'emulator-5554', platform: 'android' }],
+      cases: [{ key: 'home', label: 'Home', devices: ['iphone16'] }, { key: 'chat', label: 'Chat' }]
+    }
+  }, '/tmp/config.json'));
+  assert.equal(config.mobile.devices.length, 2);
+});
+
+test('per-case udid/serial override WITHOUT a device matrix stays valid (back-compat)', () => {
+  const config = validateConfig(normalizeConfig({
+    ...base,
+    capture: { type: 'ios-sim' },
+    mobile: { cases: [{ key: 'home', label: 'Home', udid: 'CASE-UDID' }] }
+  }, '/tmp/config.json'));
+  assert.equal(config.mobile.cases[0].udid, 'CASE-UDID');
+  assert.deepEqual(config.mobile.devices, []);
+});
+
 test('mobile.adbPath is honored when configured', () => {
   const result = normalizeConfig({ ...base, mobile: { adbPath: '/custom/sdk/platform-tools/adb' } }, '/tmp/config.json');
   assert.equal(result.mobile.adbPath, '/custom/sdk/platform-tools/adb');
