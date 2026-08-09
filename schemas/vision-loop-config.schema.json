@@ -198,6 +198,42 @@
         "serial": {
           "type": "string"
         },
+        "devices": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "key": {
+                "type": "string"
+              },
+              "label": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "udid": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "serial": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "platform": {
+                "enum": [
+                  "ios-sim",
+                  "android"
+                ]
+              }
+            }
+          }
+        },
         "cases": {
           "type": "array",
           "items": {
@@ -243,6 +279,12 @@
                   "string",
                   "null"
                 ]
+              },
+              "devices": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               },
               "masks": {
                 "type": "array",

@@ -58,6 +58,7 @@ test('mobile block parses cases with defaults and per-case overrides', () => {
     settleMs: 1500,
     udid: 'OVERRIDE-1',
     serial: 'emulator-5558',
+    devices: null,
     masks: [],
     regions: []
   });
@@ -70,6 +71,7 @@ test('mobile block parses cases with defaults and per-case overrides', () => {
     settleMs: 1000,
     udid: null,
     serial: null,
+    devices: null,
     masks: [],
     regions: []
   });
@@ -154,13 +156,90 @@ test('mobile case masks/regions default to empty arrays', () => {
 
 test('mobile block applies defaults when absent or partial', () => {
   const absent = normalizeConfig(base, '/tmp/config.json');
-  assert.deepEqual(absent.mobile, { udid: 'booted', serial: 'emulator-5554', adbPath: null, cases: [], judge: { thresholds: {} } });
+  assert.deepEqual(absent.mobile, { udid: 'booted', serial: 'emulator-5554', adbPath: null, devices: [], cases: [], judge: { thresholds: {} } });
   const partial = normalizeConfig({ ...base, mobile: { udid: 'X' } }, '/tmp/config.json');
   assert.equal(partial.mobile.udid, 'X');
   assert.equal(partial.mobile.serial, 'emulator-5554');
   assert.equal(partial.mobile.adbPath, null);
+  assert.deepEqual(partial.mobile.devices, []);
   assert.deepEqual(partial.mobile.cases, []);
   assert.deepEqual(partial.mobile.judge.thresholds, {});
+});
+
+test('config without mobile.devices yields mobile.devices === [] (backward compat)', () => {
+  const result = validateConfig(normalizeConfig(base, '/tmp/config.json'));
+  assert.deepEqual(result.mobile.devices, []);
+  const nonArray = normalizeConfig({ ...base, mobile: { devices: 'iphone16' } }, '/tmp/config.json');
+  assert.deepEqual(nonArray.mobile.devices, []);
+});
+
+test('mobile.devices parses full rows; platform defaults to ios-sim', () => {
+  const result = normalizeConfig({
+    ...base,
+    mobile: {
+      devices: [
+        { key: 'iphone16', label: 'iPhone 16', udid: 'ABCD-1234', platform: 'ios-sim' },
+        { key: 'pixel6', serial: 'emulator-5554', platform: 'android' },
+        { key: 'sim2' } // every optional field defaults
+      ]
+    }
+  }, '/tmp/config.json');
+  assert.deepEqual(result.mobile.devices, [
+    { key: 'iphone16', label: 'iPhone 16', udid: 'ABCD-1234', serial: null, platform: 'ios-sim' },
+    { key: 'pixel6', label: null, udid: null, serial: 'emulator-5554', platform: 'android' },
+    { key: 'sim2', label: null, udid: null, serial: null, platform: 'ios-sim' }
+  ]);
+});
+
+test('mobile.devices platform degrades unknown values to ios-sim (mirrors capture.type)', () => {
+  const result = normalizeConfig({ ...base, mobile: { devices: [{ key: 'dev', platform: 'selenium' }] } }, '/tmp/config.json');
+  assert.equal(result.mobile.devices[0].platform, 'ios-sim');
+});
+
+test('mobile case devices parses to a string array; absent parses to null', () => {
+  const result = normalizeConfig({
+    ...base,
+    mobile: {
+      devices: [{ key: 'iphone16' }, { key: 'pixel6' }],
+      cases: [
+        { key: 'home', label: 'Home', devices: ['iphone16', 42] },
+        { key: 'chat', label: 'Chat' }
+      ]
+    }
+  }, '/tmp/config.json');
+  assert.deepEqual(result.mobile.cases[0].devices, ['iphone16', '42']);
+  assert.equal(result.mobile.cases[1].devices, null);
+});
+
+test('duplicate mobile device keys are rejected', () => {
+  assert.throws(
+    () => validateConfig(normalizeConfig({
+      ...base,
+      mobile: { devices: [{ key: 'iphone16' }, { key: 'iphone16' }] }
+    }, '/tmp/config.json')),
+    (error) => {
+      assert.ok(error instanceof TypeError);
+      assert.match(error.message, /Duplicate mobile device key: iphone16/);
+      return true;
+    }
+  );
+});
+
+test('case.devices referencing an unknown device key is rejected and names the key', () => {
+  assert.throws(
+    () => validateConfig(normalizeConfig({
+      ...base,
+      mobile: {
+        devices: [{ key: 'iphone16' }],
+        cases: [{ key: 'home', label: 'Home', devices: ['iphone16', 'ghost'] }]
+      }
+    }, '/tmp/config.json')),
+    (error) => {
+      assert.ok(error instanceof TypeError);
+      assert.match(error.message, /unknown device key: ghost/);
+      return true;
+    }
+  );
 });
 
 test('mobile.adbPath is honored when configured', () => {
