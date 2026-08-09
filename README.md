@@ -1,4 +1,4 @@
-# Full-Stack Vision Engineering Pro v5.0.0
+# Full-Stack Vision Engineering Pro v6.0.0
 
 A production-oriented **Agent Skill + local engineering toolkit** that joins four systems in one governed release workflow:
 
@@ -60,7 +60,7 @@ This package does not provide a subagent runtime, browser, git remote, productio
 ## Install
 
 ```bash
-unzip fullstack-vision-engineering-pro-v5.0.0.zip
+unzip fullstack-vision-engineering-pro-v6.0.0.zip
 cd fullstack-vision-engineering-pro-v5
 ./setup.sh
 ```
@@ -68,7 +68,7 @@ cd fullstack-vision-engineering-pro-v5
 Windows PowerShell:
 
 ```powershell
-Expand-Archive .\fullstack-vision-engineering-pro-v5.0.0.zip -DestinationPath .
+Expand-Archive .\fullstack-vision-engineering-pro-v6.0.0.zip -DestinationPath .
 Set-Location .\fullstack-vision-engineering-pro-v5
 .\setup.ps1
 ```
@@ -348,7 +348,7 @@ Build a clean, deterministic release directory, ZIP, manifest, checksums, and ZI
 npm run release:build -- \
   --source . \
   --output ../fullstack-vision-engineering-pro-v5 \
-  --archive ../fullstack-vision-engineering-pro-v5.0.0.zip
+  --archive ../fullstack-vision-engineering-pro-v6.0.0.zip
 ```
 
 The release builder skips symlinks and development state, rejects unsafe member paths, uses a single archive root, and verifies local headers, the central directory, CRC values, sizes, duplicate members, checksums, and deterministic ordering before returning success.

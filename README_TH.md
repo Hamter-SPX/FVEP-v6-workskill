@@ -1,4 +1,4 @@
-# Full-Stack Vision Engineering Pro v5.0.0
+# Full-Stack Vision Engineering Pro v6.0.0
 
 ชุด **Agent Skill + Engineering Toolkit** ระดับ Production ที่รวมสี่ระบบไว้ในวงจรเดียว:
 
@@ -61,7 +61,7 @@ v6 รวมทุก discipline ไว้ใต้ร่มเดียว (One
 ## ติดตั้ง
 
 ```bash
-unzip fullstack-vision-engineering-pro-v5.0.0.zip
+unzip fullstack-vision-engineering-pro-v6.0.0.zip
 cd fullstack-vision-engineering-pro-v5
 ./setup.sh
 ```
@@ -69,7 +69,7 @@ cd fullstack-vision-engineering-pro-v5
 Windows PowerShell:
 
 ```powershell
-Expand-Archive .\fullstack-vision-engineering-pro-v5.0.0.zip -DestinationPath .
+Expand-Archive .\fullstack-vision-engineering-pro-v6.0.0.zip -DestinationPath .
 Set-Location .\fullstack-vision-engineering-pro-v5
 .\setup.ps1
 ```
@@ -336,7 +336,7 @@ npm run docs:all-in-one
 npm run release:build -- \
   --source . \
   --output ../fullstack-vision-engineering-pro-v5 \
-  --archive ../fullstack-vision-engineering-pro-v5.0.0.zip
+  --archive ../fullstack-vision-engineering-pro-v6.0.0.zip
 ```
 
 Release Builder จะข้าม Symlink และ Development State, ปฏิเสธ Path ที่ไม่ปลอดภัย, บังคับ Single-root ZIP และตรวจ Local Headers, Central Directory, CRC, ขนาดไฟล์, Duplicate Members, Checksum และ Deterministic Ordering ก่อนรายงานว่าผ่าน

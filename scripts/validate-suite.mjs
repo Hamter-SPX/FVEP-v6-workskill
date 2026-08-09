@@ -394,7 +394,7 @@ checks.unitTests = { files: unitFiles.length, tests: testCount, passed: passCoun
 
 const packageJson = JSON.parse(await fs.readFile(path.join(root, 'package.json'), 'utf8'));
 if (packageJson.name !== 'fullstack-vision-engineering-pro') errors.push(`Unexpected package name: ${packageJson.name}.`);
-if (packageJson.version !== '5.0.0') errors.push(`package.json version must be 5.0.0, found ${packageJson.version}.`);
+if (packageJson.version !== '6.0.0') errors.push(`package.json version must be 6.0.0, found ${packageJson.version}.`);
 if (packageJson.private !== true) errors.push('The skill/tool suite must remain private unless a reviewed publication process is added.');
 for (const dependency of ['playwright', 'axe-core', 'pixelmatch', 'pngjs']) {
   const value = packageJson.dependencies?.[dependency];
@@ -540,7 +540,7 @@ warnings.push('Behavioral pressure scenarios require fresh independent agent con
 const readme = await fs.readFile(path.join(root, 'README.md'), 'utf8');
 const readmeTh = await fs.readFile(path.join(root, 'README_TH.md'), 'utf8');
 for (const [name, text] of [['README.md', readme], ['README_TH.md', readmeTh]]) {
-  if (!text.includes('v5.0.0')) errors.push(`${name} does not identify version v5.0.0.`);
+  if (!text.includes('v6.0.0')) errors.push(`${name} does not identify version v6.0.0.`);
   if (!text.includes('fullstack.config')) errors.push(`${name} does not document the full-stack configuration.`);
   if (!text.includes('process.config')) errors.push(`${name} does not document the governed process configuration.`);
   if (!text.includes('vision-loop')) errors.push(`${name} does not document the retained frontend vision loop.`);

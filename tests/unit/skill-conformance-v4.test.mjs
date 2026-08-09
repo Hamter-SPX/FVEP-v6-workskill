@@ -28,7 +28,7 @@ function validInput() {
     pressureScenariosText: '# Pressure\nTime pressure\nAuthority pressure\nSunk cost\nContext loss\nReview collusion\nFalse completion',
     tddEvidenceText: '# Evidence\n## RED\nCommand failed for missing behavior: FAIL\n## GREEN\nCommand passed: PASS\n## REFACTOR\nRegression remained green.',
     adaptationMatrixText: requiredSkills.join('\n'),
-    packageJson: { name: 'fullstack-vision-engineering-pro', version: '5.0.0', scripts: { 'process:audit': 'x', 'process:tdd': 'x', 'process:review': 'x', 'audit:aesthetics': 'x', validate: 'x' } }
+    packageJson: { name: 'fullstack-vision-engineering-pro', version: '6.0.0', scripts: { 'process:audit': 'x', 'process:tdd': 'x', 'process:review': 'x', 'audit:aesthetics': 'x', validate: 'x' } }
   };
 }
 
