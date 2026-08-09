@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-import fsSync from 'node:fs';
 import path from 'node:path';
 import { loadAestheticEvidence } from '../lib/aesthetic-audit-engine.mjs';
 import { auditA11yAll } from '../lib/a11y-engine.mjs';
@@ -111,11 +110,12 @@ try {
     const isMobile = captureType !== 'playwright';
 
     if (isMobile) {
+      if (args['refresh-reference']) {
+        process.stdout.write('--refresh-reference is not supported for mobile captures (ignored)\n');
+      }
       if (!args['skip-capture']) sections.capture = await captureAllMobile(config, { mode: 'current', filters });
-      if (!args['skip-compare'] && fsSync.existsSync(path.join(config.outputDir, 'reference'))) {
-        sections.comparison = await compareAll(config, { filters });
-      } else if (!args['skip-compare']) {
-        process.stdout.write('compare: skipped (no stored reference captures for mobile)\n');
+      if (!args['skip-compare']) {
+        process.stdout.write('compare: skipped on mobile (mobile-aware compare is a follow-up)\n');
       }
       sections.mobileChecks = await runMobileChecks(config, { filters });
       for (const name of ['inspect', 'a11y', 'interaction', 'state-crawler', 'performance', 'tokens', 'breakpoints', 'engineering']) {
@@ -148,6 +148,7 @@ try {
     const summaryConfig = isMobile
       ? {
           ...config,
+          inspection: { ...config.inspection, enabled: false },
           accessibility: { ...config.accessibility, enabled: false },
           interaction: { ...config.interaction, enabled: false },
           stateCrawler: { ...config.stateCrawler, enabled: false },
@@ -167,6 +168,14 @@ try {
       `Release decision: ${summary.releaseDecision}`,
       `Summary: ${summary.markdownPath ?? summary.jsonPath}`
     ].join('\n') + '\n');
+    if (isMobile) {
+      // The mobile gate is the mobileChecks verdict set itself: any failing
+      // case fails the run, independent of the web-derived quality gates.
+      const checks = sections.mobileChecks ?? [];
+      const failedChecks = checks.filter((result) => result.verdict === 'fail').length;
+      process.stdout.write(`Mobile checks: ${checks.length - failedChecks} passed, ${failedChecks} failed\n`);
+      if (failedChecks > 0) process.exitCode = 1;
+    }
     if (!summary.automatedGatePassed) process.exitCode = 1;
   }
 } catch (error) {
