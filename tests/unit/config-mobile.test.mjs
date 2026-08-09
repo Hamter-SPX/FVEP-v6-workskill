@@ -169,8 +169,25 @@ test('mobile block applies defaults when absent or partial', () => {
 test('config without mobile.devices yields mobile.devices === [] (backward compat)', () => {
   const result = validateConfig(normalizeConfig(base, '/tmp/config.json'));
   assert.deepEqual(result.mobile.devices, []);
-  const nonArray = normalizeConfig({ ...base, mobile: { devices: 'iphone16' } }, '/tmp/config.json');
-  assert.deepEqual(nonArray.mobile.devices, []);
+});
+
+test('mobile.devices as a non-array value (e.g. a bare string) is rejected instead of degrading to all devices', () => {
+  // devices: "iphone16" used to silently parse to [], which the fan-out
+  // engines read as "every device" — a typo would have erased the matrix.
+  for (const devices of ['iphone16', { key: 'iphone16' }, 42]) {
+    assert.throws(
+      () => normalizeConfig({ ...base, mobile: { devices } }, '/tmp/config.json'),
+      (error) => {
+        assert.ok(error instanceof TypeError);
+        assert.match(error.message, /mobile\.devices must be an array/);
+        assert.match(error.message, /iphone16|42/); // names the offending value
+        return true;
+      }
+    );
+  }
+  // Explicit null stays equivalent to absent (one sentinel for "no matrix").
+  assert.deepEqual(normalizeConfig({ ...base, mobile: { devices: null } }, '/tmp/config.json').mobile.devices, []);
+  assert.deepEqual(normalizeConfig({ ...base, mobile: { devices: [] } }, '/tmp/config.json').mobile.devices, []);
 });
 
 test('mobile.devices parses full rows; platform defaults to ios-sim', () => {
@@ -340,6 +357,93 @@ test('duplicate mobile-case artifact identities are rejected (safeSegment collap
       return true;
     }
   );
+});
+
+test('mobile case label containing the "__" identity separator is rejected', () => {
+  // The joined comparison key splits on "__" — a separator inside a segment
+  // yields ≥4 parts and silently bypasses the evidence join (real card loses
+  // its verdict, phantom fail card appears).
+  assert.throws(
+    () => validateConfig(normalizeConfig({
+      ...base,
+      capture: { type: 'ios-sim' },
+      mobile: { cases: [{ key: 'home', label: 'Home__Page' }] }
+    }, '/tmp/config.json')),
+    (error) => {
+      assert.ok(error instanceof TypeError);
+      assert.match(error.message, /case label "Home__Page"/); // names field + value
+      assert.match(error.message, /identity separator/); // names why
+      assert.match(error.message, /different character/); // names the fix
+      return true;
+    }
+  );
+});
+
+test('mobile case key containing the "__" identity separator is rejected', () => {
+  assert.throws(
+    () => validateConfig(normalizeConfig({
+      ...base,
+      capture: { type: 'ios-sim' },
+      mobile: { cases: [{ key: 'home__v2', label: 'Home' }] }
+    }, '/tmp/config.json')),
+    (error) => {
+      assert.ok(error instanceof TypeError);
+      assert.match(error.message, /case key "home__v2"/);
+      assert.match(error.message, /identity separator/);
+      return true;
+    }
+  );
+});
+
+test('mobile case key with "__" and no label is rejected via the resolved label too', () => {
+  // The label defaults to the case key at parse time, so the reservation must
+  // not be skippable by leaving the label out — whichever segment is checked
+  // first, the config must fail loudly.
+  assert.throws(
+    () => validateConfig(normalizeConfig({
+      ...base,
+      capture: { type: 'ios-sim' },
+      mobile: { cases: [{ key: 'home__v2' }] }
+    }, '/tmp/config.json')),
+    (error) => {
+      assert.ok(error instanceof TypeError);
+      assert.match(error.message, /home__v2/);
+      assert.match(error.message, /identity separator/);
+      return true;
+    }
+  );
+});
+
+test('mobile device key containing the "__" identity separator is rejected', () => {
+  assert.throws(
+    () => validateConfig(normalizeConfig({
+      ...base,
+      capture: { type: 'ios-sim' },
+      mobile: {
+        devices: [{ key: 'my__phone__x' }],
+        cases: [{ key: 'home', label: 'Home' }]
+      }
+    }, '/tmp/config.json')),
+    (error) => {
+      assert.ok(error instanceof TypeError);
+      assert.match(error.message, /device key "my__phone__x"/);
+      assert.match(error.message, /identity separator/);
+      return true;
+    }
+  );
+});
+
+test('mobile identities without the separator (single underscores, hyphens, unicode labels) stay valid', () => {
+  const config = validateConfig(normalizeConfig({
+    ...base,
+    capture: { type: 'ios-sim' },
+    mobile: {
+      devices: [{ key: 'iphone_16' }, { key: 'pixel-6', platform: 'android' }],
+      cases: [{ key: 'home_screen', label: 'หน้า Home' }]
+    }
+  }, '/tmp/config.json'));
+  assert.equal(config.mobile.devices.length, 2);
+  assert.equal(config.mobile.cases.length, 1);
 });
 
 test('mobile capture type with empty mobile.cases is rejected', () => {

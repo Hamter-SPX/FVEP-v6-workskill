@@ -263,7 +263,8 @@ node scripts/vision-loop.mjs --config vision-loop.config.json                   
 
 For Android use `capture.type: "android"` with `mobile.serial` (default
 `emulator-5554`; `mobile.adbPath` points at a specific adb binary). Per-case
-`udid`/`serial` override the device-level defaults.
+`udid`/`serial` override the device-level defaults (on configs without a
+device matrix).
 
 #### Device matrix
 
