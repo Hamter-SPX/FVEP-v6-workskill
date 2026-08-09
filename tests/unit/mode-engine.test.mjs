@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
@@ -8,6 +9,7 @@ import { fileURLToPath } from 'node:url';
 import {
   MODE_IDS,
   auditModeExit,
+  flowForMode,
   formatModeCard,
   formatModeList,
   getMode,
@@ -60,6 +62,28 @@ test('a strong trigger produces high confidence without confirmation', () => {
   assert.equal(result.mode, 'implement');
   assert.equal(result.confidence, 'high');
   assert.equal(result.needsConfirmation, false);
+});
+
+test('every operating mode is bound to a flow doc that exists on disk', () => {
+  for (const id of MODE_IDS) {
+    const { flow, flowCompanions } = flowForMode(id);
+    assert.ok(typeof flow === 'string' && flow.startsWith('flow/'), `${id} has no flow doc bound`);
+    assert.ok(existsSync(path.join(root, flow)), `${id}: ${flow} missing on disk`);
+    assert.ok(Array.isArray(flowCompanions), `${id}: flowCompanions must be a list`);
+  }
+});
+
+test('resolveMode exposes the flow doc bound to the resolved mode', () => {
+  const result = resolveMode('ช่วยรีดีไซน์หน้านี้ให้หน่อย');
+  assert.equal(result.mode, 'design-ui');
+  assert.equal(result.flow, 'flow/brainstorming.md');
+  assert.deepEqual(result.flowCompanions, ['flow/writing-plans.md']);
+});
+
+test('auditModeExit exposes the flow doc alongside the verdict', () => {
+  const result = auditModeExit({ mode: 'debug', completedGates: [], recheckPerformed: false });
+  assert.equal(result.flow, 'flow/systematic-debugging.md');
+  assert.deepEqual(result.flowCompanions, ['flow/receiving-code-review.md']);
 });
 
 test('mode exit is blocked until gates run and the re-check happens', () => {

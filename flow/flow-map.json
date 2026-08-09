@@ -1,0 +1,12 @@
+{
+  "analyze": { "flow": "flow/using-one-framework.md", "companions": [] },
+  "design-ui": { "flow": "flow/brainstorming.md", "companions": ["flow/writing-plans.md"] },
+  "design-game": { "flow": "flow/brainstorming.md", "companions": ["flow/writing-plans.md"] },
+  "match-ref": { "flow": "flow/verification-before-completion.md", "companions": [] },
+  "implement": { "flow": "flow/subagent-driven-development.md", "companions": ["flow/executing-plans.md", "flow/test-driven-development.md", "flow/using-git-worktrees.md", "flow/dispatching-parallel-agents.md"] },
+  "debug": { "flow": "flow/systematic-debugging.md", "companions": ["flow/receiving-code-review.md"] },
+  "review": { "flow": "flow/requesting-code-review.md", "companions": ["flow/receiving-code-review.md"] },
+  "ship": { "flow": "flow/verification-before-completion.md", "companions": ["flow/finishing-a-development-branch.md"] },
+  "author-skill": { "flow": "flow/writing-skills.md", "companions": [] },
+  "recover": { "flow": "flow/using-one-framework.md", "companions": [] }
+}

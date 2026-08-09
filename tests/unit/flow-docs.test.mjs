@@ -1,0 +1,61 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
+const flowDir = path.join(root, 'flow');
+
+const REQUIRED_SECTIONS = ['## Why this exists', '## When to use', '## The flow', '## Evidence gates', '## Anti-patterns'];
+
+const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
+const npmScripts = new Set(Object.keys(pkg.scripts ?? {}));
+
+function flowDocs() {
+  if (!fs.existsSync(flowDir)) return [];
+  return fs.readdirSync(flowDir).filter((f) => f.endsWith('.md') && f !== 'README.md');
+}
+
+test('flow docs exist and follow required structure', () => {
+  const docs = flowDocs();
+  assert.ok(docs.length > 0, 'flow/ must contain flow docs');
+  for (const doc of docs) {
+    const text = fs.readFileSync(path.join(flowDir, doc), 'utf8');
+    assert.match(text, /^# .+/m, `${doc}: missing H1`);
+    for (const section of REQUIRED_SECTIONS) {
+      assert.ok(text.includes(section), `${doc}: missing section "${section}"`);
+    }
+  }
+});
+
+test('every npm command referenced by flow docs exists', () => {
+  const docs = flowDocs().map((d) => [d, fs.readFileSync(path.join(flowDir, d), 'utf8')]);
+  const cmdPattern = /npm run ([a-zA-Z0-9:\-]+)/g;
+  for (const [doc, text] of docs) {
+    for (const match of text.matchAll(cmdPattern)) {
+      assert.ok(npmScripts.has(match[1]), `${doc}: references missing npm script "${match[1]}"`);
+    }
+  }
+});
+
+test('every lib/engine file referenced by flow docs exists', () => {
+  const docs = flowDocs().map((d) => [d, fs.readFileSync(path.join(flowDir, d), 'utf8')]);
+  const refPattern = /(?:lib|scripts|templates|references|domains|prompts|agents|schemas|examples)\/[A-Za-z0-9_\-./]+/g;
+  for (const [doc, text] of docs) {
+    for (const match of text.matchAll(refPattern)) {
+      const target = path.join(root, match[0]);
+      assert.ok(fs.existsSync(target), `${doc}: references missing path "${match[0]}"`);
+    }
+  }
+});
+
+test('flow-map is valid json and points at existing docs', () => {
+  const mapPath = path.join(flowDir, 'flow-map.json');
+  assert.ok(fs.existsSync(mapPath), 'flow-map.json missing');
+  const map = JSON.parse(fs.readFileSync(mapPath, 'utf8'));
+  for (const [mode, entry] of Object.entries(map)) {
+    assert.ok(typeof entry.flow === 'string', `${mode}: flow must be a path string`);
+    assert.ok(fs.existsSync(path.join(root, entry.flow)), `${mode}: flow doc ${entry.flow} missing`);
+  }
+});
