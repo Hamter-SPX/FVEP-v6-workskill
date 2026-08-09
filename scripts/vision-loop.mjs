@@ -155,7 +155,13 @@ try {
           performance: { ...config.performance, enabled: false },
           tokens: { ...config.tokens, enabled: false },
           engineeringChecks: [],
-          breakpoints: { ...config.breakpoints, enabled: false }
+          breakpoints: { ...config.breakpoints, enabled: false },
+          // On mobile the authoritative gate is the mobileChecks verdict set
+          // (plus a mobile comparison when present). The web score floor is
+          // removed because no web gates are applicable — with the default
+          // floors (85/85) an all-not-applicable score of 0/100 would fail
+          // every clean mobile run regardless of its actual verdicts.
+          quality: { ...config.quality, minScore: 0, minConfidence: 0 }
         }
       : config;
     const summary = await writeRunSummary(summaryConfig, sections, { provenance });

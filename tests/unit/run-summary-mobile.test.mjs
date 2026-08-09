@@ -18,6 +18,9 @@ async function mobileSummaryConfig(root, overrides = {}) {
     ...overrides
   }, path.join(root, 'vision-loop.config.json')));
   // Mirror the summaryConfig clone in scripts/vision-loop.mjs for mobile runs.
+  // On mobile the authoritative gate is the mobileChecks verdict set (plus a
+  // mobile comparison when present); the web score floor is removed because no
+  // web gates are applicable (all would be not-applicable, dragging score to 0).
   return {
     ...config,
     inspection: { ...config.inspection, enabled: false },
@@ -27,7 +30,8 @@ async function mobileSummaryConfig(root, overrides = {}) {
     performance: { ...config.performance, enabled: false },
     tokens: { ...config.tokens, enabled: false },
     engineeringChecks: [],
-    breakpoints: { ...config.breakpoints, enabled: false }
+    breakpoints: { ...config.breakpoints, enabled: false },
+    quality: { ...config.quality, minScore: 0, minConfidence: 0 }
   };
 }
 
@@ -55,6 +59,12 @@ test('mobile run summary: mobileChecks section is summarized and mobile-aware ga
   // A failing mobileChecks verdict is a quality signal only via the loop's exit
   // code (vision-loop.mjs), not via these not-applicable gates.
   assert.equal(summary.quality.gates.visual.hard, false);
+  // With all web gates not-applicable the score is 0/100 by definition; the
+  // mobile clone removes the web floor so the automated gate does not fail on
+  // an inapplicable web score (the real mobile gate is mobileChecks + exit code).
+  assert.equal(summary.quality.score, 0);
+  assert.equal(summary.quality.confidence, 0);
+  assert.equal(summary.automatedGatePassed, true);
 });
 
 test('mobile run summary: a present comparison re-applies the visual gate', async () => {
