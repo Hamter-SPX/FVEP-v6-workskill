@@ -318,7 +318,7 @@ for (const file of jsonFiles) {
 trace('json-parsed');
 checks.json = { files: jsonResults.length, failed: jsonResults.filter((item) => item.status === 'FAIL').length };
 
-for (const configFile of ['vision-loop.config.example.json', 'examples/advanced-state.config.json']) {
+for (const configFile of ['vision-loop.config.example.json', 'examples/advanced-state.config.json', 'examples/mobile-matrix.config.json']) {
   try {
     const config = await loadConfig(path.join(root, configFile));
     if (config.version !== 2) errors.push(`${configFile} did not normalize to frontend config version 2.`);
