@@ -2,6 +2,7 @@
   "name": "fullstack-vision-engineering-pro",
   "version": "5.0.0",
   "private": true,
+  "license": "MIT",
   "type": "module",
   "description": "Evidence-driven full-stack engineering and governed agent process suite combining frontend vision loops, backend risk gates, TDD proof, scientific debugging, isolated execution, independent review, and claim-bound release verification.",
   "engines": {
