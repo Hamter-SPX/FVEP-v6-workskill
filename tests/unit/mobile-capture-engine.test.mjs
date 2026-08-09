@@ -261,6 +261,7 @@ function fakeAdbExec(calls, png = fakePngBytes(1176, 2400)) {
 
 test('captureAllMobile — android matrix delegates to the adb adapter per case', async () => {
   const config = mobileFixture({ capture: { type: 'android' } });
+  config.mobile.adbPath = '/custom/sdk/platform-tools/adb';
   config.mobile.cases[0].launchActivity = 'com.example.app/.MainActivity';
   config.mobile.cases[1].serial = 'emulator-5556';
   const calls = [];
@@ -282,8 +283,11 @@ test('captureAllMobile — android matrix delegates to the adb adapter per case'
   assert.equal(JSON.parse(fs.readFileSync(chat.metadataPath, 'utf8')).mobile.serial, 'emulator-5556');
   // home: launchActivity (am start -n) precedes its screencap; serial/-s reaches adb.
   assert.deepEqual(calls[0].slice(1), ['-s', 'emulator-5554', 'shell', 'am', 'start', '-n', 'com.example.app/.MainActivity']);
-  assert.ok(calls[1].join(' ').includes('-s emulator-5554 exec-out screencap'));
   // chat: openUrl (am start VIEW -d) precedes its screencap, on the per-case serial.
   assert.deepEqual(calls[2].slice(1), ['-s', 'emulator-5556', 'shell', 'am', 'start', '-a', 'android.intent.action.VIEW', '-d', 'app://chat/1']);
-  assert.ok(calls[3].join(' ').includes('-s emulator-5556 exec-out screencap'));
+  // Exact exec-out argv pin: trailing -p forces PNG (raw RGBA regression guard).
+  assert.deepEqual(calls[1].slice(1), ['-s', 'emulator-5554', 'exec-out', 'screencap', '-p']);
+  assert.deepEqual(calls[3].slice(1), ['-s', 'emulator-5556', 'exec-out', 'screencap', '-p']);
+  // mobile.adbPath threads through to every adb invocation.
+  for (const call of calls) assert.equal(call[0], '/custom/sdk/platform-tools/adb');
 });

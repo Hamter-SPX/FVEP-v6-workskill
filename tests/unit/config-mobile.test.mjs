@@ -14,7 +14,7 @@ test('capture.type ios-sim is honored', () => {
   assert.equal(result.capture.type, 'ios-sim');
 });
 
-test('capture.type android is honored (driver ships in a follow-up task)', () => {
+test('capture.type android is honored', () => {
   const result = normalizeConfig({ ...base, capture: { type: 'android' } }, '/tmp/config.json');
   assert.equal(result.capture.type, 'android');
 });
@@ -63,12 +63,18 @@ test('mobile block parses cases with defaults and per-case overrides', () => {
 
 test('mobile block applies defaults when absent or partial', () => {
   const absent = normalizeConfig(base, '/tmp/config.json');
-  assert.deepEqual(absent.mobile, { udid: 'booted', serial: 'emulator-5554', cases: [], judge: { thresholds: {} } });
+  assert.deepEqual(absent.mobile, { udid: 'booted', serial: 'emulator-5554', adbPath: null, cases: [], judge: { thresholds: {} } });
   const partial = normalizeConfig({ ...base, mobile: { udid: 'X' } }, '/tmp/config.json');
   assert.equal(partial.mobile.udid, 'X');
   assert.equal(partial.mobile.serial, 'emulator-5554');
+  assert.equal(partial.mobile.adbPath, null);
   assert.deepEqual(partial.mobile.cases, []);
   assert.deepEqual(partial.mobile.judge.thresholds, {});
+});
+
+test('mobile.adbPath is honored when configured', () => {
+  const result = normalizeConfig({ ...base, mobile: { adbPath: '/custom/sdk/platform-tools/adb' } }, '/tmp/config.json');
+  assert.equal(result.mobile.adbPath, '/custom/sdk/platform-tools/adb');
 });
 
 test('mobile.judge.thresholds is preserved and defensively cloned', () => {

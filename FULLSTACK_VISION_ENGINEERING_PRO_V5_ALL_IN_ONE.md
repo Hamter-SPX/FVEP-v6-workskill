@@ -732,7 +732,7 @@ npm run audit:game-assets -- --assets examples/game-assets.example.json --frame-
 
 Discipline packs — what each role owns, its gates, and its red flags — live in `domains/ROLES/`.
 
-### Mobile Vision Loop (iOS, phase 1)
+### Mobile Vision Loop (iOS + Android)
 
 Capture Flutter/native app screens from the iOS Simulator and feed the existing
 compare / ascii-map / layout-structure pipeline. Text-only judging is available
@@ -744,7 +744,11 @@ npm run vision:metrics -- --image .fx/cur.png --grid 8x5 --out .fx/metrics.json
 npm run vision:judge -- --judge metrics --metrics .fx/metrics.json --thresholds '{"maxEmptyCells":3}' --out .fx/verdict.json
 ```
 
-Android capture is a documented phase-2 stub (`--platform android` exits non-zero).
+Android capture ships via `adb screencap` (`exec-out` with an `/sdcard` pull fallback):
+
+```bash
+npm run capture:mobile -- --platform android --serial emulator-5554 --out .fx/home.png --label home --settle 2
+```
 
 ## Domain commands
 
@@ -1076,7 +1080,7 @@ npm run audit:game-assets -- --assets examples/game-assets.example.json --frame-
 
 เอกสาร: `references/vfx-and-sfx-direction.md`, `references/game-feel-and-juice.md`
 
-### Mobile Vision Loop (iOS, phase 1)
+### Mobile Vision Loop (iOS + Android)
 
 Capture หน้าจอแอป Flutter/native จาก iOS Simulator แล้วส่งต่อเข้า pipeline เดิม
 (compare / ascii-map / layout-structure) ได้ทันที การตัดสินแบบไม่ต้องเห็นภาพตัดสินได้
@@ -1088,7 +1092,11 @@ npm run vision:metrics -- --image .fx/cur.png --grid 8x5 --out .fx/metrics.json
 npm run vision:judge -- --judge metrics --metrics .fx/metrics.json --thresholds '{"maxEmptyCells":3}' --out .fx/verdict.json
 ```
 
-การ capture บน Android ยังเป็น stub ของ phase 2 (`--platform android` จะ exit ไม่เป็นศูนย์)
+การ capture บน Android พร้อมใช้งานผ่าน `adb screencap` (โหมด `exec-out` พร้อม fallback แบบ `pull` ผ่าน /sdcard):
+
+```bash
+npm run capture:mobile -- --platform android --serial emulator-5554 --out .fx/home.png --label home --settle 2
+```
 
 ## วงจรการทำงาน
 
