@@ -42,6 +42,12 @@ Quality Score       = คุณภาพที่หลักฐานซึ่�
 Evidence Confidence = ความครบถ้วน ความสดใหม่ ขอบเขต ความเป็นอิสระ และการผูกกับ Artifact ปัจจุบัน
 ```
 
+## One Framework — Flow Layer (v6)
+
+v6 รวมทุก discipline ไว้ใต้ร่มเดียว (One Framework): ทุก pattern ที่ process kernel บังคับ มีเอกสาร flow ที่อ่านตามได้ระดับบทสนทนาด้วย — 14 ฉบับที่ FVEP เขียนเองใต้ `flow/` โครงเดียวกันทุกฉบับ (Why → When → Steps → Evidence gates → Anti-patterns) และทุกฉบับผูกกับ engine ที่ตัดสินหลักฐานของมันจริง ทั้งสิบโหมด resolve ไปหา flow ที่คุ้มงานผ่าน `flow/flow-map.json` และ `npm run mode -- resolve` / `show` จะบอกชื่อ flow doc ของงานตรงหน้าเสมอ — เฟรมเวิร์กเดียวกันคุมทั้งบทสนทนา artifact และ gate
+
+เริ่มที่ `flow/README.md` สำหรับแผนที่ทั้งสิบสี่ flow แล้วเดิน `GOLDEN_PATH.md` สำหรับเส้นทางตรงครบทุก gate — route, design, plan, isolate, TDD, review, quality gate, verify, integrate — พร้อม command log ที่รันจริงบน toy repo ใน `examples/golden-path/`
+
 ## ข้อกำหนด
 
 - Node.js 20 ขึ้นไป
@@ -339,6 +345,8 @@ Release Builder จะข้าม Symlink และ Development State, ปฏ�
 
 - `SKILL.md`
 - `PLAYBOOKS.md` — ขั้นตอนพร้อมใช้สำหรับรีดีไซน์ เทียบต้นฉบับ ฉาก แมพ ชุด asset เอฟเฟกต์และเสียง และการส่งงาน
+- `flow/README.md` — เอกสาร flow ทั้งสิบสี่ฉบับ discipline ละฉบับ (ตัวจริงของ flow layer)
+- `GOLDEN_PATH.md` — เส้นทางตรงสำหรับ solo dev ทีละ gate พร้อม walkthrough จริงใน `examples/golden-path/`
 - `references/operating-modes_TH.md` — สิบโหมด สัญญาของแต่ละโหมด และวิธีข้ามโหมด
 - `references/recheck-protocol_TH.md` — การตรวจงานตัวเองก่อนเสนอ
 - `SUPERPOWERS_ADAPTATION_MATRIX.md`

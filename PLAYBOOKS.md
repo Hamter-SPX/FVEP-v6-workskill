@@ -15,6 +15,9 @@ npm run recheck -- audit --record .fx/recheck.json
 
 References: `references/operating-modes.md` · `references/recheck-protocol.md`
 
+The conversation-level discipline behind each mode lives in the flow layer — `flow/README.md`
+lists all fourteen flows, and `GOLDEN_PATH.md` shows one full pass end to end.
+
 ---
 
 ## 1. "Here is a screenshot — redesign it"

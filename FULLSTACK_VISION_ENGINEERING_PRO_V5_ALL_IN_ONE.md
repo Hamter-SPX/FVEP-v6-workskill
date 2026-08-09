@@ -9,126 +9,127 @@
 2. `README.md`
 3. `README_TH.md`
 4. `PLAYBOOKS.md`
-5. `ARCHITECTURE.md`
-6. `SECURITY.md`
-7. `SUPERPOWERS_ADAPTATION_MATRIX.md`
-8. `MIGRATION_V3_TO_V4.md`
-9. `MIGRATION_V4_TO_V5.md`
-10. `UPGRADE_REPORT_V4_TH.md`
-11. `UPGRADE_REPORT_V5_TH.md`
-12. `references/process-kernel-overview.md`
-13. `references/skill-routing-and-precedence.md`
-14. `references/design-before-implementation.md`
-15. `references/executable-planning.md`
-16. `references/tdd-evidence-protocol.md`
-17. `references/scientific-debugging-protocol.md`
-18. `references/parallel-task-isolation.md`
-19. `references/subagent-task-lifecycle.md`
-20. `references/review-and-feedback-governance.md`
-21. `references/workspace-and-branch-safety.md`
-22. `references/verification-and-claim-governance.md`
-23. `references/integration-and-cleanup.md`
-24. `references/skill-authoring-conformance.md`
-25. `references/context-recovery-ledger.md`
-26. `references/fullstack-operating-model.md`
-27. `references/experience-design-to-system-contract.md`
-28. `references/backend-architecture-and-domain-boundaries.md`
-29. `references/backend-design-quality-gates.md`
-30. `references/api-contracts-and-compatibility.md`
-31. `references/data-integrity-transactions-and-migrations.md`
-32. `references/data-privacy-and-classification.md`
-33. `references/application-security-and-threat-modeling.md`
-34. `references/resilience-and-distributed-failure-modes.md`
-35. `references/observability-slos-and-incident-readiness.md`
-36. `references/fullstack-systematic-debugging.md`
-37. `references/risk-discovery-and-adversarial-review.md`
-38. `references/dependency-and-supply-chain-risk.md`
-39. `references/fullstack-release-and-rollback.md`
-40. `references/vision-loop-protocol.md`
-41. `references/reference-reconstruction.md`
-42. `references/responsive-and-state-matrix.md`
-43. `references/frontend-engineering-gates.md`
-44. `references/accessibility-and-interaction.md`
-45. `references/performance-and-runtime.md`
-46. `references/anti-generic-design.md`
-47. `references/visual-delta-triage.md`
-48. `references/scene-completeness.md`
-49. `references/game-vision-loop.md`
-50. `references/game-asset-direction.md`
-51. `references/world-building-and-level-blockout.md`
-52. `references/visual-delta-triage_TH.md`
-53. `references/game-vision-loop_TH.md`
-54. `prompts/vision-triage-loop.md`
-55. `agents/scene-and-asset-critic.md`
-56. `domains/README.md`
-57. `domains/ROLES/README.md`
-58. `lib/scene-completeness-engine.mjs`
-59. `scripts/audit-scene.mjs`
-60. `lib/game-asset-engine.mjs`
-61. `scripts/audit-game-assets.mjs`
-62. `lib/visual-diff-triage-engine.mjs`
-63. `scripts/vision-triage.mjs`
-64. `lib/direction-gallery-engine.mjs`
-65. `scripts/open-direction-gallery.mjs`
-66. `lib/direction-init-engine.mjs`
-67. `scripts/init-direction.mjs`
-68. `lib/direction-spec-sync-engine.mjs`
-69. `scripts/sync-direction-spec.mjs`
-70. `lib/direction-iterate-engine.mjs`
-71. `scripts/iterate-direction.mjs`
-72. `lib/direction-gate-engine.mjs`
-73. `scripts/direction-gate.mjs`
-74. `lib/direction-runtime-engine.mjs`
-75. `scripts/detect-direction-runtime.mjs`
-76. `scripts/install-direction-cursor.mjs`
-77. `prompts/visual-direction-prompt-pack.md`
-78. `prompts/visual-direction-exploration-ide.md`
-79. `prompts/visual-direction-exploration-cli.md`
-80. `examples/direction-camera/README.md`
-81. `templates/cursor/README.md`
-82. `references/visual-direction-exploration.md`
-83. `references/visual-direction-exploration_TH.md`
-84. `references/aesthetic-direction-protocol.md`
-85. `references/aesthetic-principles.md`
-86. `references/aesthetic-direction-protocol_TH.md`
-87. `references/aesthetic-principles_TH.md`
-88. `AESTHETIC_WALKTHROUGH.md`
-89. `references/aesthetic-scoring-anchors.md`
-90. `references/visual-craft-standards.md`
-91. `references/color-system-and-perception.md`
-92. `references/typographic-system-quality.md`
-93. `references/spatial-composition-and-rhythm.md`
-94. `references/motion-quality-standards.md`
-95. `references/brand-personality-and-tone.md`
-96. `references/visual-style-lexicon.md`
-97. `references/copy-voice-and-microcopy.md`
-98. `templates/task-brief.md`
-99. `templates/scene-brief.md`
-100. `templates/game-asset-spec.md`
-101. `templates/aesthetic-profile.md`
-102. `templates/aesthetic-review.md`
-103. `templates/visual-direction-spec.md`
-104. `templates/review-package.md`
-105. `templates/feedback-ruling.md`
-106. `templates/tdd-evidence.md`
-107. `templates/debug-session.md`
-108. `templates/integration-decision.md`
-109. `agents/process-controller.md`
-110. `agents/task-implementer.md`
-111. `agents/task-reviewer.md`
-112. `agents/re-reviewer.md`
-113. `agents/final-reviewer.md`
-114. `agents/aesthetic-critic.md`
-115. `prompts/process-controller.md`
-116. `prompts/visual-direction-exploration.md`
-117. `prompts/aesthetic-critique.md`
-118. `prompts/aesthetic-direction.md`
-119. `prompts/task-implementer.md`
-120. `prompts/task-reviewer.md`
-121. `prompts/re-reviewer.md`
-122. `prompts/final-reviewer.md`
-123. `tests/process-pressure-scenarios-v4.md`
-124. `tests/TDD_EVIDENCE_V4.md`
+5. `GOLDEN_PATH.md`
+6. `ARCHITECTURE.md`
+7. `SECURITY.md`
+8. `SUPERPOWERS_ADAPTATION_MATRIX.md`
+9. `MIGRATION_V3_TO_V4.md`
+10. `MIGRATION_V4_TO_V5.md`
+11. `UPGRADE_REPORT_V4_TH.md`
+12. `UPGRADE_REPORT_V5_TH.md`
+13. `references/process-kernel-overview.md`
+14. `references/skill-routing-and-precedence.md`
+15. `references/design-before-implementation.md`
+16. `references/executable-planning.md`
+17. `references/tdd-evidence-protocol.md`
+18. `references/scientific-debugging-protocol.md`
+19. `references/parallel-task-isolation.md`
+20. `references/subagent-task-lifecycle.md`
+21. `references/review-and-feedback-governance.md`
+22. `references/workspace-and-branch-safety.md`
+23. `references/verification-and-claim-governance.md`
+24. `references/integration-and-cleanup.md`
+25. `references/skill-authoring-conformance.md`
+26. `references/context-recovery-ledger.md`
+27. `references/fullstack-operating-model.md`
+28. `references/experience-design-to-system-contract.md`
+29. `references/backend-architecture-and-domain-boundaries.md`
+30. `references/backend-design-quality-gates.md`
+31. `references/api-contracts-and-compatibility.md`
+32. `references/data-integrity-transactions-and-migrations.md`
+33. `references/data-privacy-and-classification.md`
+34. `references/application-security-and-threat-modeling.md`
+35. `references/resilience-and-distributed-failure-modes.md`
+36. `references/observability-slos-and-incident-readiness.md`
+37. `references/fullstack-systematic-debugging.md`
+38. `references/risk-discovery-and-adversarial-review.md`
+39. `references/dependency-and-supply-chain-risk.md`
+40. `references/fullstack-release-and-rollback.md`
+41. `references/vision-loop-protocol.md`
+42. `references/reference-reconstruction.md`
+43. `references/responsive-and-state-matrix.md`
+44. `references/frontend-engineering-gates.md`
+45. `references/accessibility-and-interaction.md`
+46. `references/performance-and-runtime.md`
+47. `references/anti-generic-design.md`
+48. `references/visual-delta-triage.md`
+49. `references/scene-completeness.md`
+50. `references/game-vision-loop.md`
+51. `references/game-asset-direction.md`
+52. `references/world-building-and-level-blockout.md`
+53. `references/visual-delta-triage_TH.md`
+54. `references/game-vision-loop_TH.md`
+55. `prompts/vision-triage-loop.md`
+56. `agents/scene-and-asset-critic.md`
+57. `domains/README.md`
+58. `domains/ROLES/README.md`
+59. `lib/scene-completeness-engine.mjs`
+60. `scripts/audit-scene.mjs`
+61. `lib/game-asset-engine.mjs`
+62. `scripts/audit-game-assets.mjs`
+63. `lib/visual-diff-triage-engine.mjs`
+64. `scripts/vision-triage.mjs`
+65. `lib/direction-gallery-engine.mjs`
+66. `scripts/open-direction-gallery.mjs`
+67. `lib/direction-init-engine.mjs`
+68. `scripts/init-direction.mjs`
+69. `lib/direction-spec-sync-engine.mjs`
+70. `scripts/sync-direction-spec.mjs`
+71. `lib/direction-iterate-engine.mjs`
+72. `scripts/iterate-direction.mjs`
+73. `lib/direction-gate-engine.mjs`
+74. `scripts/direction-gate.mjs`
+75. `lib/direction-runtime-engine.mjs`
+76. `scripts/detect-direction-runtime.mjs`
+77. `scripts/install-direction-cursor.mjs`
+78. `prompts/visual-direction-prompt-pack.md`
+79. `prompts/visual-direction-exploration-ide.md`
+80. `prompts/visual-direction-exploration-cli.md`
+81. `examples/direction-camera/README.md`
+82. `templates/cursor/README.md`
+83. `references/visual-direction-exploration.md`
+84. `references/visual-direction-exploration_TH.md`
+85. `references/aesthetic-direction-protocol.md`
+86. `references/aesthetic-principles.md`
+87. `references/aesthetic-direction-protocol_TH.md`
+88. `references/aesthetic-principles_TH.md`
+89. `AESTHETIC_WALKTHROUGH.md`
+90. `references/aesthetic-scoring-anchors.md`
+91. `references/visual-craft-standards.md`
+92. `references/color-system-and-perception.md`
+93. `references/typographic-system-quality.md`
+94. `references/spatial-composition-and-rhythm.md`
+95. `references/motion-quality-standards.md`
+96. `references/brand-personality-and-tone.md`
+97. `references/visual-style-lexicon.md`
+98. `references/copy-voice-and-microcopy.md`
+99. `templates/task-brief.md`
+100. `templates/scene-brief.md`
+101. `templates/game-asset-spec.md`
+102. `templates/aesthetic-profile.md`
+103. `templates/aesthetic-review.md`
+104. `templates/visual-direction-spec.md`
+105. `templates/review-package.md`
+106. `templates/feedback-ruling.md`
+107. `templates/tdd-evidence.md`
+108. `templates/debug-session.md`
+109. `templates/integration-decision.md`
+110. `agents/process-controller.md`
+111. `agents/task-implementer.md`
+112. `agents/task-reviewer.md`
+113. `agents/re-reviewer.md`
+114. `agents/final-reviewer.md`
+115. `agents/aesthetic-critic.md`
+116. `prompts/process-controller.md`
+117. `prompts/visual-direction-exploration.md`
+118. `prompts/aesthetic-critique.md`
+119. `prompts/aesthetic-direction.md`
+120. `prompts/task-implementer.md`
+121. `prompts/task-reviewer.md`
+122. `prompts/re-reviewer.md`
+123. `prompts/final-reviewer.md`
+124. `tests/process-pressure-scenarios-v4.md`
+125. `tests/TDD_EVIDENCE_V4.md`
 
 ---
 
@@ -239,6 +240,10 @@ Common routes:
 | Completion or integration | Fresh packaged verification → explicit user decision → controlled cleanup |
 
 Read `references/skill-routing-and-precedence.md` and `SUPERPOWERS_ADAPTATION_MATRIX.md`.
+
+## The Flow Layer
+
+Each process discipline also ships as a readable flow doc — Why → When → Steps → Evidence gates → Anti-patterns — and `npm run mode -- resolve` / `show` names the governing flow doc for every mode. After a mode is resolved, its flow doc is the source of truth for how the work proceeds: start at `flow/README.md` for the fourteen flows, and walk `GOLDEN_PATH.md` for one honest end-to-end pass across all nine gates with a live command log.
 
 ## Domain packs
 
@@ -553,6 +558,12 @@ Quality score       = what the assessed evidence says
 Evidence confidence = how complete, current, scoped, independent, and artifact-bound the evidence is
 ```
 
+## One Framework — the Flow Layer (v6)
+
+v6 puts the whole discipline under a single umbrella: every process pattern the kernel enforces also ships as a readable, conversation-level **flow doc** — fourteen original docs under `flow/`, each in the same contract shape (Why → When → Steps → Evidence gates → Anti-patterns) and each bound to the deterministic engines that judge its evidence. The ten operating modes resolve to their governing flow through `flow/flow-map.json`, and `npm run mode -- resolve` / `show` names the flow doc for the work at hand, so the same framework governs the conversation, the artifacts, and the gates.
+
+Start at `flow/README.md` for the map of all fourteen flows. For the shortest honest end-to-end pass — route, design, plan, isolate, TDD, review, quality gate, verify, integrate — walk `GOLDEN_PATH.md`, backed by a live command log over a real toy repo in `examples/golden-path/`.
+
 ## Requirements
 
 - Node.js 20 or later
@@ -863,6 +874,8 @@ The release builder skips symlinks and development state, rejects unsafe member 
 
 - `SKILL.md` — main agent workflow
 - `PLAYBOOKS.md` — copy-paste flows for redesign, reference matching, scenes, maps, asset sets, effects and sound, and delivery
+- `flow/README.md` — the fourteen flow docs, one per process discipline (the flow source of truth)
+- `GOLDEN_PATH.md` — the solo fullstack happy path, gate by gate, with the live walkthrough in `examples/golden-path/`
 - `references/operating-modes.md` — the ten modes, their contracts, and how to cross between them
 - `references/recheck-protocol.md` — the adversarial pass every mode closes with
 - `domains/` — product-shaped packs (GAME, APPLICATION, DESIGN, GENERAL) and discipline packs (ROLES)
@@ -946,6 +959,12 @@ v5 เติมโมเดลเชิงบวกเข้าไป โดย�
 Quality Score       = คุณภาพที่หลักฐานซึ่งตรวจแล้วรองรับ
 Evidence Confidence = ความครบถ้วน ความสดใหม่ ขอบเขต ความเป็นอิสระ และการผูกกับ Artifact ปัจจุบัน
 ```
+
+## One Framework — Flow Layer (v6)
+
+v6 รวมทุก discipline ไว้ใต้ร่มเดียว (One Framework): ทุก pattern ที่ process kernel บังคับ มีเอกสาร flow ที่อ่านตามได้ระดับบทสนทนาด้วย — 14 ฉบับที่ FVEP เขียนเองใต้ `flow/` โครงเดียวกันทุกฉบับ (Why → When → Steps → Evidence gates → Anti-patterns) และทุกฉบับผูกกับ engine ที่ตัดสินหลักฐานของมันจริง ทั้งสิบโหมด resolve ไปหา flow ที่คุ้มงานผ่าน `flow/flow-map.json` และ `npm run mode -- resolve` / `show` จะบอกชื่อ flow doc ของงานตรงหน้าเสมอ — เฟรมเวิร์กเดียวกันคุมทั้งบทสนทนา artifact และ gate
+
+เริ่มที่ `flow/README.md` สำหรับแผนที่ทั้งสิบสี่ flow แล้วเดิน `GOLDEN_PATH.md` สำหรับเส้นทางตรงครบทุก gate — route, design, plan, isolate, TDD, review, quality gate, verify, integrate — พร้อม command log ที่รันจริงบน toy repo ใน `examples/golden-path/`
 
 ## ข้อกำหนด
 
@@ -1244,6 +1263,8 @@ Release Builder จะข้าม Symlink และ Development State, ปฏ�
 
 - `SKILL.md`
 - `PLAYBOOKS.md` — ขั้นตอนพร้อมใช้สำหรับรีดีไซน์ เทียบต้นฉบับ ฉาก แมพ ชุด asset เอฟเฟกต์และเสียง และการส่งงาน
+- `flow/README.md` — เอกสาร flow ทั้งสิบสี่ฉบับ discipline ละฉบับ (ตัวจริงของ flow layer)
+- `GOLDEN_PATH.md` — เส้นทางตรงสำหรับ solo dev ทีละ gate พร้อม walkthrough จริงใน `examples/golden-path/`
 - `references/operating-modes_TH.md` — สิบโหมด สัญญาของแต่ละโหมด และวิธีข้ามโหมด
 - `references/recheck-protocol_TH.md` — การตรวจงานตัวเองก่อนเสนอ
 - `SUPERPOWERS_ADAPTATION_MATRIX.md`
@@ -1297,6 +1318,9 @@ npm run recheck -- audit --record .fx/recheck.json
 ```
 
 References: `references/operating-modes.md` · `references/recheck-protocol.md`
+
+The conversation-level discipline behind each mode lives in the flow layer — `flow/README.md`
+lists all fourteen flows, and `GOLDEN_PATH.md` shows one full pass end to end.
 
 ---
 
@@ -1493,6 +1517,250 @@ Example: `examples/recheck.example.json`
 
 ---
 
+## Source: `GOLDEN_PATH.md`
+
+<!-- BEGIN SOURCE: GOLDEN_PATH.md -->
+
+# GOLDEN_PATH.md — The Solo Fullstack Happy Path
+
+This is the shortest honest route from "one person with an idea" to "small
+production-grade change whose every claim has evidence behind it". Walk it
+once end to end and you will have touched every discipline the framework
+enforces: routing, design governance, executable planning, isolated
+workspaces, test-first implementation, independent review, claim-bound
+verification, and the full-stack evidence gate.
+
+**What this is not.** The golden path is not an app generator and not a
+scaffolder. Nothing in it types your code for you. It is a discipline plus a
+deterministic toolbox: you and your agent do the thinking, the framework
+makes the thinking *visible* and refuses to certify what it cannot see. It
+also cannot make lying impossible — every approval timestamp, review verdict,
+and integration decision is *recorded*, and a determined author can record
+fiction. What the path does do is make honest work cheap and sloppy work
+loud: a skipped gate shows up as a named blocker in a committed report, not
+as a shrug in chat.
+
+**When to walk it.** A self-contained change one person can finish in a few
+hours with full evidence: a feature slice, a hardening pass, a small service.
+For bigger arcs, split into golden-path-sized slices and run the path once
+per slice.
+
+**The ground rule.** Gates are ordered because upstream decisions are cheaper
+than downstream rework. Never "borrow" a later gate's artifact for an earlier
+gate — if gate 3 fails you do not touch test evidence, you fix the plan.
+
+## The gates at a glance
+
+Spec §5 counts eight gates; the table numbers nine rows because it inserts
+the **optional visual-direction pre-gate** between routing and design.
+Non-visual work skips gate 1 explicitly.
+
+| # | Gate | Command(s) | Produced artifact | Exit condition | Flow doc |
+|---|---|---|---|---|---|
+| 0 | Route | `npm run mode -- resolve "<the request in your own words>"` then `npm run process:route -- --input .fvep/request.json` | `.fvep/request.json`; route report | Mode, confidence, and flow doc printed (ambiguous requests exit 1 until *you* confirm); route report names blockers or binds skills. Read `status`, not just `$?` — a `blocked` report still exits 0 | `flow/using-one-framework.md` |
+| 1 | Direction (optional — visual UI work only) | `npm run direction:runtime`, `npm run direction:init -- --product "<surface>" --primary-task "<task>"`, `npm run direction:distinctness -- --options design/direction-options/options.json`, close with `npm run direction:gate -- --dir .` | `design/visual-direction-spec.md`, direction options, approval trail | Direction gate exits 0 with an explicit recorded approval (**เริ่มเขียน**) for one option | `flow/brainstorming.md` |
+| 2 | Design contract | Write `.fvep/design.json` (shape: `examples/process/design.approved.json`), record approval, then re-run `npm run process:route -- --input .fvep/request.json` | `.fvep/design.json` with `approval.status = approved` | Re-routed report shows no `DESIGN_APPROVAL_REQUIRED` hard failure; the design section of the gate-6 audit passes | `flow/brainstorming.md` |
+| 3 | Plan | `npm run process:plan -- --input .fvep/plan.json --output .fvep/reports/plan.report.json` | `.fvep/plan.json`; plan report | Report exits 0: every task has files, interfaces, and RED→GREEN→commit steps; dependency graph acyclic | `flow/writing-plans.md` (multi-task? also `flow/subagent-driven-development.md` + `flow/dispatching-parallel-agents.md`) |
+| 4 | Isolation | `npm run process:workspace -- --cwd <your repo> --output .fvep/reports/workspace.report.json` | workspace report (+ worktree/branch you created) | `implementationAllowed: true`, no `PROTECTED_BRANCH_IMPLEMENTATION` / `WORKTREE_CONTAINER_NOT_IGNORED` blockers | `flow/using-git-worktrees.md` |
+| 5 | Implement (TDD loops) | Per task: write failing test → run it (RED) → implement → run it (GREEN) → commit; record cycles; then `npm run process:tdd -- --input .fvep/tdd-evidence.json --output .fvep/reports/tdd.report.json` and `npm run process:review -- --input .fvep/review-chain.json` | source + tests; `.fvep/tdd-evidence.json`; `.fvep/review-chain.json` | TDD report exits 0, every cycle classified `test-first`; review chain validates with a reviewer identity distinct from the implementer | `flow/test-driven-development.md`, `flow/executing-plans.md`, `flow/requesting-code-review.md` |
+| 6 | Quality gate | `npm run process:audit -- --config .fvep/process.config.json`, then `npm run audit:fullstack -- --config fullstack.config.json`, then `npm run fullstack:quality-gate -- --report artifacts/fullstack-audit/reports/fullstack-report.json` | process report (JSON+MD); full-stack report (JSON+MD) | Process audit exits 0 (`releaseEligible`); full-stack gate prints `PASS`; quality-gate exits 0 with `Hard failures: none` | `flow/verification-before-completion.md` |
+| 7 | Verify claims | `.fvep/claims.json` + `.fvep/evidence.json` (checked inside the gate-6 process audit, freshness window `policy.claims`); adversarial self-pass via `npm run recheck -- plan --mode ship` then `npm run recheck -- audit --record .fvep/recheck.json` | claims bound to passing evidence; re-check record | Every claim has fresh, passing, artifact-hash-bound evidence; re-check audit exits 0 | `flow/verification-before-completion.md` |
+| 8 | Integrate | `npm run process:integration -- --input .fvep/integration.json` | integration decision report | `status: decision-required` with `allowedOptions` listed — **you** then merge / PR / keep / discard explicitly. The engine never merges for you | `flow/finishing-a-development-branch.md` |
+
+Gates 7 and 8 are deliberately human-shaped: the tools assemble and validate
+the decision inputs (freshness, hashes, allowed options), the judgment is
+yours and the record says so.
+
+## The `.fvep/` contracts, minimal
+
+The path needs one directory of small JSON contracts. Each is a mini version
+of a fully-worked example under `examples/process/` — copy the shape, keep it
+honest.
+
+`.fvep/request.json` — what the router needs to know at gate 0 (see
+`examples/process/request.feature.json`):
+
+```json
+{
+  "kind": "feature",
+  "stage": "implementation",
+  "creative": true,
+  "multiStep": true,
+  "hasApprovedDesign": true,
+  "hasImplementationPlan": true,
+  "subagentsAvailable": false,
+  "needsIsolation": true,
+  "hasUnexpectedBehavior": false,
+  "independentDomains": 1,
+  "parallelImplementationHasSharedFiles": false,
+  "sharedMutableState": false
+}
+```
+
+`hasApprovedDesign` / `hasImplementationPlan` start `false` at gate 0 and
+flip `true` only when gates 2 and 3 produced the real artifacts — the file
+tells the truth about *now*, not about *eventually*.
+
+`.fvep/plan.json` — one task of an executable plan (see
+`examples/process/implementation-plan.json`):
+
+```json
+{
+  "id": "plan-my-feature",
+  "goal": "Add a slugify helper with a pinned behavioral contract.",
+  "architecture": "Single pure ES module consumed by a node:test suite.",
+  "techStack": ["Node.js 20", "ES modules", "node:test"],
+  "globalConstraints": ["Observe RED before production code"],
+  "tasks": [
+    {
+      "id": "task-1",
+      "dependsOn": [],
+      "files": { "create": ["src/slug.js"], "modify": [], "test": ["test/slug.test.mjs"] },
+      "interfaces": {
+        "produces": [{ "name": "slugify", "signature": "slugify(value, { maxLength } = {}) -> string" }],
+        "consumes": []
+      },
+      "resources": [],
+      "sharedState": [],
+      "steps": [
+        { "kind": "write-failing-test", "detail": "Pin the contract in test/slug.test.mjs." },
+        { "kind": "verify-red", "command": "node --test test/slug.test.mjs", "expected": "FAIL with 'Cannot find module' for src/slug.js" },
+        { "kind": "implement", "detail": "Implement the normalization pipeline." },
+        { "kind": "verify-green", "command": "node --test test/slug.test.mjs", "expected": "PASS, zero failures" },
+        { "kind": "commit", "command": "git commit -m \"feat: add slugify helper\"", "expected": "One focused commit" }
+      ]
+    }
+  ]
+}
+```
+
+`.fvep/tdd-evidence.json` — one RED→GREEN cycle (see
+`examples/process/tdd-cycles.json`). Hashes bind the evidence to what
+actually ran; compute them cheaply, e.g. `sha256sum test/slug.test.mjs`:
+
+```json
+{
+  "cycles": [
+    {
+      "id": "cycle-1",
+      "behaviorId": "slugify-contract",
+      "requirementRef": "plan-my-feature#task-1",
+      "risk": "normal",
+      "test": { "file": "test/slug.test.mjs", "name": "slugify contract" },
+      "red": {
+        "command": "node --test test/slug.test.mjs",
+        "exitStatus": 1,
+        "failureKind": "behavior-missing",
+        "expectedFailureSignature": "Cannot find module",
+        "observedFailureSignature": "Cannot find module '…/src/slug.js' imported from '…/test/slug.test.mjs'",
+        "outputHash": "<sha256 of the captured RED output>",
+        "testHash": "<sha256 of test/slug.test.mjs>",
+        "productionHash": "<sha256 of production state before the change>",
+        "at": "2026-08-09T09:28:46.000Z"
+      },
+      "production": {
+        "changeId": "3ee16c4",
+        "productionHash": "<sha256 of src/slug.js>",
+        "at": "2026-08-09T09:29:20.000Z"
+      },
+      "green": {
+        "command": "node --test test/slug.test.mjs",
+        "exitStatus": 0,
+        "passCount": 5,
+        "outputHash": "<sha256 of the captured GREEN output>",
+        "testHash": "<sha256 of test/slug.test.mjs>",
+        "productionHash": "<sha256 of src/slug.js>",
+        "at": "2026-08-09T09:29:31.000Z"
+      },
+      "refactor": { "changed": false }
+    }
+  ]
+}
+```
+
+The engine checks chronology (RED strictly before implementation strictly
+before GREEN), identity (the test did not silently change mid-cycle), proof
+of change (`red.productionHash` differs from `production.productionHash`,
+which equals `green.productionHash`), and — for `risk: "high"` behaviors — a
+negative control that fails as expected.
+
+`fullstack.config.json` — scope the gate to what is actually true. A tiny
+library has no API surface and no database; it says so, and the gate
+re-normalizes over the applicable sections. Copy
+`fullstack.config.example.json` and adjust:
+
+```json
+{
+  "gates": {
+    "frontend": { "required": false },
+    "api": { "required": false },
+    "data": { "required": false },
+    "security": { "required": true, "hard": true },
+    "dependencies": { "required": true, "hard": true },
+    "process": { "required": true, "hard": true }
+  },
+  "policies": {
+    "security": { "requiredControls": ["inputValidation"] }
+  }
+}
+```
+
+Scoping honestly means *naming why a gate does not apply* — "no HTTP surface"
+is a fact, "I did not feel like it" is a confession. Two things you may not
+do: mark a gate `required: false` while the system it protects exists, or
+lower `quality.minScore` / `quality.minConfidence` to turn a red gate green.
+
+## When the path goes wrong
+
+**A gate goes red.** Read the report, not the vibes: every `process:*` and
+audit command emits JSON with `hardFailures` / `findings` whose codes name
+the missing artifact — codes like `DESIGN_APPROVAL_REQUIRED`,
+`IMPLEMENTATION_PLAN_REQUIRED`, `PROTECTED_BRANCH_IMPLEMENTATION`,
+`TEST_IDENTITY_CHANGED`, `CLAIM_EVIDENCE_STALE`. The fix is almost never
+inside the failing gate —
+a red TDD gate is a missing RED observation, not a TDD-policy problem; a red
+full-stack gate lists exactly which section's evidence is absent. Fix the
+evidence, re-run the same command, keep both reports. If a route report comes
+back `status: "blocked"` with exit code 0, that is the router working —
+create the artifact it names instead of arguing.
+
+**The plan breaks mid-run.** Stop editing. The ledger (`.fvep/ledger.json`)
+is the source of truth, not your memory of "where we were" — re-resolve the
+mode with `npm run mode -- resolve "ทำต่อจากเดิม"` and rebuild current state
+from the ledger. Then: if behavior surprised you, switch modes and run
+`flow/systematic-debugging.md` before touching the plan — patching blind
+makes the next state unrecoverable. If the plan itself was wrong, write the
+break into the ledger (`note` / `supersede` events), revise
+`.fvep/plan.json`, re-run `npm run process:plan -- --input .fvep/plan.json`,
+and resume from the broken task — tasks that already produced green cycles
+stay green, do not re-execute them for ritual purity.
+`flow/executing-plans.md` owns the checkpoint discipline that makes this
+cheap.
+
+**Review pushback.** Fix rounds are cheap; arguing is not. Take findings one
+round at a time, re-verify after each, and let `.fvep/review-chain.json`
+record the round(s); the engine enforces independence and escalating
+fresh-eyes rules (`FIX_LOOP_ESCALATION_MISSING`) so you do not grade your own
+homework forever. If you disagree with a finding, the disagreement needs
+evidence — a test, a trace, a contract — not eloquence
+(`flow/receiving-code-review.md`). If the pushback amounts to a spec change,
+walk backwards: a different brief means a new design approval (gate 2) and a
+re-planned change (gate 3), and downstream evidence whose identity bound to
+the old brief/diff must be rebuilt, not re-labeled.
+
+## Proof it walks
+
+`examples/golden-path/` contains a real toy project (one pure JS helper,
+five tests) driven through gates 0–6 with the real commands above — every
+output tail pasted into `examples/golden-path/README.md`, committed contracts
+under `examples/golden-path/.fvep/`, and a passing quality gate with zero
+hard failures. Gates 7–8 are documented there with their real commands and
+left as the human decisions they are.
+
+<!-- END SOURCE: GOLDEN_PATH.md -->
+
+---
+
 ## Source: `ARCHITECTURE.md`
 
 <!-- BEGIN SOURCE: ARCHITECTURE.md -->
@@ -1611,30 +1879,32 @@ Static scans and contract audits identify bounded risks. They do not prove absen
 
 <!-- BEGIN SOURCE: SUPERPOWERS_ADAPTATION_MATRIX.md -->
 
-# Superpowers Adaptation Matrix — v4
+# Superpowers Adaptation Matrix — v6
 
-This document maps every installed Superpowers process skill to an **original adaptation** in Full-Stack Vision Engineering Pro v4. The package does not claim to supersede Superpowers for every kind of work. It is more specialized and more machine-verifiable for frontend, backend, risk, debugging, and release governance because each principle is represented by a deterministic engine and evidence contract.
+This document maps every installed Superpowers process skill to an **original adaptation** in Full-Stack Vision Engineering Pro v6. The package does not claim to supersede Superpowers for every kind of work. It is more specialized and more machine-verifiable for frontend, backend, risk, debugging, and release governance because each principle is represented by a deterministic engine and evidence contract.
 
-| Superpowers skill | Principle retained | v4 original adaptation | Deterministic engine or artifact | Added domain strength |
-|---|---|---|---|---|
-| `using-superpowers` | Route through applicable disciplines before acting | Task-context router with precedence, blockers, constraints, and ordered routes | `skill-router-engine.mjs`, request schema, `process:route` | Routes frontend/full-stack/security/incident work without relying on prompt memory |
-| `brainstorming` | Explore context, compare approaches, obtain approval before implementation | Machine-audited design contract with context artifacts, alternatives, recommendation, approval, and self-review | `design-governance-engine.mjs` | Connects UX direction to architecture, data, errors, and testing |
-| `writing-plans` | Produce executable, exact, test-first plans | Plan graph validates exact files, interfaces, dependencies, commands, expected failures, and commits | `plan-quality-engine.mjs`, `task-graph-engine.mjs` | Detects cycles and unsafe parallel file/resource collisions |
-| `using-git-worktrees` | Isolate feature work and verify the baseline | Read-only workspace classifier distinguishes worktree, submodule, detached head, protected branch, and cleanup ownership | `workspace-safety-engine.mjs`, `process:workspace` | Prevents automatic removal of host-owned workspaces and silent protected-branch work |
-| `test-driven-development` | Observe RED before production code, then GREEN and refactor | Hash- and timestamp-bound TDD cycle with behavior identity and high-risk negative controls | `tdd-evidence-engine.mjs`, `process:tdd` | Separates real test-first proof from tests written after implementation |
-| `systematic-debugging` | Reproduce, localize, hypothesize, test minimally, fix root cause | Boundary evidence graph, one active hypothesis, one-variable experiment, regression RED, and architecture breaker | `debug-session-engine.mjs` | Links browser, API, queue, worker, database, and provider evidence |
-| `dispatching-parallel-agents` | Parallelize only independent domains | Conflict-aware task waves based on dependencies, files, exclusive resources, and shared mutable state | `task-graph-engine.mjs` | Admits parallel analysis while blocking unsafe concurrent implementation |
-| `subagent-driven-development` | Fresh implementer per task, review after each task, bounded fix loop, final review | Host-neutral role contracts, task briefs, diff packages, implementer reports, dual-verdict reviews, recovery ledger, and five-round breaker | review engine, ledger engine, roles/prompts/templates | Preserves coordination evidence even when the host provides different agent APIs |
-| `executing-plans` | Execute a validated plan sequentially with checkpoints | Inline execution mode uses the same task graph, TDD, ledger, review, and verification contracts | process orchestrator and ledger | Provides equivalent gates when no subagent runtime exists |
-| `requesting-code-review` | Review early and before merge | Review package binds requirement hash, base/head identity, diff hash, files, tests, and reviewer identity | `review-governance-engine.mjs`, `process:review` | Requires separate spec and quality verdicts and a final whole-change review |
-| `receiving-code-review` | Verify feedback against codebase reality before accepting it | Feedback disposition records restatement, checked files, commands, evidence, accept/reject/defer rationale, and implementation proof | `feedback-adjudication-engine.mjs` | Blocks performative acceptance, unsupported rejection, and unmanaged deferral |
-| `verification-before-completion` | Evidence before every success claim | Claim type maps to required evidence types, freshness, scope, status, and artifact hash | `claim-verification-engine.mjs` | Governs visual-match, security-gates-pass, bug-fixed, and production-ready language |
-| `finishing-a-development-branch` | Verify, present integration options, execute only the user’s choice, clean safely | Integration contract exposes allowed options and validates actor, verification, base branch, remote, cleanup ownership, and exact discard confirmation | `integration-decision-engine.mjs`, `process:integration` | Integration remains human-owned and destructive actions fail closed |
-| `writing-skills` | Author skills through failing pressure scenarios and conformance checks | Skill conformance engine audits frontmatter, trigger quality, references, process coverage, pressure tests, TDD evidence, and release artifacts | `skill-conformance-engine.mjs`, v4 pressure scenarios | The package self-audits its own discovery and deployment surface |
+v6 (One Framework) adds the conversation-level flow layer: each discipline also ships as a readable flow doc under `flow/` (state **shipped** in the table below), bound into the ten operating modes via `flow/flow-map.json` and surfaced by `npm run mode`. The full happy path across all gates is documented in `GOLDEN_PATH.md`.
+
+| Superpowers skill | Principle retained | Original adaptation | Deterministic engine or artifact | v6 flow doc (state) | Added domain strength |
+|---|---|---|---|---|---|
+| `using-superpowers` | Route through applicable disciplines before acting | Task-context router with precedence, blockers, constraints, and ordered routes | `skill-router-engine.mjs`, request schema, `process:route` | `flow/using-one-framework.md` — shipped | Routes frontend/full-stack/security/incident work without relying on prompt memory |
+| `brainstorming` | Explore context, compare approaches, obtain approval before implementation | Machine-audited design contract with context artifacts, alternatives, recommendation, approval, and self-review | `design-governance-engine.mjs` | `flow/brainstorming.md` — shipped | Connects UX direction to architecture, data, errors, and testing |
+| `writing-plans` | Produce executable, exact, test-first plans | Plan graph validates exact files, interfaces, dependencies, commands, expected failures, and commits | `plan-quality-engine.mjs`, `task-graph-engine.mjs` | `flow/writing-plans.md` — shipped | Detects cycles and unsafe parallel file/resource collisions |
+| `using-git-worktrees` | Isolate feature work and verify the baseline | Read-only workspace classifier distinguishes worktree, submodule, detached head, protected branch, and cleanup ownership | `workspace-safety-engine.mjs`, `process:workspace` | `flow/using-git-worktrees.md` — shipped | Prevents automatic removal of host-owned workspaces and silent protected-branch work |
+| `test-driven-development` | Observe RED before production code, then GREEN and refactor | Hash- and timestamp-bound TDD cycle with behavior identity and high-risk negative controls | `tdd-evidence-engine.mjs`, `process:tdd` | `flow/test-driven-development.md` — shipped | Separates real test-first proof from tests written after implementation |
+| `systematic-debugging` | Reproduce, localize, hypothesize, test minimally, fix root cause | Boundary evidence graph, one active hypothesis, one-variable experiment, regression RED, and architecture breaker | `debug-session-engine.mjs` | `flow/systematic-debugging.md` — shipped | Links browser, API, queue, worker, database, and provider evidence |
+| `dispatching-parallel-agents` | Parallelize only independent domains | Conflict-aware task waves based on dependencies, files, exclusive resources, and shared mutable state | `task-graph-engine.mjs` | `flow/dispatching-parallel-agents.md` — shipped | Admits parallel analysis while blocking unsafe concurrent implementation |
+| `subagent-driven-development` | Fresh implementer per task, review after each task, bounded fix loop, final review | Host-neutral role contracts, task briefs, diff packages, implementer reports, dual-verdict reviews, recovery ledger, and five-round breaker | review engine, ledger engine, roles/prompts/templates | `flow/subagent-driven-development.md` — shipped | Preserves coordination evidence even when the host provides different agent APIs |
+| `executing-plans` | Execute a validated plan sequentially with checkpoints | Inline execution mode uses the same task graph, TDD, ledger, review, and verification contracts | process orchestrator and ledger | `flow/executing-plans.md` — shipped | Provides equivalent gates when no subagent runtime exists |
+| `requesting-code-review` | Review early and before merge | Review package binds requirement hash, base/head identity, diff hash, files, tests, and reviewer identity | `review-governance-engine.mjs`, `process:review` | `flow/requesting-code-review.md` — shipped | Requires separate spec and quality verdicts and a final whole-change review |
+| `receiving-code-review` | Verify feedback against codebase reality before accepting it | Feedback disposition records restatement, checked files, commands, evidence, accept/reject/defer rationale, and implementation proof | `feedback-adjudication-engine.mjs` | `flow/receiving-code-review.md` — shipped | Blocks performative acceptance, unsupported rejection, and unmanaged deferral |
+| `verification-before-completion` | Evidence before every success claim | Claim type maps to required evidence types, freshness, scope, status, and artifact hash | `claim-verification-engine.mjs` | `flow/verification-before-completion.md` — shipped | Governs visual-match, security-gates-pass, bug-fixed, and production-ready language |
+| `finishing-a-development-branch` | Verify, present integration options, execute only the user's choice, clean safely | Integration contract exposes allowed options and validates actor, verification, base branch, remote, cleanup ownership, and exact discard confirmation | `integration-decision-engine.mjs`, `process:integration` | `flow/finishing-a-development-branch.md` — shipped | Integration remains human-owned and destructive actions fail closed |
+| `writing-skills` | Author skills through failing pressure scenarios and conformance checks | Skill conformance engine audits frontmatter, trigger quality, references, process coverage, pressure tests, TDD evidence, and release artifacts | `skill-conformance-engine.mjs`, v4 pressure scenarios | `flow/writing-skills.md` — shipped | The package self-audits its own discovery and deployment surface |
 
 ## Cross-skill improvements
 
-Superpowers skills are intentionally modular. v4 adds a cross-skill evidence fabric:
+Superpowers skills are intentionally modular. The package adds a cross-skill evidence fabric:
 
 - a hash-linked ledger carries state across context loss;
 - every task is bound to an approved design and executable plan;

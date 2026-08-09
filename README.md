@@ -41,6 +41,12 @@ Quality score       = what the assessed evidence says
 Evidence confidence = how complete, current, scoped, independent, and artifact-bound the evidence is
 ```
 
+## One Framework — the Flow Layer (v6)
+
+v6 puts the whole discipline under a single umbrella: every process pattern the kernel enforces also ships as a readable, conversation-level **flow doc** — fourteen original docs under `flow/`, each in the same contract shape (Why → When → Steps → Evidence gates → Anti-patterns) and each bound to the deterministic engines that judge its evidence. The ten operating modes resolve to their governing flow through `flow/flow-map.json`, and `npm run mode -- resolve` / `show` names the flow doc for the work at hand, so the same framework governs the conversation, the artifacts, and the gates.
+
+Start at `flow/README.md` for the map of all fourteen flows. For the shortest honest end-to-end pass — route, design, plan, isolate, TDD, review, quality gate, verify, integrate — walk `GOLDEN_PATH.md`, backed by a live command log over a real toy repo in `examples/golden-path/`.
+
 ## Requirements
 
 - Node.js 20 or later
@@ -351,6 +357,8 @@ The release builder skips symlinks and development state, rejects unsafe member 
 
 - `SKILL.md` — main agent workflow
 - `PLAYBOOKS.md` — copy-paste flows for redesign, reference matching, scenes, maps, asset sets, effects and sound, and delivery
+- `flow/README.md` — the fourteen flow docs, one per process discipline (the flow source of truth)
+- `GOLDEN_PATH.md` — the solo fullstack happy path, gate by gate, with the live walkthrough in `examples/golden-path/`
 - `references/operating-modes.md` — the ten modes, their contracts, and how to cross between them
 - `references/recheck-protocol.md` — the adversarial pass every mode closes with
 - `domains/` — product-shaped packs (GAME, APPLICATION, DESIGN, GENERAL) and discipline packs (ROLES)

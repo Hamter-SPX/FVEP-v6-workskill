@@ -102,6 +102,10 @@ Common routes:
 
 Read `references/skill-routing-and-precedence.md` and `SUPERPOWERS_ADAPTATION_MATRIX.md`.
 
+## The Flow Layer
+
+Each process discipline also ships as a readable flow doc — Why → When → Steps → Evidence gates → Anti-patterns — and `npm run mode -- resolve` / `show` names the governing flow doc for every mode. After a mode is resolved, its flow doc is the source of truth for how the work proceeds: start at `flow/README.md` for the fourteen flows, and walk `GOLDEN_PATH.md` for one honest end-to-end pass across all nine gates with a live command log.
+
 ## Domain packs
 
 Product-shaped work lives under `domains/`:

@@ -1,5 +1,24 @@
 # Changelog
 
+## 6.0.0 — 2026-08-09
+
+**One Framework** — every process discipline now ships as a readable flow doc under a single umbrella, wired into the mode engine, with a walked golden path as proof.
+
+### Added
+
+- Flow layer: fourteen original flow docs under `flow/` — one per Superpowers-derived discipline, each in the same contract shape (Why → When → Steps → Evidence gates → Anti-patterns) — with `flow/README.md` as the index and an attribution notice
+- `flow/flow-map.json` + mode-engine wiring: `npm run mode -- resolve` / `show` names the governing flow doc and its companions for each of the ten modes
+- `GOLDEN_PATH.md` — the solo fullstack happy path across nine gates — backed by a live walkthrough on a real toy repo under `examples/golden-path/` with committed commands, output tails, and replayable gate reports
+- Flow docs lint (`tests/unit/flow-docs.test.mjs`): required sections per doc, existence of every referenced npm script and engine/template path, flow-map validity, and GOLDEN_PATH command existence
+- MIT LICENSE (copyright Jirawat (Hamter-SPX)) and the matching `license` field in `package.json`
+- Mobile compare in the vision loop (rolled up from the prior round): `compareAll` enumerates `mobile.cases`, per-case `masks` blank volatile regions, and `--refresh-reference` seeds the stored references
+
+### Changed
+
+- `SUPERPOWERS_ADAPTATION_MATRIX.md` is now the v6 matrix: every one of the fourteen rows names its shipped `flow/<slug>.md` doc
+- `SKILL.md`, `PLAYBOOKS.md`, `README.md`, and `README_TH.md` point at the flow layer as the source of truth for procedure once a mode is resolved
+- The all-in-one bundle now includes `GOLDEN_PATH.md`
+
 ## 2026-08-09 — Mobile compare in the vision loop
 
 ### Added
