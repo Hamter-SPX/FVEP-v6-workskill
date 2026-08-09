@@ -196,7 +196,8 @@ test('collect — merges pngs, capture metadata, comparison and mobile judgment 
   assert.equal(orphan.thumbs.diff, null);
   assert.ok(orphan.thumbs.current);
   assert.ok(orphan.metrics);
-  assert.equal(orphan.hashes.captureSha256, orphan.hashes.metricsSha256, 'hash falls back to the computed source hash');
+  assert.equal(orphan.hashes.captureSha256, undefined, 'no capture metadata -> capture row omitted, no faked provenance');
+  assert.equal(orphan.hashes.metricsSha256, sha256(fs.readFileSync(path.join(dir, 'current', 'orphan__mobile__panel.png'))), 'report-time hash stays anchored');
 
   assert.equal(evidence.summary.passed, 1);
   assert.equal(evidence.summary.failed, 1);
@@ -329,6 +330,71 @@ test('collect — reference-only meta: capture hash unknown, no false stale flag
   const html = renderEvidenceHtml(evidence);
   assert.ok(!html.includes('hashes diverge'), 'no false stale-evidence warning');
   assert.ok(html.includes('reference-only meta'), 'limitation surfaced as a badge');
+});
+
+test('collect — unreadable current artifact (directory named .png) degrades to absent without throwing', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'vee-eisdir-'));
+  for (const folder of ['current', 'reference']) {
+    fs.mkdirSync(path.join(dir, folder), { recursive: true });
+  }
+  const key = 'broken__mobile__shot';
+  // Deterministic unreadable-but-present artifact: a directory named *.png
+  // makes fs.readFile reject with EISDIR (chmod-000 is unreliable when the
+  // test run is root). Before the guard this aborted the whole collect.
+  fs.mkdirSync(path.join(dir, 'current', `${key}.png`));
+  const referencePng = makePng(8, 8, [50, 60, 70]);
+  fs.writeFileSync(path.join(dir, 'reference', `${key}.png`), referencePng);
+  const evidence = await collectEvidence(dir); // must resolve, not reject
+  const item = evidence.cases.find((c) => c.key === key);
+  assert.ok(item, 'unreadable artifact still surfaces as a case, not dropped');
+  assert.equal(item.thumbs.current, null, 'unreadable current renders absent');
+  assert.ok(item.thumbs.reference, 'readable slots are unaffected');
+  assert.equal(item.metrics, null, 'metrics honestly absent — no bytes to compute from');
+  assert.equal(item.hashes.metricsSha256, undefined, 'no bytes -> no report-time hash faked');
+  assert.equal(item.hashes.captureSha256, undefined);
+  const html = renderEvidenceHtml(evidence);
+  assert.ok(html.includes('absent'), 'card renders the absent thumb honestly');
+  assert.ok(!html.includes('hashes diverge'), 'no hashes -> no stale flag');
+});
+
+test('render — capture hash diverging from current file hash flags the evidence as stale', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'vee-stale-'));
+  fs.mkdirSync(path.join(dir, 'current'), { recursive: true });
+  fs.mkdirSync(path.join(dir, 'metadata'), { recursive: true });
+  const key = 'stale__mobile__home';
+  const currentPng = makePng(8, 8, [90, 90, 90]);
+  fs.writeFileSync(path.join(dir, 'current', `${key}.png`), currentPng);
+  writeJson(path.join(dir, 'metadata', `${key}.current.capture.json`), {
+    schemaVersion: 2, mode: 'current', key: 'home', route: 'stale',
+    viewport: { width: 8, height: 8 }, state: null, platform: 'ios-sim', label: 'stale',
+    capturedAt: '2026-08-08T12:00:00.000Z',
+    screenshotSha256: sha256(makePng(8, 8, [1, 1, 1])), // capture-time hash of DIFFERENT bytes
+    screenshotBytes: currentPng.length
+  });
+  const evidence = await collectEvidence(dir);
+  const item = evidence.cases.find((c) => c.key === key);
+  assert.equal(item.hashes.metricsSha256, sha256(currentPng));
+  assert.notEqual(item.hashes.captureSha256, item.hashes.metricsSha256, 'hashes diverge');
+  const html = renderEvidenceHtml(evidence);
+  assert.ok(html.includes('captureSha256'), 'capture hash row rendered');
+  assert.ok(html.includes('metricsSha256'), 'metrics hash row rendered');
+  assert.ok(html.includes('hashes diverge'), 'stale-evidence warning rendered');
+});
+
+test('render — no capture metadata: captureSha256 row omitted, no fake provenance, no stale flag', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'vee-nometa-'));
+  fs.mkdirSync(path.join(dir, 'current'), { recursive: true });
+  const key = 'bare__mobile__shot';
+  const png = makePng(8, 8);
+  fs.writeFileSync(path.join(dir, 'current', `${key}.png`), png);
+  const evidence = await collectEvidence(dir);
+  const item = evidence.cases.find((c) => c.key === key);
+  assert.equal(item.hashes.captureSha256, undefined, 'no capture metadata -> capture row omitted');
+  assert.equal(item.hashes.metricsSha256, sha256(png), 'report-time hash still anchored');
+  const html = renderEvidenceHtml(evidence);
+  assert.ok(html.includes('metricsSha256 <code class="hash">'), 'report-time hash row rendered');
+  assert.ok(!html.includes('captureSha256 <code class="hash">'), 'no capture row masquerading as capture-recorded');
+  assert.ok(!html.includes('hashes diverge'), 'no capture hash -> no stale row');
 });
 
 test('render — self-contained html, doctype, data-case, real hashes, palette, injection neutralized', async () => {
