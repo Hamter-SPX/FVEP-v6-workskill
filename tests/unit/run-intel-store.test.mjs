@@ -144,12 +144,9 @@ test('jsonl store on empty dir: queries return [] without throwing', async () =>
   await store.close();
 });
 
-test('close() idempotent + Symbol.dispose exposed (both modes)', async (t) => {
+test('close() idempotent + Symbol.dispose exposed (both modes)', async () => {
   for (const opts of [{}, { forceJsonl: true }]) {
-    if (!opts.forceJsonl && !(await sqliteAvailable())) {
-      t.skip('node:sqlite unavailable in this engine');
-      return;
-    }
+    if (!opts.forceJsonl && !(await sqliteAvailable())) continue; // Node < 22.5: jsonl half must still run
     const store = await openIntelStore(tmpOut(), opts);
     await store.close();
     await store.close();
@@ -158,4 +155,44 @@ test('close() idempotent + Symbol.dispose exposed (both modes)', async (t) => {
       store[Symbol.dispose]();
     }
   }
+});
+
+test('ops after close() throw in both modes (parity)', async () => {
+  for (const opts of [{}, { forceJsonl: true }]) {
+    if (!opts.forceJsonl && !(await sqliteAvailable())) continue;
+    const dir = tmpOut();
+    const store = await openIntelStore(dir, opts);
+    await store.close();
+    await assert.rejects(store.recordRun(runRow(dir)));
+    await assert.rejects(store.recordFindings([findingRow(dir)]));
+    await assert.rejects(store.queryFindings({ outputDir: dir }));
+    await assert.rejects(store.listRuns({ outputDir: dir }));
+  }
+});
+
+test('corrupt intel.sqlite: quarantined + fallback to jsonl + record/query still work', async (t) => {
+  if (!(await sqliteAvailable())) {
+    t.skip('node:sqlite unavailable in this engine');
+    return;
+  }
+  const dir = tmpOut();
+  const intelDir = path.join(dir, '.fx', 'intel');
+  fs.mkdirSync(intelDir, { recursive: true });
+  const dbPath = path.join(intelDir, 'intel.sqlite');
+  fs.writeFileSync(dbPath, Buffer.from('definitely not a sqlite database — garbage bytes'));
+
+  const store = await openIntelStore(dir); // must not reject
+  assert.equal(store.mode, 'jsonl');
+  assert.equal(store.path, path.join(intelDir, 'findings.jsonl'));
+  assert.equal(fs.existsSync(dbPath), false); // original moved away
+  const quarantined = fs.readdirSync(intelDir).filter((name) => name.startsWith('intel.sqlite.corrupt-'));
+  assert.equal(quarantined.length, 1);
+
+  await store.recordRun(runRow(dir));
+  await store.recordFindings([findingRow(dir)]);
+  assert.equal((await store.queryFindings({ outputDir: dir })).length, 1);
+  assert.equal((await store.listRuns({ outputDir: dir })).length, 1);
+  await store.close();
+
+  assert.equal(fs.existsSync(path.join(intelDir, quarantined[0])), true); // quarantine survives
 });
