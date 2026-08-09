@@ -10,6 +10,7 @@ import {
   buildSimctlOpenUrlArgs,
   captureSimulatorScreenshot,
   captureAllMobile,
+  mobileCaseRuns,
   metaPathFor
 } from '../../lib/mobile-capture-engine.mjs';
 
@@ -290,4 +291,169 @@ test('captureAllMobile — android matrix delegates to the adb adapter per case'
   assert.deepEqual(calls[3].slice(1), ['-s', 'emulator-5556', 'exec-out', 'screencap', '-p']);
   // mobile.adbPath threads through to every adb invocation.
   for (const call of calls) assert.equal(call[0], '/custom/sdk/platform-tools/adb');
+});
+
+// Device-matrix fixture: one ios-sim device + one android device, two cases.
+function matrixFixture(overrides = {}) {
+  const outputDir = fs.mkdtempSync(path.join(os.tmpdir(), 'mce-fanout-'));
+  return {
+    outputDir,
+    capture: { type: 'ios-sim' },
+    mobile: {
+      udid: 'booted',
+      serial: 'emulator-5554',
+      devices: [
+        { key: 'iphone16', label: 'iPhone 16', udid: 'UDID-IPHONE16', serial: null, platform: 'ios-sim' },
+        { key: 'pixel6', label: 'Pixel 6', udid: null, serial: 'emulator-5556', platform: 'android' }
+      ],
+      cases: [
+        { key: 'home', label: 'Home', bundleId: 'com.example.app', launchActivity: 'com.example.app/.MainActivity', openUrl: null, settleMs: 0, udid: null, serial: null, devices: null },
+        { key: 'chat', label: 'Chat', bundleId: null, launchActivity: null, openUrl: 'app://chat/1', settleMs: 0, udid: null, serial: null, devices: null }
+      ],
+      judge: { thresholds: {} }
+    },
+    ...overrides
+  };
+}
+
+// Mixed-driver fake: answers both `xcrun simctl` and `adb` invocations.
+function fakeMatrixExec(calls) {
+  return (cmd, args) => {
+    calls.push([cmd, ...args]);
+    if (args[0] === 'simctl' && args[1] === 'io') fs.writeFileSync(args[4], fakePngBytes(1170, 2532));
+    if (args.join(' ').includes('exec-out screencap')) return { status: 0, stdout: fakePngBytes(1176, 2400), stderr: '' };
+    return { status: 0, stdout: '', stderr: '' };
+  };
+}
+
+test('mobileCaseRuns — no-devices config yields the legacy single identity (cases × [null])', () => {
+  const runs = mobileCaseRuns(mobileFixture());
+  assert.equal(runs.length, 2);
+  assert.deepEqual(runs.map((r) => r.identity), [
+    { routeName: 'Home', viewportName: 'mobile', stateName: 'home' },
+    { routeName: 'Chat', viewportName: 'mobile', stateName: 'chat' }
+  ]);
+  assert.deepEqual(runs.map((r) => r.key), ['Home__mobile__home', 'Chat__mobile__chat']);
+  assert.deepEqual(runs.map((r) => r.device), [null, null]);
+  assert.equal(runs[0].case.key, 'home');
+});
+
+test('mobileCaseRuns — fans out cases × devices, config order, case-major', () => {
+  const runs = mobileCaseRuns(matrixFixture());
+  assert.equal(runs.length, 4);
+  assert.deepEqual(runs.map((r) => r.key), [
+    'Home__iphone16__home', 'Home__pixel6__home',
+    'Chat__iphone16__chat', 'Chat__pixel6__chat'
+  ]);
+  assert.equal(runs[0].device.key, 'iphone16');
+  assert.equal(runs[1].device.platform, 'android');
+  assert.deepEqual(runs[2].identity, { routeName: 'Chat', viewportName: 'iphone16', stateName: 'chat' });
+});
+
+test('mobileCaseRuns — case.devices subset restricts the fan-out; raw [] means every device', () => {
+  const config = matrixFixture();
+  config.mobile.cases[0].devices = ['pixel6'];
+  config.mobile.cases[1].devices = []; // unnormalized raw input: empty = every device
+  assert.deepEqual(mobileCaseRuns(config).map((r) => r.key), [
+    'Home__pixel6__home',
+    'Chat__iphone16__chat', 'Chat__pixel6__chat'
+  ]);
+});
+
+test('mobileCaseRuns — duplicate run identity after safeSegment normalization throws (cross-key guard)', () => {
+  const config = matrixFixture();
+  // safeSegment('My Phone') === safeSegment('my-phone') → both devices map the
+  // same case onto 'home__my-phone__home' and would overwrite each other.
+  config.mobile.devices = [
+    { key: 'My Phone', label: null, udid: 'UDID-1', serial: null, platform: 'ios-sim' },
+    { key: 'my-phone', label: null, udid: 'UDID-2', serial: null, platform: 'ios-sim' }
+  ];
+  config.mobile.cases = [{ key: 'home', label: 'Home', bundleId: null, launchActivity: null, openUrl: null, settleMs: 0, udid: null, serial: null, devices: null }];
+  assert.throws(
+    () => mobileCaseRuns(config),
+    (error) => {
+      assert.ok(error instanceof TypeError);
+      assert.match(error.message, /Duplicate mobile run artifact identity: home__my-phone__home/);
+      assert.match(error.message, /My Phone/); // names BOTH colliding inputs
+      assert.match(error.message, /my-phone/);
+      return true;
+    }
+  );
+});
+
+test('mobileCaseRuns — undeclared device key in case.devices throws instead of degrading to mobile identity', () => {
+  const config = matrixFixture();
+  config.mobile.cases[0].devices = ['ghost'];
+  assert.throws(
+    () => mobileCaseRuns(config),
+    (error) => {
+      assert.ok(error instanceof TypeError);
+      assert.match(error.message, /unknown device key: ghost/);
+      return true;
+    }
+  );
+});
+
+test('mobileCaseRuns — filters narrow cases exactly like captureAllMobile', () => {
+  const config = matrixFixture();
+  assert.deepEqual(mobileCaseRuns(config, { case: 'chat' }).map((r) => r.key), ['Chat__iphone16__chat', 'Chat__pixel6__chat']);
+  assert.deepEqual(mobileCaseRuns(config, { route: 'Home' }).map((r) => r.key), ['Home__iphone16__home', 'Home__pixel6__home']);
+});
+
+test('captureAllMobile — 2 devices × 2 cases captures 4 runs with per-run udid/serial and device metadata', async () => {
+  const config = matrixFixture();
+  const calls = [];
+  const results = await captureAllMobile(config, { exec: fakeMatrixExec(calls), sleep: () => {} });
+  assert.equal(results.length, 4);
+  // Session order: config order, case-major, sequential.
+  assert.deepEqual(
+    results.map((r) => path.basename(r.screenshotPath)),
+    ['home__iphone16__home.png', 'home__pixel6__home.png', 'chat__iphone16__chat.png', 'chat__pixel6__chat.png']
+  );
+  for (const result of results) {
+    assert.equal(result.ok, true);
+    assert.equal(result.regionCount, 0);
+    assert.ok(fs.existsSync(result.screenshotPath));
+  }
+  const homeIphone = JSON.parse(fs.readFileSync(results[0].metadataPath, 'utf8'));
+  assert.equal(homeIphone.device, 'iphone16');
+  assert.equal(homeIphone.platform, 'ios-sim');
+  assert.equal(homeIphone.mobile.udid, 'UDID-IPHONE16');
+  assert.deepEqual(homeIphone.viewport, { width: 1170, height: 2532 });
+  const homePixel = JSON.parse(fs.readFileSync(results[1].metadataPath, 'utf8'));
+  assert.equal(homePixel.device, 'pixel6');
+  assert.equal(homePixel.platform, 'android');
+  assert.equal(homePixel.mobile.serial, 'emulator-5556');
+  assert.deepEqual(homePixel.viewport, { width: 1176, height: 2400 });
+  // The resolved endpoints reached the right drivers.
+  const seq = calls.map((c) => c.join(' '));
+  assert.ok(seq.some((s) => s.includes('simctl launch UDID-IPHONE16 com.example.app')));
+  assert.ok(seq.some((s) => s.includes('simctl io UDID-IPHONE16 screenshot')));
+  assert.ok(seq.some((s) => s.includes('-s emulator-5556 shell am start -n com.example.app/.MainActivity')));
+  assert.ok(seq.some((s) => s.includes('-s emulator-5556 exec-out screencap -p')));
+  assert.ok(seq.some((s) => s.includes('simctl openurl UDID-IPHONE16 app://chat/1')));
+});
+
+test('captureAllMobile — case.devices subset captures only the listed devices', async () => {
+  const config = matrixFixture();
+  config.mobile.cases[0].devices = ['pixel6'];
+  config.mobile.cases[1].devices = ['iphone16'];
+  const calls = [];
+  const results = await captureAllMobile(config, { exec: fakeMatrixExec(calls), sleep: () => {} });
+  assert.deepEqual(results.map((r) => path.basename(r.screenshotPath)), [
+    'home__pixel6__home.png', 'chat__iphone16__chat.png'
+  ]);
+  assert.equal(fs.existsSync(path.join(config.outputDir, 'current', 'home__iphone16__home.png')), false);
+  assert.equal(fs.existsSync(path.join(config.outputDir, 'current', 'chat__pixel6__chat.png')), false);
+});
+
+test('captureAllMobile — no-devices config keeps legacy identity and records meta.device null', async () => {
+  const config = mobileFixture();
+  const calls = [];
+  const results = await captureAllMobile(config, { exec: fakeSimctlExec(calls), sleep: () => {} });
+  assert.equal(results.length, 2);
+  assert.match(results[0].screenshotPath, /current[/\\]home__mobile__home\.png$/);
+  const metadata = JSON.parse(fs.readFileSync(results[0].metadataPath, 'utf8'));
+  assert.equal(metadata.device, null);
+  assert.equal(metadata.platform, 'ios-sim');
 });

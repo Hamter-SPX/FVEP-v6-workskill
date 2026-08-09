@@ -124,3 +124,57 @@ test('runMobileChecks — judged capture bytes are the ones on disk (sha wiring)
     crypto.createHash('sha256').update(pngBytes).digest('hex')
   );
 });
+
+const MATRIX_DEVICES = [
+  { key: 'iphone16', label: 'iPhone 16', udid: 'UDID-IPHONE16', serial: null, platform: 'ios-sim' },
+  { key: 'pixel6', label: 'Pixel 6', udid: null, serial: 'emulator-5556', platform: 'android' }
+];
+
+function writeDeviceCapture(config, c, deviceKey, pngBytes = solidPng()) {
+  const p = path.join(config.outputDir, 'current', `${c.label.toLowerCase()}__${deviceKey}__${c.key.toLowerCase()}.png`);
+  fs.mkdirSync(path.dirname(p), { recursive: true });
+  fs.writeFileSync(p, pngBytes);
+  return p;
+}
+
+test('runMobileChecks — device matrix writes one judgment per run at capture identities', async () => {
+  const config = checksFixture({ cases: [HOME_CASE] });
+  config.mobile.devices = MATRIX_DEVICES;
+  writeDeviceCapture(config, HOME_CASE, 'iphone16');
+  writeDeviceCapture(config, HOME_CASE, 'pixel6');
+  const results = await runMobileChecks(config);
+  assert.equal(results.length, 2);
+  assert.deepEqual(results.map((r) => r.key), ['home', 'home']);
+  assert.ok(results[0].judgmentPath.endsWith(path.join('metadata', 'home__iphone16__home.mobile.judgment.json')));
+  assert.ok(results[1].judgmentPath.endsWith(path.join('metadata', 'home__pixel6__home.mobile.judgment.json')));
+  for (const r of results) {
+    assert.equal(r.verdict, 'pass');
+    assert.ok(fs.existsSync(r.judgmentPath));
+  }
+  // Each judgment's capture_ref is the per-device current PNG capture wrote.
+  const iphoneRecord = JSON.parse(fs.readFileSync(results[0].judgmentPath, 'utf8'));
+  assert.ok(iphoneRecord.capture_ref.endsWith(path.join('current', 'home__iphone16__home.png')));
+  const pixelRecord = JSON.parse(fs.readFileSync(results[1].judgmentPath, 'utf8'));
+  assert.ok(pixelRecord.capture_ref.endsWith(path.join('current', 'home__pixel6__home.png')));
+});
+
+test('runMobileChecks — device matrix: a missing per-device capture fails only that run', async () => {
+  const config = checksFixture({ cases: [HOME_CASE] });
+  config.mobile.devices = MATRIX_DEVICES;
+  writeDeviceCapture(config, HOME_CASE, 'iphone16'); // pixel6 run has no capture on disk
+  const results = await runMobileChecks(config);
+  assert.equal(results.length, 2);
+  assert.equal(results[0].verdict, 'pass');
+  assert.equal(results[1].verdict, 'fail');
+  assert.deepEqual(results[1].findings, [{ rule: 'missingCapture', severity: 'fail', expected: 'captured PNG', observed: null }]);
+  assert.equal(results[1].judgmentPath, null);
+});
+
+test('runMobileChecks — case.devices subset checks only the listed devices', async () => {
+  const config = checksFixture({ cases: [{ ...HOME_CASE, devices: ['pixel6'] }] });
+  config.mobile.devices = MATRIX_DEVICES;
+  writeDeviceCapture(config, HOME_CASE, 'pixel6');
+  const results = await runMobileChecks(config);
+  assert.equal(results.length, 1);
+  assert.ok(results[0].judgmentPath.endsWith(path.join('metadata', 'home__pixel6__home.mobile.judgment.json')));
+});

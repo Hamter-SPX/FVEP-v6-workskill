@@ -211,6 +211,19 @@ test('mobile case devices parses to a string array; absent parses to null', () =
   assert.equal(result.mobile.cases[1].devices, null);
 });
 
+test('mobile case devices: explicit empty array normalizes to null (= every device)', () => {
+  // Absent and [] must share ONE meaning (run on every device) so downstream
+  // fan-out logic has a single null check instead of two sentinel spellings.
+  const result = normalizeConfig({
+    ...base,
+    mobile: {
+      devices: [{ key: 'iphone16' }],
+      cases: [{ key: 'home', label: 'Home', devices: [] }]
+    }
+  }, '/tmp/config.json');
+  assert.equal(result.mobile.cases[0].devices, null);
+});
+
 test('duplicate mobile device keys are rejected', () => {
   assert.throws(
     () => validateConfig(normalizeConfig({

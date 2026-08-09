@@ -94,3 +94,46 @@ test('compareAll — mobile case filters work (filters.case)', async () => {
   assert.equal(result.comparisons.length, 1);
   assert.equal(result.comparisons[0].key, 'chat__mobile__chat');
 });
+
+const MATRIX_DEVICES = [
+  { key: 'iphone16', label: null, udid: 'UDID-1', serial: null, platform: 'ios-sim' },
+  { key: 'pixel6', label: null, udid: null, serial: 'emulator-5556', platform: 'android' }
+];
+
+function plantPair(dir, artifactFile, png = makePng(16, 16, [255, 255, 255])) {
+  for (const mode of ['reference', 'current']) {
+    const p = path.join(dir, mode, artifactFile);
+    fs.mkdirSync(path.dirname(p), { recursive: true });
+    fs.writeFileSync(p, png);
+  }
+}
+
+test('compareAll — device matrix fans out one comparison per run at capture identities', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cem-'));
+  const cfg = fixtureConfig(dir);
+  cfg.mobile.devices = MATRIX_DEVICES;
+  plantPair(dir, 'home__iphone16__home.png');
+  plantPair(dir, 'home__pixel6__home.png');
+  const result = await compareAll(cfg);
+  // One comparison per run, keyed by the capture identity each run wrote.
+  assert.deepEqual(result.comparisons.map((c) => c.key), ['home__iphone16__home', 'home__pixel6__home']);
+  for (const comparison of result.comparisons) {
+    assert.equal(comparison.mismatchRatio, 0);
+    assert.equal(comparison.severity, 'accepted');
+  }
+  assert.ok(result.comparisons[0].currentRelative.endsWith('home__iphone16__home.png'));
+  assert.ok(result.comparisons[1].currentRelative.endsWith('home__pixel6__home.png'));
+  assert.ok(result.ok);
+});
+
+test('compareAll — case.devices subset narrows the comparison matrix', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cem-'));
+  const cfg = fixtureConfig(dir);
+  cfg.mobile.devices = MATRIX_DEVICES;
+  cfg.mobile.cases[0].devices = ['pixel6'];
+  plantPair(dir, 'home__pixel6__home.png');
+  const result = await compareAll(cfg);
+  assert.equal(result.comparisons.length, 1);
+  assert.equal(result.comparisons[0].key, 'home__pixel6__home');
+  assert.ok(result.comparisons[0].currentRelative.endsWith('home__pixel6__home.png'));
+});
