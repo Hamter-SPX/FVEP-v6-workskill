@@ -104,7 +104,7 @@ Read `references/skill-routing-and-precedence.md` and `SUPERPOWERS_ADAPTATION_MA
 
 ## The Flow Layer
 
-Each process discipline also ships as a readable flow doc — Why → When → Steps → Evidence gates → Anti-patterns — and `npm run mode -- resolve` / `show` names the governing flow doc for every mode. After a mode is resolved, its flow doc is the source of truth for how the work proceeds: start at `flow/README.md` for the fourteen flows, and walk `GOLDEN_PATH.md` for one honest end-to-end pass across all nine gates with a live command log.
+Each process discipline also ships as a readable flow doc — Why → When → Steps → Evidence gates → Anti-patterns — and `npm run mode -- resolve` / `show` names the governing flow doc for every mode. After a mode is resolved, its flow doc is the source of truth for how the work proceeds: start at `flow/README.md` for the fourteen flows, and walk `GOLDEN_PATH.md` for one honest end-to-end pass across nine gates — 0–6 walked live on a real toy repo (`examples/golden-path/`), 7–8 documented as the human decisions they are.
 
 ## Domain packs
 

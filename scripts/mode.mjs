@@ -6,6 +6,7 @@ import { writeJsonAtomic } from '../lib/io.mjs';
 import {
   MODE_IDS,
   auditModeExit,
+  flowForMode,
   formatModeCard,
   formatModeList,
   getMode,
@@ -47,7 +48,7 @@ try {
     else process.stdout.write(formatModeList());
   } else if (command === 'show') {
     const definition = getMode(rest[0] ?? args.mode);
-    if (args.json) process.stdout.write(`${JSON.stringify(definition, null, 2)}\n`);
+    if (args.json) process.stdout.write(`${JSON.stringify({ ...definition, ...flowForMode(definition.id) }, null, 2)}\n`);
     else process.stdout.write(formatModeCard(definition));
   } else if (command === 'resolve') {
     const text = rest.join(' ') || String(args.text ?? '');

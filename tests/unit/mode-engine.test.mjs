@@ -138,6 +138,7 @@ test('the mode card shows the contract and the list shows every mode', () => {
   assert.match(card, /FORBIDDEN/);
   assert.match(card, /audit:scene/);
   assert.match(card, /RE-CHECK BEFORE CLOSING/);
+  assert.match(card, /FLOW\n  - flow\/brainstorming\.md \(governing\)/);
 
   const list = formatModeList();
   for (const id of MODE_IDS) assert.ok(list.includes(id), `${id} missing from the list`);
@@ -152,6 +153,12 @@ test('mode CLI lists, shows, resolves, and checks', async () => {
 
   const show = spawnSync(process.execPath, [script, 'show', 'ship'], { encoding: 'utf8' });
   assert.match(show.stdout, /MODE: SHIP/);
+  assert.match(show.stdout, /flow\/verification-before-completion\.md \(governing\)/);
+
+  const showJson = spawnSync(process.execPath, [script, 'show', 'ship', '--json'], { encoding: 'utf8' });
+  const shown = JSON.parse(showJson.stdout);
+  assert.equal(shown.flow, 'flow/verification-before-completion.md');
+  assert.deepEqual(shown.flowCompanions, ['flow/finishing-a-development-branch.md']);
 
   const ambiguous = spawnSync(process.execPath, [script, 'resolve', 'hello'], { encoding: 'utf8' });
   assert.equal(ambiguous.status, 1);
