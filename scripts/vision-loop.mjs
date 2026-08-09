@@ -16,6 +16,7 @@ import { captureAllMobile } from '../lib/mobile-capture-engine.mjs';
 import { runMobileChecks } from '../lib/mobile-checks-engine.mjs';
 import { auditPerformanceAll } from '../lib/performance-engine.mjs';
 import { createRunProvenance } from '../lib/provenance.mjs';
+import { recordRunIntel } from '../lib/run-intel-engine.mjs';
 import { writeRunSummary } from '../lib/run-summary.mjs';
 import { crawlInteractionStatesAll } from '../lib/state-crawler-engine.mjs';
 import { compareTokenProfileSets, extractTokenProfiles, loadStoredTokenProfiles } from '../lib/token-engine.mjs';
@@ -40,6 +41,7 @@ Usage: node scripts/vision-loop.mjs [options]
       --skip-compare        Skip visual comparison
       --skip-manual-review  Skip loading recorded semantic review
       --skip-aesthetics     Skip loading aesthetic profile/review evidence
+      --skip-intel          Skip run-intelligence recording for this run
       --evidence-visual     Emit reports/visual-evidence.html after the run summary
       --route/--viewport/--state/--case <value>  Filter matrix
   -h, --help                Show help
@@ -62,6 +64,7 @@ const OPTIONS = {
   'skip-compare': { type: 'boolean', default: false },
   'skip-manual-review': { type: 'boolean', default: false },
   'skip-aesthetics': { type: 'boolean', default: false },
+  'skip-intel': { type: 'boolean', default: false },
   'evidence-visual': { type: 'boolean', default: false },
   route: { type: 'string' },
   viewport: { type: 'string' },
@@ -174,6 +177,14 @@ try {
         }
       : config;
     const summary = await writeRunSummary(summaryConfig, sections, { provenance });
+    // Post-summary intelligence capture: recordRunIntel is best-effort and never
+    // throws — store problems degrade to warning lines and never affect the gate.
+    if (!args['skip-intel']) {
+      const intel = await recordRunIntel(config, sections, summary);
+      for (const warning of intel.warnings) {
+        process.stdout.write(`intel warning: ${warning}\n`);
+      }
+    }
     // Post-summary, opt-in: fold the artifacts this run left on disk into one
     // self-contained HTML evidence report. Runs identically on web and mobile
     // configs; the engine degrades missing inputs to badges, never throws on
