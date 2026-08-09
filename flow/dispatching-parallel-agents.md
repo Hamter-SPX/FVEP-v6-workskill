@@ -32,8 +32,9 @@ is allowed to depend on it.
    and `sharedState` entries (shape:
    `examples/process/implementation-plan.json`). Undeclared sharing is how
    "independent" tasks corrupt each other; the graph can only check what the
-   plan admits. The engine treats the following signals as parallel-forbidding
-   conflicts:
+   plan admits. All four signals below forbid parallel execution, but they are
+   not detected the same way: the engine mechanically detects the first three;
+   the fourth it cannot see — that one is on the plan author:
 
    | Shared signal in the plan | Why it forbids parallel execution |
    |---|---|
