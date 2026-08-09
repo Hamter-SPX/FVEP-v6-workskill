@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-08-10 — Interactive onboarding tutorial
+
+### Added
+
+- `npm run tutorial` (`scripts/tutorial.mjs` + `lib/tutorial-engine.mjs`): walks the GOLDEN_PATH gates as eight numbered steps — route, design, plan, isolate, TDD, quality gate, verify, integrate — on a temporary copy of `examples/golden-path/`; the shipped example is never modified (setup/mutating steps refuse to run on it) and the sandbox is removed when the walk ends. Each step states its gate, why it exists, the standard command for a real project, a tailed live transcript or replay summary, and one learning point
+- Three modes: **interactive** (default on a TTY — pauses for Enter between steps, offers the RED/GREEN pass at the TDD gate, falls back to auto when stdio is not a terminal), **`--auto`** (no pauses, CI-friendly), and **`--off`** (read-only replay of the artifacts committed in the toy, `[OFF]` badge, no commands executed); plus `--from <n>`, `--variant red|green`, `--json` (machine-readable summary), and `--keep` (leaves the sandbox on disk, notice on stderr)
+- `createPrompter` in the tutorial engine: wraps readline prompting with a single interface-`close` guard so EOF (Ctrl+D) resolves the pending prompt with `null` and the walk ends quietly, instead of leaving an unsettled top-level await (exit 13) and an orphaned sandbox
+- "Interactive onboarding" subsections in `README.md` / `README_TH.md` right after the One Framework intro, pointing new users at `npm run tutorial` first
+
 ## 2026-08-09 — Smart error remediation
 
 ### Added

@@ -9,6 +9,7 @@ import {
   runStep,
   replayStep,
   renderStep,
+  createPrompter,
   SEPARATOR_WIDTH
 } from '../lib/tutorial-engine.mjs';
 
@@ -70,12 +71,6 @@ function writeSummary(results, failures) {
   process.stdout.write(`${lines.join('\n')}\n`);
 }
 
-function ask(rl, question) {
-  return new Promise((resolve) => {
-    rl.question(question, (answer) => resolve(answer.trim()));
-  });
-}
-
 try {
   const args = parseLooseArgs();
   if (args.help || args.h) {
@@ -98,6 +93,7 @@ try {
         toyDir = sandbox;
       }
       const rl = mode === 'interactive' ? readline.createInterface({ input: process.stdin, output: process.stdout }) : null;
+      const prompter = rl ? createPrompter(rl) : null;
 
       if (!jsonMode) writeIntro(mode, sandbox ?? '(read-only)');
 
@@ -111,8 +107,9 @@ try {
             result = replayStep(step, mode === 'off' ? TOY_DIR : toyDir);
           } else {
             let pickedVariant = variant;
-            if (step.run.variants && !pickedVariant && rl) {
-              const answer = await ask(rl, '\nขั้น 5 เลือกรอบ TDD: [g]reen = ดูเทสต์ผ่านหลัง implement, [r]ed = ดูเทสต์ล้มก่อนมี implementation (Enter = green): ');
+            if (step.run.variants && !pickedVariant && prompter) {
+              const answer = await prompter.ask('\nขั้น 5 เลือกรอบ TDD: [g]reen = ดูเทสต์ผ่านหลัง implement, [r]ed = ดูเทสต์ล้มก่อนมี implementation (Enter = green): ');
+              if (answer === null) break; // stdin closed (^D/EOF) — end the walk quietly
               pickedVariant = answer.toLowerCase().startsWith('r') ? 'red' : 'green';
             }
             result = runStep(step, { toyDir, variant: pickedVariant });
@@ -120,8 +117,9 @@ try {
           if (result.source === 'run' && result.status === 'warn') failures += 1;
           if (!jsonMode) process.stdout.write(`${renderStep(step, result, { mode, stepIndex: step.n, totalSteps: total })}\n`);
           results.push({ n: step.n, id: step.id, gate: step.gate, status: result.status, exit: result.exit ?? null, timedOut: result.timedOut === true });
-          if (rl && index < steps.length - 1) {
-            await ask(rl, `\nกด Enter เพื่อไปขั้นที่ ${steps[index + 1].n}/${total} (${steps[index + 1].id})… `);
+          if (prompter && index < steps.length - 1) {
+            const answer = await prompter.ask(`\nกด Enter เพื่อไปขั้นที่ ${steps[index + 1].n}/${total} (${steps[index + 1].id})… `);
+            if (answer === null) break; // stdin closed (^D/EOF) — end the walk quietly
           }
         }
       } finally {

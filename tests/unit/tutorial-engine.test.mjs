@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { EventEmitter } from 'node:events';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -17,6 +18,7 @@ import {
   runStep,
   renderStep,
   replayStep,
+  createPrompter,
   prepareToyRun,
   cleanupToyRun
 } from '../../lib/tutorial-engine.mjs';
@@ -259,6 +261,41 @@ test('tailTranscript keeps the last lines only', () => {
   assert.deepEqual(tailTranscript('a', 30), ['a']);
 });
 
+// ----------------------------------------------------------------- prompter
+
+function fakeReadline() {
+  const emitter = new EventEmitter();
+  const asked = [];
+  return {
+    asked,
+    question(question, callback) { asked.push({ question, callback }); },
+    on: emitter.on.bind(emitter),
+    emit: emitter.emit.bind(emitter)
+  };
+}
+
+test('createPrompter resolves trimmed answers for answered questions', async () => {
+  const rl = fakeReadline();
+  const prompter = createPrompter(rl);
+  const first = prompter.ask('press enter ');
+  rl.asked[0].callback('  green  ');
+  assert.equal(await first, 'green');
+  const second = prompter.ask('again ');
+  rl.asked[1].callback('');
+  assert.equal(await second, '');
+});
+
+test('createPrompter resolves null on interface close instead of dangling', async () => {
+  const rl = fakeReadline();
+  const prompter = createPrompter(rl);
+  const pending = prompter.ask('about to close ');
+  rl.emit('close');
+  assert.equal(await pending, null, 'EOF must quietly resolve the pending prompt');
+  const after = await prompter.ask('never asked ');
+  assert.equal(after, null, 'asks after close resolve null immediately');
+  assert.equal(rl.asked.length, 1, 'a closed interface is never questioned again');
+});
+
 // ------------------------------------------------------------------ sandbox
 
 test('prepareToyRun copies the toy and cleanup removes only the sandbox', () => {
@@ -336,6 +373,14 @@ test('CLI --off --from 7 resumes from step 7 only', () => {
   assert.doesNotMatch(result.stdout, /ขั้นที่ 1\/8/);
 });
 
+test('CLI --interactive falls back to AUTO when stdio is not a TTY (no prompt, no hang)', () => {
+  const result = runCli(['--interactive', '--from', '8'], { input: '' });
+  assert.equal(result.status, 0, result.stderr);
+  assert.match(result.stdout, /โหมด: AUTO/);
+  assert.doesNotMatch(result.stdout, /กด Enter/);
+  assert.doesNotMatch(result.stdout, /เลือกรอบ TDD/);
+});
+
 test('CLI --json emits a single machine-readable summary', () => {
   const result = runCli(['--off', '--auto', '--json']);
   assert.equal(result.status, 0, result.stderr);
@@ -386,4 +431,14 @@ test('CLI --auto --variant red shows the failing first run and still passes the 
   assert.match(result.stdout, /expected exit 1 · RED/);
   assert.match(result.stdout, /Cannot find module/);
   assert.doesNotMatch(result.stdout, /WARN \(ต้องตรวจ\)/);
+});
+
+test('CLI --auto --from 3 resumes at step 3 and walks through step 8', () => {
+  const result = runCli(['--auto', '--from', '3']);
+  assert.equal(result.status, 0, `stderr: ${result.stderr}\nstdout tail: ${result.stdout.slice(-1200)}`);
+  assert.match(result.stdout, /ขั้นที่ 3\/8/);
+  assert.match(result.stdout, /ขั้นที่ 8\/8/);
+  assert.doesNotMatch(result.stdout, /ขั้นที่ 1\/8/);
+  assert.doesNotMatch(result.stdout, /ขั้นที่ 2\/8/);
+  assert.match(result.stdout, /สรุป: 6 ขั้น · PASS 5 · NOTE 1 · WARN 0/);
 });

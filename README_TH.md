@@ -48,6 +48,22 @@ v6 รวมทุก discipline ไว้ใต้ร่มเดียว (One
 
 เริ่มที่ `flow/README.md` สำหรับแผนที่ทั้งสิบสี่ flow แล้วเดิน `GOLDEN_PATH.md` สำหรับเส้นทางตรงครบทุก gate — route, design, plan, isolate, TDD, review, quality gate, verify, integrate — พร้อม command log ที่รันจริงบน toy repo ใน `examples/golden-path/`
 
+## เริ่มต้นแบบ Interactive: `npm run tutorial`
+
+เพิ่งมาใหม่? เดิน golden path หนึ่งรอบก่อนทำอย่างอื่น:
+
+```bash
+npm run tutorial        # interactive เมื่อ stdio เป็น TTY, --auto เมื่อไม่ใช่
+```
+
+Tutorial เดิน GOLDEN_PATH ครบ 8 ขั้น — route, design, plan, isolate, TDD, quality gate, verify, integrate — บนสำเนาชั่วคราวของ `examples/golden-path/` ต้นฉบับจึงไม่ถูกแตะ และ sandbox ถูกลบอัตโนมัติเมื่อจบ ทุกขั้นบอก gate ที่ผูก เหตุผลที่เกตนั้นต้องมี คำสั่งมาตรฐานที่จะพิมพ์ในโปรเจกต์จริง transcript สดแบบตัดท้าย (หรือสรุป replay สำหรับขั้นที่เป็น documented) และบทเรียนหนึ่งข้อ
+
+- **Interactive** (default บน TTY) หยุดรอ Enter ระหว่างขั้น และให้เลือกรอบ RED/GREEN ที่เกต TDD — ถ้า stdio ไม่ใช่เทอร์มินัลจะสลับเป็น `--auto` เองโดยไม่ค้างรอ input
+- **`--auto`** ไม่หยุดรอ เหมาะกับ CI — เสริมด้วย `--from <n>` เพื่อเริ่มจากขั้นที่ n, `--variant red` ให้เห็นเทสต์ล้มก่อนมี implementation, `--json` รับสรุปแบบ machine-readable, `--keep` เก็บ sandbox ไว้เปิดดูภายหลัง
+- **`--off`** อ่านอย่างเดียว — replay จาก artifact ที่ commit ไว้ใน toy โดยไม่ spawn คำสั่งจริง และทุกขั้นติด badge `[OFF]` ชัดเจน
+
+Exit 0 เมื่อทุกขั้นที่รันจริงผ่าน expectation; ถ้ามีขั้นใดเป็น WARN จะ exit 1 อ่าน prose เต็มพร้อมหลักฐานใน `GOLDEN_PATH.md`
+
 ## ข้อกำหนด
 
 - Node.js 20 ขึ้นไป

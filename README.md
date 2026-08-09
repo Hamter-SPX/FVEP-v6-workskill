@@ -47,6 +47,22 @@ v6 puts the whole discipline under a single umbrella: every process pattern the 
 
 Start at `flow/README.md` for the map of all fourteen flows. For the shortest honest end-to-end pass — route, design, plan, isolate, TDD, review, quality gate, verify, integrate — walk `GOLDEN_PATH.md`, backed by a live command log over a real toy repo in `examples/golden-path/`.
 
+## Interactive onboarding: `npm run tutorial`
+
+New here? Walk the golden path once before running anything else:
+
+```bash
+npm run tutorial        # interactive on a TTY, --auto otherwise
+```
+
+The tutorial walks the GOLDEN_PATH gates as eight numbered steps — route, design, plan, isolate, TDD, quality gate, verify, integrate — on a temporary copy of `examples/golden-path/`, so the shipped example is never modified and the sandbox is removed when the walk ends. Each step states its gate, why it exists, the standard command you would run in a real project, a tailed live transcript (or a replay summary for documented steps), and one learning point.
+
+- **Interactive** (default on a TTY): pauses for Enter between steps and lets you pick the RED or GREEN pass at the TDD gate; falls back to `--auto` when stdio is not a terminal.
+- **`--auto`**: no pauses — the CI-friendly form; combine with `--from <n>` to resume at step n, `--variant red` to watch the TDD gate fail first, `--json` for a machine-readable summary, `--keep` to inspect the sandbox afterwards.
+- **`--off`**: read-only replay of the artifacts committed inside the toy — no commands are executed and every step carries an explicit `[OFF]` badge.
+
+Exit 0 means every executed step met its expectation; a `WARN` step exits 1. Full prose and evidence live in `GOLDEN_PATH.md`.
+
 ## Requirements
 
 - Node.js 20 or later
