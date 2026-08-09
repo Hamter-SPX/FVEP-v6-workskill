@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-08-10 — Run intelligence
+
+### Added
+
+- `npm run intel -- --output-dir <dir> [--window-days <n>] [--json]` + `scripts/intel.mjs`: reads the run-intelligence store a vision loop maintains under `<outputDir>/.fx/intel/` and prints the five evidence-backed insight families from `lib/run-intel-engine.mjs` — recurring rules, consecutive-failure streaks, device correlations, resolved rules, and per-case pass→fail regressions — with real run ids and counts in every line; advisory only, exit 0 regardless
+- `--purge --yes` on `scripts/intel.mjs`: deletes the intel store non-interactively (the flag never prompts — `--yes` is the explicit confirmation) and lists every file it removed; `--purge` without `--yes` refuses without touching anything
+- Summary advisory lines in `scripts/vision-loop.mjs`: after the summary block (and the Mobile checks line on mobile) the loop prints at most two Thai lines from the recorded history — `สถิติ run: rule 'x' เกิด N ครั้งในช่วง D วัน — ตรวจ <case>` (top recurring) and `สตรีค: rule 'y' ล้มติดกัน K รัน` (top streak) — capped for stdout noise, never gate-affecting, and suppressed together with recording by the existing `--skip-intel` flag
+- `formatIntelAdvisory` in `lib/run-intel-engine.mjs`: the two-line advisory renderer the loop summary consumes
+
 ## 2026-08-10 — Interactive onboarding tutorial
 
 ### Added

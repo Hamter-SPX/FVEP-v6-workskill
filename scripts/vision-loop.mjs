@@ -16,7 +16,7 @@ import { captureAllMobile } from '../lib/mobile-capture-engine.mjs';
 import { runMobileChecks } from '../lib/mobile-checks-engine.mjs';
 import { auditPerformanceAll } from '../lib/performance-engine.mjs';
 import { createRunProvenance } from '../lib/provenance.mjs';
-import { recordRunIntel } from '../lib/run-intel-engine.mjs';
+import { analyzeRunIntel, formatIntelAdvisory, recordRunIntel } from '../lib/run-intel-engine.mjs';
 import { writeRunSummary } from '../lib/run-summary.mjs';
 import { crawlInteractionStatesAll } from '../lib/state-crawler-engine.mjs';
 import { compareTokenProfileSets, extractTokenProfiles, loadStoredTokenProfiles } from '../lib/token-engine.mjs';
@@ -46,6 +46,11 @@ Usage: node scripts/vision-loop.mjs [options]
       --route/--viewport/--state/--case <value>  Filter matrix
   -h, --help                Show help
 `;
+
+// Analysis window for the post-summary advisory lines (matches the default
+// window of scripts/intel.mjs): two weeks — long enough to see repeats,
+// short enough to stay relevant.
+const INTEL_WINDOW_DAYS = 14;
 
 const OPTIONS = {
   'base-url': { type: 'string' },
@@ -213,6 +218,19 @@ try {
       const failedChecks = checks.filter((result) => result.verdict === 'fail').length;
       process.stdout.write(`Mobile checks: ${checks.length - failedChecks} passed, ${failedChecks} failed\n`);
       if (failedChecks > 0) process.exitCode = 1;
+    }
+    // Advisory run-intelligence lines (top recurring rule, then top streak —
+    // capped at two by formatIntelAdvisory). Strictly advisory: failures
+    // degrade to a warning line and the gate/exit code is never consulted.
+    if (!args['skip-intel']) {
+      try {
+        const intelAnalysis = await analyzeRunIntel(config.outputDir, { windowDays: INTEL_WINDOW_DAYS });
+        for (const line of formatIntelAdvisory(intelAnalysis, { windowDays: INTEL_WINDOW_DAYS })) {
+          process.stdout.write(`${line}\n`);
+        }
+      } catch (error) {
+        process.stdout.write(`intel warning: advisory unavailable: ${error?.message ?? error}\n`);
+      }
     }
     if (!summary.automatedGatePassed) process.exitCode = 1;
   }

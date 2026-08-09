@@ -55,6 +55,7 @@
     "vision:judge": "node scripts/vision-judge.mjs",
     "vision:metrics": "node scripts/vision-metrics.mjs",
     "evidence:visual": "node scripts/visual-evidence.mjs",
+    "intel": "node scripts/intel.mjs",
     "remediate": "node scripts/remediate.mjs",
     "audit:fullstack": "node scripts/audit-fullstack.mjs",
     "audit:experience": "node scripts/audit-experience.mjs",

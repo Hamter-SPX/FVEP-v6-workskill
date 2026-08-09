@@ -366,6 +366,17 @@ npm run remediate -- --output-dir artifacts/vision-loop
 npm run remediate -- --output-dir artifacts/vision-loop --json
 ```
 
+### Run Intelligence
+
+Every `vision-loop` run records its outcome and findings (mobile-check judgments plus blocker/major comparison rows) into a small store under `<outputDir>/.fx/intel/` — SQLite via `node:sqlite`, with an append-only JSONL fallback on engines without it, so nothing new is installed. `npm run intel` reads that history and prints evidence-backed insights with real run ids and counts: rules recurring across runs, consecutive-failure streaks, rules pinned to a single device, rules that stopped appearing (resolved), and per-case pass→fail regressions. Recording is best-effort and the report is advisory only — neither ever touches the gate or the exit code. Pass `--skip-intel` to opt a loop run out of recording and of the summary's two-line `สถิติ run:`/`สตรีค:` advisory, which the loop prints after the summary block (and the Mobile checks line on mobile) whenever the window has repeats.
+
+```bash
+npm run intel -- --output-dir artifacts/vision-loop                    # window: last 14 days
+npm run intel -- --output-dir artifacts/vision-loop --window-days 30
+npm run intel -- --output-dir artifacts/vision-loop --json
+npm run intel -- --output-dir artifacts/vision-loop --purge --yes      # delete the store (--yes confirms, deleted files are listed)
+```
+
 ## Domain commands
 
 The v3 surface is preserved:

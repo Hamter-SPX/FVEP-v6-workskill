@@ -358,6 +358,17 @@ npm run remediate -- --output-dir artifacts/vision-loop
 npm run remediate -- --output-dir artifacts/vision-loop --json
 ```
 
+### Run Intelligence
+
+ทุก `vision-loop` run บันทึกผลเกตและ findings (คำตัดสินของ mobile-check บวกแถว comparison ระดับ blocker/major) ลง store เล็กๆ ใต้ `<outputDir>/.fx/intel/` — SQLite ผ่าน `node:sqlite` พร้อม fallback เป็น JSONL แบบ append-only บน Node ที่ไม่มี sqlite จึงไม่ต้องติดตั้งอะไรเพิ่ม `npm run intel` อ่านประวัตินั้นแล้วพิมพ์ insight ที่ผูกกับหลักฐานจริง (เลข run id และจำนวนครั้งเสมอ): rule ที่กลับมาซ้ำข้ามรัน, สตรีคล้มติดกัน, rule ที่ติดอยู่กับ device เดียว, rule ที่หายไป (resolved) และ regression แบบเคสต่อเคส (ผ่าน → ล้ม) การบันทึกเป็นแบบ best-effort และรายงานนี้เป็นเพียง advisory — ไม่มีทางไปแตะ gate หรือ exit code ใส่ `--skip-intel` ให้รันของ loop เพื่อปิดทั้งการบันทึกและบรรทัด advisory `สถิติ run:`/`สตรีค:` สูงสุด 2 บรรทัดที่ loop พิมพ์หลังบล็อกสรุป (และหลังบรรทัด Mobile checks บนมือถือ) เมื่อหน้าต่างเวลามี rule ซ้ำ
+
+```bash
+npm run intel -- --output-dir artifacts/vision-loop                    # หน้าต่าง: 14 วันล่าสุด
+npm run intel -- --output-dir artifacts/vision-loop --window-days 30
+npm run intel -- --output-dir artifacts/vision-loop --json
+npm run intel -- --output-dir artifacts/vision-loop --purge --yes      # ลบ store (--yes ยืนยัน และรายงานไฟล์ที่ลบ)
+```
+
 ## วงจรการทำงาน
 
 ```text
