@@ -19,7 +19,7 @@ import { createRunProvenance } from '../lib/provenance.mjs';
 import { writeRunSummary } from '../lib/run-summary.mjs';
 import { crawlInteractionStatesAll } from '../lib/state-crawler-engine.mjs';
 import { compareTokenProfileSets, extractTokenProfiles, loadStoredTokenProfiles } from '../lib/token-engine.mjs';
-import { writeJsonAtomic } from '../lib/io.mjs';
+import { writeJsonAtomic, writeTextAtomic } from '../lib/io.mjs';
 
 const HELP = `
 Usage: node scripts/vision-loop.mjs [options]
@@ -40,6 +40,7 @@ Usage: node scripts/vision-loop.mjs [options]
       --skip-compare        Skip visual comparison
       --skip-manual-review  Skip loading recorded semantic review
       --skip-aesthetics     Skip loading aesthetic profile/review evidence
+      --evidence-visual     Emit reports/visual-evidence.html after the run summary
       --route/--viewport/--state/--case <value>  Filter matrix
   -h, --help                Show help
 `;
@@ -61,6 +62,7 @@ const OPTIONS = {
   'skip-compare': { type: 'boolean', default: false },
   'skip-manual-review': { type: 'boolean', default: false },
   'skip-aesthetics': { type: 'boolean', default: false },
+  'evidence-visual': { type: 'boolean', default: false },
   route: { type: 'string' },
   viewport: { type: 'string' },
   state: { type: 'string' },
@@ -172,6 +174,17 @@ try {
         }
       : config;
     const summary = await writeRunSummary(summaryConfig, sections, { provenance });
+    // Post-summary, opt-in: fold the artifacts this run left on disk into one
+    // self-contained HTML evidence report. Runs identically on web and mobile
+    // configs; the engine degrades missing inputs to badges, never throws on
+    // absent sections (outputDir itself exists — writeRunSummary just wrote it).
+    let visualEvidencePath = null;
+    if (args['evidence-visual']) {
+      const { collectEvidence, renderEvidenceHtml } = await import('../lib/visual-evidence-engine.mjs');
+      const evidence = await collectEvidence(config.outputDir);
+      visualEvidencePath = path.join(config.outputDir, 'reports', 'visual-evidence.html');
+      await writeTextAtomic(visualEvidencePath, renderEvidenceHtml(evidence));
+    }
     process.stdout.write([
       `Automated evidence gate: ${summary.automatedGatePassed ? 'PASS' : 'FAIL'}`,
       `Quality score: ${summary.quality.score}/100 (${summary.quality.grade})`,
@@ -179,7 +192,8 @@ try {
       `Aesthetic gate: ${summary.quality.gates.aesthetic?.status ?? 'not-applicable'}`,
       `Semantic visual review: ${summary.semanticVisualReviewPassed ? 'PASS' : 'PENDING/FAIL'}`,
       `Release decision: ${summary.releaseDecision}`,
-      `Summary: ${summary.markdownPath ?? summary.jsonPath}`
+      `Summary: ${summary.markdownPath ?? summary.jsonPath}`,
+      ...(visualEvidencePath ? [`Visual evidence: ${visualEvidencePath}`] : [])
     ].join('\n') + '\n');
     if (isMobile) {
       // The mobile gate is the mobileChecks verdict set itself: any failing

@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-08-09 — Visual evidence report
+
+### Added
+
+- `vision-loop --evidence-visual`: after the run summary, on web and mobile paths alike, the loop folds the artifacts the run just left on disk into `<outputDir>/reports/visual-evidence.html` and names the path in the stdout summary; the run verdict itself is untouched
+- `npm run evidence:visual -- --output-dir <dir>` + `lib/visual-evidence-engine.mjs`: builds the same report standalone from any prior run's output directory — one self-contained HTML file with per-case reference/current/diff thumbnails, deterministic metrics, unified pass/warn/fail verdicts, findings, sha256 anchors (a capture/metrics hash divergence flags the evidence as stale), the gate ladder, and run provenance; readable offline with inline CSS, base64 images, no JavaScript, and no external references
+
 ## 6.0.0 — 2026-08-09
 
 **One Framework** — every process discipline now ships as a readable flow doc under a single umbrella, wired into the mode engine, with a walked golden path as proof.

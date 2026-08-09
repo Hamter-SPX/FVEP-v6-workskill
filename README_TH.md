@@ -277,6 +277,17 @@ metrics บันทึก hash ของภาพต้นทาง — ส่�
 npm run vision:judge -- --judge metrics --metrics .fx/metrics.json --capture .fx/cur.png --verify-source --out .fx/verdict.json
 ```
 
+### Visual Evidence Report
+
+ไฟล์ HTML ไฟล์เดียวต่อหนึ่งรัน — thumbnail ของ reference/current/diff ทุกเคส, metrics แบบ deterministic, verdict และ findings, hash sha256 สำหรับตรวจยืนยันหลักฐาน, ภาพรวมเกตทั้งบันได และ provenance ของรัน — reviewer อ่านครบทั้งรันแบบออฟไลน์ได้โดยไม่ต้องรื้อ artifact tree เอง inline CSS, รูปเป็น base64, ไม่มี JavaScript, ไม่อ้างอิงไฟล์ภายนอก: เปิด `reports/visual-evidence.html` ในเบราว์เซอร์ได้เลย (ดับเบิลคลิกได้ ไม่ต้อง serve)
+
+เปิด flag บน `vision-loop` ได้ทั้งเว็บและมือถือ หรือสร้างย้อนหลังจาก output directory ของรันเก่า:
+
+```bash
+node scripts/vision-loop.mjs --config vision-loop.config.json --evidence-visual   # สร้างหลัง run summary
+npm run evidence:visual -- --output-dir artifacts/vision-loop                      # ชี้ output dir ของรันไหนก็ได้
+```
+
 ## วงจรการทำงาน
 
 ```text

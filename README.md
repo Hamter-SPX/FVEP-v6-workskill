@@ -284,6 +284,17 @@ under judgment:
 npm run vision:judge -- --judge metrics --metrics .fx/metrics.json --capture .fx/cur.png --verify-source --out .fx/verdict.json
 ```
 
+### Visual Evidence Report
+
+One self-contained HTML file per run — per-case reference/current/diff thumbnails, deterministic metrics, verdicts and findings, sha256 hash anchors for verification, the full gate ladder, and run provenance — so a reviewer can read the whole run offline without reconstructing it from the artifact tree. Inline CSS, base64 images, no JavaScript, no external references: open `reports/visual-evidence.html` in any browser (double-click works; nothing to serve).
+
+Flag it on any web or mobile `vision-loop` run, or build it standalone from an existing output directory:
+
+```bash
+node scripts/vision-loop.mjs --config vision-loop.config.json --evidence-visual   # emitted after the run summary
+npm run evidence:visual -- --output-dir artifacts/vision-loop                      # any prior run's output dir
+```
+
 ## Domain commands
 
 The v3 surface is preserved:

@@ -65,7 +65,7 @@ function blockMovedPng() {
   return PNG.sync.write(png);
 }
 
-function runLoop(thresholds, { currentDiffers = false } = {}) {
+function runLoop(thresholds, { currentDiffers = false, extraArgs = [] } = {}) {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'vision-loop-mobile-'));
   // Mobile artifact identity rides the web layout as label__mobile__key
   // (lib/mobile-capture-engine.mjs caseIdentity), seeded as "current" capture.
@@ -89,7 +89,7 @@ function runLoop(thresholds, { currentDiffers = false } = {}) {
     },
     routes: [{ name: 'home', path: '/' }]
   }, null, 2)}\n`);
-  const result = spawnSync(process.execPath, [LOOP_SCRIPT, '--config', configPath, '--skip-capture'], {
+  const result = spawnSync(process.execPath, [LOOP_SCRIPT, '--config', configPath, '--skip-capture', ...extraArgs], {
     cwd: root,
     encoding: 'utf8',
     timeout: 120_000
@@ -131,4 +131,16 @@ test('vision-loop mobile: differing current fails the visual gate (exit 1)', () 
   assert.equal(comparison.comparisons.length, 1);
   assert.equal(comparison.comparisons[0].severity, 'blocker');
   assert.ok(comparison.summary.blockers >= 1, `expected blockers >= 1, got ${comparison.summary.blockers}`);
+});
+
+// --evidence-visual rides the post-summary hook: after writeRunSummary the
+// loop folds the seeded artifact tree into one self-contained HTML report.
+// The flag must also leave the run verdict untouched (still exit 0 here).
+test('vision-loop mobile: --evidence-visual emits reports/visual-evidence.html', () => {
+  const result = runLoop({}, { extraArgs: ['--evidence-visual'] });
+  assert.equal(result.status, 0, `expected exit 0; stdout:\n${result.stdout}\nstderr:\n${result.stderr}`);
+  const htmlPath = path.join(result.outputDir, 'reports', 'visual-evidence.html');
+  assert.match(result.stdout, /Visual evidence: .+visual-evidence\.html/);
+  assert.ok(fs.existsSync(htmlPath), `expected ${htmlPath} to exist`);
+  assert.match(fs.readFileSync(htmlPath, 'utf8'), /<!DOCTYPE html>/);
 });
