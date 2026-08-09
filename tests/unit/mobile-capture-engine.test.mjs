@@ -75,10 +75,28 @@ test('captureSimulatorScreenshot — simctl failure throws with stderr tail', ()
   );
 });
 
-test('captureSimulatorScreenshot — android is an explicit phase-2 stub', () => {
+test('captureSimulatorScreenshot — platform android delegates to the adb adapter', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'mce-'));
+  const out = path.join(dir, 'cur.png');
+  const png = fakePngBytes(1176, 2400);
+  const calls = [];
+  const exec = (cmd, args) => {
+    calls.push([cmd, ...args]);
+    if (args.join(' ').includes('exec-out screencap')) return { status: 0, stdout: png, stderr: '' };
+    return { status: 0, stdout: '', stderr: '' };
+  };
+  const meta = captureSimulatorScreenshot({ out, platform: 'android', serial: 'emulator-5554', exec, sleep: () => {} });
+  assert.equal(meta.platform, 'android');
+  assert.equal(meta.serial, 'emulator-5554');
+  assert.equal(meta.png.width, 1176);
+  assert.equal(fs.existsSync(metaPathFor(out)), true);
+  assert.ok(calls.some((c) => c.join(' ').includes('exec-out screencap')));
+});
+
+test('captureSimulatorScreenshot — unsupported platform is rejected', () => {
   assert.throws(
-    () => captureSimulatorScreenshot({ out: '/tmp/x.png', platform: 'android', exec: () => ({ status: 0 }), sleep: () => {} }),
-    /phase 2/i
+    () => captureSimulatorScreenshot({ out: '/tmp/x.png', platform: 'harmonyos', exec: () => ({ status: 0 }), sleep: () => {} }),
+    TypeError
   );
 });
 
@@ -225,13 +243,47 @@ test('captureAllMobile — filters.case and filters.route narrow the matrix', as
   assert.match(byRoute[0].screenshotPath, /home__mobile__home\.png$/);
 });
 
-test('captureAllMobile — rejects capture.type playwright (web path) and Task-4-pending android', async () => {
+test('captureAllMobile — rejects capture.type playwright (web path)', async () => {
   await assert.rejects(
     () => captureAllMobile(mobileFixture({ capture: { type: 'playwright' } }), { exec: () => {}, sleep: () => {} }),
     /requires capture\.type ios-sim\|android/
   );
-  await assert.rejects(
-    () => captureAllMobile(mobileFixture({ capture: { type: 'android' } }), { exec: () => {}, sleep: () => {} }),
-    (error) => error instanceof TypeError && /Task 4 pending/.test(error.message)
-  );
+});
+
+// Simulates `adb`: `exec-out screencap` returns a fake PNG via stdout.
+function fakeAdbExec(calls, png = fakePngBytes(1176, 2400)) {
+  return (cmd, args) => {
+    calls.push([cmd, ...args]);
+    if (args.join(' ').includes('exec-out screencap')) return { status: 0, stdout: png, stderr: '' };
+    return { status: 0, stdout: '', stderr: '' };
+  };
+}
+
+test('captureAllMobile — android matrix delegates to the adb adapter per case', async () => {
+  const config = mobileFixture({ capture: { type: 'android' } });
+  config.mobile.cases[0].launchActivity = 'com.example.app/.MainActivity';
+  config.mobile.cases[1].serial = 'emulator-5556';
+  const calls = [];
+  const results = await captureAllMobile(config, { exec: fakeAdbExec(calls), sleep: () => {} });
+  assert.equal(results.length, 2);
+  for (const result of results) {
+    assert.equal(result.ok, true);
+    assert.ok(fs.existsSync(result.screenshotPath));
+    const metadata = JSON.parse(fs.readFileSync(result.metadataPath, 'utf8'));
+    assert.equal(metadata.schemaVersion, 2);
+    assert.equal(metadata.platform, 'android');
+    assert.deepEqual(metadata.viewport, { width: 1176, height: 2400 });
+    assert.equal(metadata.mobile.platform, 'android');
+    const pngBytes = fs.readFileSync(result.screenshotPath);
+    assert.equal(metadata.screenshotSha256, crypto.createHash('sha256').update(pngBytes).digest('hex'));
+  }
+  const [home, chat] = results;
+  assert.equal(JSON.parse(fs.readFileSync(home.metadataPath, 'utf8')).mobile.serial, 'emulator-5554');
+  assert.equal(JSON.parse(fs.readFileSync(chat.metadataPath, 'utf8')).mobile.serial, 'emulator-5556');
+  // home: launchActivity (am start -n) precedes its screencap; serial/-s reaches adb.
+  assert.deepEqual(calls[0].slice(1), ['-s', 'emulator-5554', 'shell', 'am', 'start', '-n', 'com.example.app/.MainActivity']);
+  assert.ok(calls[1].join(' ').includes('-s emulator-5554 exec-out screencap'));
+  // chat: openUrl (am start VIEW -d) precedes its screencap, on the per-case serial.
+  assert.deepEqual(calls[2].slice(1), ['-s', 'emulator-5556', 'shell', 'am', 'start', '-a', 'android.intent.action.VIEW', '-d', 'app://chat/1']);
+  assert.ok(calls[3].join(' ').includes('-s emulator-5556 exec-out screencap'));
 });
