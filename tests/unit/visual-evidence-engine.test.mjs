@@ -239,6 +239,98 @@ test('collect — missing output directory is the only throwing input', async ()
   assert.equal(evidence.summary.total, 0);
 });
 
+test('collect+render — uncanonical judgment verdict normalized, raw payload never reaches class attributes', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'vee-xss-'));
+  fs.mkdirSync(path.join(dir, 'current'), { recursive: true });
+  fs.mkdirSync(path.join(dir, 'metadata'), { recursive: true });
+  const key = 'inject__mobile__case';
+  fs.writeFileSync(path.join(dir, 'current', `${key}.png`), makePng(8, 8));
+  writeJson(path.join(dir, 'metadata', `${key}.mobile.judgment.json`), {
+    schema_version: 1,
+    case_label: 'inject',
+    mode: 'metrics',
+    verdict: 'fail" onmouseover="alert(1)', // hostile, uncanonical verdict
+    findings: [],
+    metrics_ref: null,
+    capture_ref: `current/${key}.png`,
+    judged_by: 'metrics-engine',
+    judged_at: '2026-08-08T10:01:00.000Z',
+    goal: null
+  });
+  const evidence = await collectEvidence(dir);
+  const item = evidence.cases.find((c) => c.key === key);
+  assert.equal(item.verdict, null, 'uncanonical verdict normalizes away instead of leaking');
+  assert.equal(item.label, 'inject');
+  const html = renderEvidenceHtml(evidence);
+  assert.ok(!html.includes('onmouseover'), 'raw payload appears nowhere in the document');
+  assert.ok(!/class="[^"]*onmouseover/.test(html), 'class attributes carry no unescaped payload');
+  assert.ok(html.includes('chip--unknown'), 'card falls back to the UNKNOWN chip');
+});
+
+test('collect — raw mobile comparison key joins onto the canonical artifact case (no phantom card)', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'vee-join-'));
+  for (const folder of ['current', 'reference', 'metadata', 'reports']) {
+    fs.mkdirSync(path.join(dir, folder), { recursive: true });
+  }
+  // Config case { label: 'Home Page', key: 'home_screen' }: compare-engine writes the
+  // RAW join, artifactPaths writes the safeSegment-canonical one.
+  const canonicalKey = 'home-page__mobile__home-screen';
+  const rawComparisonKey = 'Home Page__mobile__home_screen';
+  const png = makePng(8, 8);
+  fs.writeFileSync(path.join(dir, 'current', `${canonicalKey}.png`), png);
+  fs.writeFileSync(path.join(dir, 'reference', `${canonicalKey}.png`), png);
+  writeJson(path.join(dir, 'metadata', `${canonicalKey}.current.capture.json`), {
+    schemaVersion: 2, mode: 'current', key: 'home_screen', route: 'Home Page',
+    viewport: { width: 8, height: 8 }, state: null, platform: 'ios-sim', label: 'Home Page',
+    capturedAt: '2026-08-08T11:00:00.000Z', screenshotSha256: sha256(png), screenshotBytes: png.length
+  });
+  writeJson(path.join(dir, 'reports', 'comparison.json'), {
+    schemaVersion: 2, generatedAt: '2026-08-08T11:01:00.000Z', configPath: 'c', mode: 'compare',
+    summary: {}, comparisons: [{ key: rawComparisonKey, severity: 'major', mismatchRatio: 0.3, visualScore: 50, reason: 'mismatch-above-major', regions: [], notes: ['Raw-key join regression.'] }]
+  });
+  const evidence = await collectEvidence(dir);
+  assert.equal(evidence.cases.length, 1, 'one joined card, no phantom duplicate');
+  const [item] = evidence.cases;
+  assert.equal(item.key, canonicalKey, 'canonical artifact key wins');
+  assert.equal(item.verdict, 'fail', 'verdict joined from the raw-key comparison entry');
+  assert.equal(item.severity, 'major');
+  assert.equal(item.label, 'Home Page', 'raw label still displayed (escaped on render)');
+  assert.equal(item.findings.length, 1);
+  assert.ok(item.thumbs.current && item.thumbs.reference);
+  const html = renderEvidenceHtml(evidence);
+  assert.equal((html.match(/data-case="/g) ?? []).length, 1, 'html renders exactly one card');
+});
+
+test('collect — reference-only meta: capture hash unknown, no false stale flag', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'vee-refonly-'));
+  for (const folder of ['current', 'reference', 'metadata', 'reports']) {
+    fs.mkdirSync(path.join(dir, folder), { recursive: true });
+  }
+  const key = 'promoted__mobile__home';
+  const currentPng = makePng(8, 8, [10, 200, 10]);
+  const referencePng = makePng(8, 8, [200, 10, 10]);
+  fs.writeFileSync(path.join(dir, 'current', `${key}.png`), currentPng);
+  fs.writeFileSync(path.join(dir, 'reference', `${key}.png`), referencePng);
+  writeJson(path.join(dir, 'metadata', `${key}.reference.capture.json`), {
+    schemaVersion: 2, mode: 'reference', key: 'home', route: 'promoted',
+    viewport: { width: 8, height: 8 }, state: null, platform: 'ios-sim', label: 'promoted',
+    capturedAt: '2026-08-01T09:00:00.000Z', screenshotSha256: sha256(referencePng), screenshotBytes: referencePng.length
+  });
+  writeJson(path.join(dir, 'reports', 'comparison.json'), {
+    schemaVersion: 2, generatedAt: '2026-08-08T11:02:00.000Z', configPath: 'c', mode: 'compare',
+    summary: {}, comparisons: [{ key, severity: 'minor', mismatchRatio: 0.02, visualScore: 88, reason: 'mismatch-minor', regions: [], notes: ['Minor drift.'] }]
+  });
+  const evidence = await collectEvidence(dir);
+  const item = evidence.cases.find((c) => c.key === key);
+  assert.equal(item.metaSource, 'reference');
+  assert.equal(item.hashes.captureSha256, undefined, 'reference hash must NOT pose as the current capture hash');
+  assert.equal(item.hashes.metricsSha256, sha256(currentPng), 'report-time hash still anchored');
+  assert.equal(item.verdict, 'warn'); // minor severity
+  const html = renderEvidenceHtml(evidence);
+  assert.ok(!html.includes('hashes diverge'), 'no false stale-evidence warning');
+  assert.ok(html.includes('reference-only meta'), 'limitation surfaced as a badge');
+});
+
 test('render — self-contained html, doctype, data-case, real hashes, palette, injection neutralized', async () => {
   const { dir, captureMeta } = makeFixture({ label: '<script>alert(1)</script>' });
   writeRunSummary(dir);
